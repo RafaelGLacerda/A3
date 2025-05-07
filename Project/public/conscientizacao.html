@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8" />
+  <title>Conscientização - ReciclaSLA</title>
+  <link rel="stylesheet" href="css/conscientizacao.css" />
+  <link rel="stylesheet" href="css/sidebar.css">
+</head>
+<body>
+  <div class="container">
+    <div id="sidebar-container"></div>
+
+    <main class="content">
+      <h2>Conscientização</h2>
+      <p>Aprenda mais sobre a importância da reciclagem e como fazer sua parte!</p>
+
+      <h3>📊 Dados sobre Reciclagem</h3>
+      <p>Mais de 90% do lixo reciclável no Brasil ainda não é reaproveitado.</p>
+
+      <h3>💥 Impactos da Poluição</h3>
+      <p>Plásticos nos oceanos afetam a vida marinha e microplásticos estão sendo encontrados até em alimentos.</p>
+
+      <h3>✅ Dicas de Reciclagem</h3>
+      <ul>
+        <li>Enxágue embalagens antes de descartar</li>
+        <li>Separe materiais por tipo: plástico, papel, metal, vidro</li>
+        <li>Evite o uso de descartáveis sempre que possível</li>
+      </ul>
+  
+
+<script>
+  fetch("sidebar.html")
+    .then(response => response.text())
+    .then(data => {
+      document.getElementById("sidebar-container").innerHTML = data;
+    });
+</script>
+
+    </main>
+  </div>
+</body>
+<script>
+  fetch("sidebar.html")
+    .then(response => response.text())
+    .then(data => {
+      document.getElementById("sidebar-container").innerHTML = data;
+    });
+</script>
+
+</html>

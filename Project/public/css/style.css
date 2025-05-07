@@ -1,0 +1,85 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: sans-serif;
+  }
+  
+  body.bg {
+    background: url('../img/IMGLogin.png') no-repeat center center fixed;
+    background-size: cover;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+  }
+  
+  .form-container {
+    background-color: rgba(255, 255, 255, 0.95);
+    padding: 30px 40px;
+    border-radius: 12px;
+    max-width: 350px;
+    width: 100%;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+  }
+  
+  h2 {
+    margin-bottom: 20px;
+    text-align: center;
+  }
+  
+  form {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  input,
+  textarea {
+    padding: 10px;
+    margin-bottom: 12px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+  }
+  
+  textarea {
+    resize: none;
+    height: 60px;
+  }
+  
+  button {
+    padding: 10px;
+    background-color: #2e7d32;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+  }
+  
+  button:hover {
+    background-color: #1b5e20;
+  }
+  
+  .bottom-link {
+    text-align: center;
+    margin-top: 15px;
+  }
+  
+  .bottom-link p {
+    margin-bottom: 8px;
+  }
+
+  .return-button {
+    display: inline-block;
+    padding: 10px 15px;
+    background-color: #1565c0;
+    color: white;
+    text-decoration: none;
+    border-radius: 6px;
+    transition: background-color 0.2s ease;
+  }
+  
+  .return-button:hover {
+    background-color: #0d47a1;
+  }
+  

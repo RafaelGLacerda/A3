@@ -1,0 +1,69 @@
+[
+  {
+    "nome": "Rafael Lacerda",
+    "email": "rafaellacerda2004@gmail.com",
+    "senha": "rafael12",
+    "cep": "41720-000",
+    "endereco": "uma rua"
+  },
+  {
+    "nome": "aaa",
+    "email": "a@a",
+    "senha": "rafael12",
+    "cep": "41720-000",
+    "endereco": "Rua João José Rescala, 199\nVila Anaiti, Condomínio IKE, Torre Jacarandá, Aprt 1402"
+  },
+  {
+    "nome": "d",
+    "email": "d@d",
+    "senha": "d",
+    "cep": "41720-000",
+    "endereco": "Rua João José Rescala, 199\nVila Anaiti, Condomínio IKE, Torre Jacarandá, Aprt 1402"
+  },
+  {
+    "nome": "c@c",
+    "email": "c@c",
+    "senha": "rafael12",
+    "cep": "41720-000",
+    "endereco": "Rua João José Rescala, 199\nVila Anaiti, Condomínio IKE, Torre Jacarandá, Aprt 1402"
+  },
+  {
+    "nome": "RAFAEL PEREIRA GRIGORIO DE LACERDA",
+    "email": "grigorio.lacerda@gmail.com",
+    "senha": "rafael12",
+    "cep": "41720-000",
+    "endereco": "Rua João José Rescala, 199\nVila Anaiti, Condomínio IKE, Torre Jacarandá, Aprt 1402"
+  },
+  {
+    "nome": "dwadwa",
+    "email": "dwadwa@dwadwa",
+    "senha": "dwadwa",
+    "cep": "dwadwa",
+    "endereco": "dwadwa",
+    "quantidadeReciclada": 0
+  },
+  {
+    "nome": "Joao",
+    "email": "joao@gmail.com",
+    "senha": "rafael12",
+    "cep": "41720-000",
+    "endereco": "Rua João José Rescala, 199\nVila Anaiti, Condomínio IKE, Torre Jacarandá, Aprt 1402",
+    "quantidadeReciclada": 0
+  },
+  {
+    "nome": "dwadwa",
+    "email": "daw@daw",
+    "senha": "rafael12",
+    "cep": "41720-000",
+    "endereco": "Rua João José Rescala, 199\nVila Anaiti, Condomínio IKE, Torre Jacarandá, Aprt 1402",
+    "quantidadeReciclada": 0
+  },
+  {
+    "nome": "Rafael",
+    "email": "willian@gmail.com",
+    "senha": "rafael12",
+    "cep": "41720-000",
+    "endereco": "um endereco",
+    "quantidadeReciclada": 0
+  }
+]

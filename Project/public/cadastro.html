@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Cadastro - Reciclagem</title>
+  <link rel="stylesheet" href="css/style.css"/>
+</head>
+<body class="bg">
+  <div class="form-container">
+    <h2>Cadastro</h2>
+    <form id="cadastroForm">
+      <input type="text" name="nome" placeholder="Nome completo" required />
+      <input type="email" name="email" placeholder="Email" required />
+      <input type="password" name="senha" placeholder="Senha" required />
+      <input type="text" name="cep" placeholder="CEP" required />
+      <textarea name="endereco" placeholder="Endereço completo" required></textarea>
+      <button type="submit">Cadastrar</button>
+    </form>
+    
+    <div class="bottom-link">
+      <p>Já possui uma conta?</p>
+      <a href="index.html" class="return-button">Voltar para o Login</a>
+    </div>
+  </div>
+  
+  <script src="js/cadastro.js"></script>
+</body>
+</html>

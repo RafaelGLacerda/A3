@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <title>Perfil do Usuário - ReciclaSLA</title>
+  <link rel="stylesheet" href="css/sidebar.css">
+  <link rel="stylesheet" href="css/perfil.css">
+</head>
+<body>
+  <div id="sidebar-container"></div>
+
+  <main class="content">
+    <h2>Perfil do Usuário</h2>
+
+    <div class="perfil-info">
+      <p><strong>Nome:</strong> <span id="nomeUsuario"></span></p>
+      <p><strong>Email:</strong> <span id="emailUsuario"></span></p>
+      <p><strong>Endereço:</strong> <span id="enderecoUsuario"></span></p>
+      <p><strong>Quantidade reciclada:</strong> <span id="quantidadeReciclada"></span></p>
+    </div>
+
+    <div class="botoes">
+      <button onclick="editarNome()">Editar Nome</button>
+      <button onclick="editarEndereco()">Editar Endereço</button>
+    </div>
+  </main>
+
+  <script src="js/perfil.js">
+    
+  </script>
+</body>
+<script>
+fetch("sidebar.html")
+  .then(res => res.text())
+  .then(html => {
+    document.getElementById("sidebar-container").innerHTML = html;
+  });
+</script>
+</html>

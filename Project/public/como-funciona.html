@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8" />
+  <title>Como Funciona - ReciclaSLA</title>
+  <link rel="stylesheet" href="css/como-funciona.css" />
+  <link rel="stylesheet" href="css/sidebar.css">
+  <div id="sidebar-container"></div>
+
+
+</head>
+<body>
+  <div class="container">
+
+    <main class="content">
+      <h2>Como Funciona</h2>
+      <p>Nosso sistema facilita a conexão entre cidadãos e pontos de coleta de recicláveis.</p>
+      <ul>
+        <li>📦 Cadastre-se e informe seu endereço</li>
+        <li>📅 Agende uma coleta ou leve seus resíduos a um ecoponto</li>
+        <li>🎁 Ganhe pontos por contribuir com a reciclagem</li>
+        <li>🏆 Troque pontos por prêmios no nosso catálogo</li>
+      </ul>
+      <h3>Por que é importante?</h3>
+      <p>Reciclar ajuda a reduzir a poluição, economiza recursos naturais e contribui para um planeta mais sustentável.</p>
+    </main>
+  </div>
+</body>
+<script>
+  fetch("sidebar.html")
+    .then(response => response.text())
+    .then(data => {
+      document.getElementById("sidebar-container").innerHTML = data;
+    });
+</script>
+
+</html>

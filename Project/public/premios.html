@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <title>Prêmios - ReciclaSLA</title>
+  <link rel="stylesheet" href="css/sidebar.css">
+  <link rel="stylesheet" href="css/premios.css">
+</head>
+<body>
+  <div id="sidebar-container"></div>
+
+  <main class="content">
+    <h2>🎁 Prêmios Disponíveis</h2>
+    <p>Troque seus pontos por prêmios sustentáveis!</p>
+
+    <div class="grid-premios" id="lista-premios">
+      <!-- Prêmios serão inseridos aqui via JS -->
+    </div>
+  </main>
+
+  <script>
+    const premios = [
+      { nome: "Vale R$ 50", quantidade: 12, pontos: 50 },
+      { nome: "Vale R$ 100", quantidade: 8, pontos: 100 },
+      { nome: "Vale gás", quantidade: 5, pontos: 80 },
+      { nome: "Vale-refeição R$ 50", quantidade: 14, pontos: 60 },
+      { nome: "Vale-refeição R$ 100", quantidade: 10, pontos: 120 },
+      { nome: "Vale-refeição R$ 250", quantidade: 3, pontos: 200 },
+      { nome: "Sacolas ecológicas", quantidade: 25, pontos: 30 },
+      { nome: "Ventilador", quantidade: 4, pontos: 150 },
+      { nome: "Kit de cozinha", quantidade: 6, pontos: 180 },
+      { nome: "Mochila ecológica", quantidade: 9, pontos: 70 },
+      { nome: "Produtos de limpeza", quantidade: 20, pontos: 40 },
+      { nome: "AIRFRYER", quantidade: 1, pontos: 500 }
+    ];
+
+    const container = document.getElementById("lista-premios");
+
+    premios.forEach(premio => {
+      const card = document.createElement("div");
+      card.className = "card-premio";
+      card.innerHTML = `
+        <h3>${premio.nome}</h3>
+        <p>Estoque: ${premio.quantidade}</p>
+        <p>Pontos necessários: ${premio.pontos}</p>
+      `;
+      container.appendChild(card);
+    });
+
+    // Carregar barra lateral
+    fetch("sidebar.html")
+      .then(response => response.text())
+      .then(data => {
+        document.getElementById("sidebar-container").innerHTML = data;
+      });
+  </script>
+</body>
+</html>

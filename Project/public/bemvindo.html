@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <title>Bem-vindo ao ReciclaSLA</title>
+  <link rel="stylesheet" href="css/bemvindo.css">
+  <link rel="stylesheet" href="css/sidebar.css">
+
+</head>
+<body>
+  <div class="container">
+    <div id="sidebar-container"></div>
+    <main class="content">
+      <div class="boas-vindas">
+        <h2 id="boas-vindas">Bem-vindo ao ReciclaSLA</h2>
+      </div>
+      <p class="descricao">
+        Conheça nosso site e veja como você pode usar nossos serviços
+      </p>
+
+      <section class="empresas">
+        <div class="empresa">EMPRESA PARCEIRA 1</div>
+        <div class="empresa">EMPRESA PARCEIRA 2</div>
+        <div class="empresa">EMPRESA PARCEIRA 3</div>
+        <div class="empresa">EMPRESA PARCEIRA 4</div>
+        <div class="empresa">EMPRESA PARCEIRA 5</div>
+      </section>
+    </main>
+  </div>
+
+  <script src="main.js"></script>
+</body>
+<script>
+  fetch("sidebar.html")
+    .then(response => response.text())
+    .then(data => {
+      document.getElementById("sidebar-container").innerHTML = data;
+    });
+</script>
+
+</html>

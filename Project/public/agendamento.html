@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <title>Agendamento de Coleta - ReciclaSLA</title>
+  <link rel="stylesheet" href="css/sidebar.css">
+  <link rel="stylesheet" href="css/agendamento.css">
+</head>
+<body>
+  <div id="sidebar-container"></div>
+
+  <main class="content">
+    <h2>🗓️ Agendamento de Coleta</h2>
+
+    <form id="form-agendamento" class="form-agendamento">
+      <div class="form-group">
+        <label for="nomeRepresentante">Nome do Representante:</label>
+        <input type="text" id="nomeRepresentante" required placeholder="Digite o nome do representante">
+      </div>
+
+      <div class="form-group">
+        <label for="dataColeta">Data:</label>
+        <input type="date" id="dataColeta" required>
+      </div>
+
+      <div class="form-group">
+        <label for="horaColeta">Hora:</label>
+        <input type="time" id="horaColeta" required>
+      </div>
+
+      <div class="form-group">
+        <button type="button" id="btnBuscarColeta">Buscar Coleta Mais Próxima</button>
+      </div>
+
+      <div class="form-group">
+        <button type="submit">Agendar Coleta</button>
+      </div>
+
+      <div id="mensagemAgendamento" class="mensagem-agendamento"></div>
+    </form>
+  </main>
+
+  <script>
+    // Função para exibir mensagem de agendamento concluído
+    document.getElementById('form-agendamento').addEventListener('submit', function(e) {
+      e.preventDefault();
+      document.getElementById('mensagemAgendamento').textContent = "Agendamento concluído!";
+      document.getElementById('mensagemAgendamento').style.color = "green";
+    });
+
+    // Função de buscar coleta mais próxima (por enquanto não faz nada)
+    document.getElementById('btnBuscarColeta').addEventListener('click', function() {
+      alert("Função de buscar coleta mais próxima em desenvolvimento!");
+    });
+
+    // Carregar barra lateral
+    fetch("sidebar.html")
+      .then(response => response.text())
+      .then(data => {
+        document.getElementById("sidebar-container").innerHTML = data;
+      });
+  </script>
+</body>
+</html>

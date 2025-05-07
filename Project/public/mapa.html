@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Mapa de Ecopontos - ReciclaSLA</title>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+  <link rel="stylesheet" href="css/sidebar.css">
+  <style>
+    body {
+      margin: 0;
+      display: flex;
+    }
+
+    #sidebar-container {
+      width: 250px;
+      background-color: #f0f0f0;
+    }
+
+    #map {
+      flex: 1;
+      height: 100vh;
+    }
+  </style>
+</head>
+<body>
+  <div id="sidebar-container"></div>
+  <div id="map"></div>
+
+  <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+  <script>
+    const recyclePoints = [
+      { id: 1, name: "Campo Grande", lat: -12.988572736686292, lng: -38.520103895353984 },
+      { id: 2, name: "Ondina", lat: -13.0115, lng: -38.4995 },
+      { id: 3, name: "Rio Vermelho", lat: -13.0102, lng: -38.4866 },
+      { id: 4, name: "Brotas", lat: -12.985138018320063, lng: -38.501248250615475 },
+      { id: 5, name: "Pituba", lat: -13.000812913502605, lng: -38.45969249204836 },
+      { id: 6, name: "Pernambués", lat: -12.972252437839018, lng: -38.461392333116734 },
+      { id: 7, name: "Imbuí", lat: -12.970897156797012, lng: -38.43489105185892 },
+      { id: 8, name: "Sussuarana", lat: -12.933550563139878, lng: -38.444129692500596 },
+      { id: 9, name: "São Cristóvão", lat: -12.91040561999883, lng: -38.353779377995345 },
+      { id: 10, name: "Cajazeiras", lat: -12.899468912209896, lng: -38.4077516879381 }
+    ];
+
+    const map = L.map('map').setView([-12.97, -38.50], 12); // Salvador
+
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      attribution: '© OpenStreetMap'
+    }).addTo(map);
+
+    recyclePoints.forEach(point => {
+      L.marker([point.lat, point.lng])
+        .addTo(map)
+        .bindPopup(`<strong>${point.name}</strong>`);
+    });
+
+    // Carrega a barra lateral
+    fetch("sidebar.html")
+      .then(res => res.text())
+      .then(html => {
+        document.getElementById("sidebar-container").innerHTML = html;
+      });
+  </script>
+</body>
+</html>
