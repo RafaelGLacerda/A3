@@ -11,5 +11,5 @@ cd backend
 -
 node server.js
 ---
-##Abra o index.html como Live Server.
+Abra o index.html como Live Server.
 ---
