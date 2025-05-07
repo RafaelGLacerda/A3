@@ -1,13 +1,14 @@
 {
-    "name": "reciclasla-backend",
+    "name": "reciclasla-server",
     "version": "1.0.0",
-    "main": "backend/server.js",
-    "type": "commonjs",
+    "main": "server.js",
     "scripts": {
-        "start": "node backend/server.js"
+      "start": "node server.js"
     },
     "dependencies": {
-        "cors": "^2.8.5",
-        "express": "^4.18.2"
+      "express": "^4.18.2",
+      "body-parser": "^1.20.2",
+      "cors": "^2.8.5"
     }
-}
+  }
+  
