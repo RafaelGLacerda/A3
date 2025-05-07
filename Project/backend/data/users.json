@@ -65,5 +65,13 @@
     "cep": "41720-000",
     "endereco": "um endereco",
     "quantidadeReciclada": 0
+  },
+  {
+    "nome": "D8HUWY7ADJOIWAKPOLDPWA",
+    "email": "xdd@gmail.com",
+    "senha": "rafael12",
+    "cep": "41720-000",
+    "endereco": "Rua João José Rescala, 199\nVila Anaiti, Condomínio IKE, Torre Jacarandá, Aprt 1402",
+    "quantidadeReciclada": 0
   }
 ]

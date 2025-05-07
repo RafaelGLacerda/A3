@@ -16,7 +16,7 @@ document.getElementById('loginForm').addEventListener('submit', function(event) 
     if (data.message === 'Login bem-sucedido') {
       // SALVA o email do usuário logado
       localStorage.setItem('email', email);
-      window.location.href = 'perfil.html';
+      window.location.href = 'bemvindo.html';
     } else {
       alert(data.message);
     }
