@@ -7,7 +7,7 @@ document.getElementById('cadastroForm').addEventListener('submit', function(even
   const cep = event.target.cep.value;
   const endereco = event.target.endereco.value;
 
-  fetch('http://localhost:3000/api/cadastro', {
+  fetch(`${API_URL}/api/cadastro`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
