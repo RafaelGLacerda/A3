@@ -3,7 +3,7 @@ const fs = require('fs');
 const path = require('path');
 const bodyParser = require('body-parser');
 const cors = require('cors');
-
+const API_URL = "https://a3-2lsq.onrender.com";
 const app = express();
 const PORT = process.env.PORT || 3000;
 
