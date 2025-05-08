@@ -2,9 +2,9 @@
   "name": "reciclasla-server",
   "version": "1.0.0",
   "description": "Servidor Node.js para o projeto ReciclaSalvador",
-  "main": "backend/server.js",
+  "main": "server.js",
   "scripts": {
-    "start": "node backend/server.js"
+    "start": "node server.js"
   },
   "dependencies": {
     "express": "^4.18.2",
