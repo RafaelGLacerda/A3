@@ -1,11 +1,13 @@
-const emailUsuario = localStorage.getItem("email");
 const API_URL = "https://a3-2lsq.onrender.com";
+const emailUsuario = localStorage.getItem("email");
+
 if (!emailUsuario) {
   alert("Usuário não autenticado.");
   window.location.href = "index.html";
 }
+
 function carregarPerfil() {
-  fetch(`${API_URL}/api/profile/${emailUsuario}`)
+  fetch(`${API_URL}/profile/${emailUsuario}`)
     .then(res => res.json())
     .then(dados => {
       document.getElementById("nomeUsuario").textContent = dados.nome;
@@ -18,11 +20,10 @@ function carregarPerfil() {
     });
 }
 
-
 function editarNome() {
   const novoNome = prompt("Digite o novo nome:");
   if (novoNome) {
-    fetch(`${API_URL}/api/profile/${emailUsuario}`, {
+    fetch(`${API_URL}/profile/${emailUsuario}`, {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ nome: novoNome })
@@ -33,7 +34,7 @@ function editarNome() {
 function editarEndereco() {
   const novoEndereco = prompt("Digite o novo endereço:");
   if (novoEndereco) {
-    fetch(`${API_URL}/api/profile/${emailUsuario}`, {
+    fetch(`${API_URL}/profile/${emailUsuario}`, {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ endereco: novoEndereco })
