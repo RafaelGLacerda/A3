@@ -1,3 +1,4 @@
+const API_URL = "https://a3-2lsq.onrender.com";
 document.getElementById('loginForm').addEventListener('submit', function(event) {
   event.preventDefault();
 
