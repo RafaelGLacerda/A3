@@ -1,5 +1,5 @@
 const emailUsuario = localStorage.getItem("email");
-
+const API_URL = "https://a3-2lsq.onrender.com";
 if (!emailUsuario) {
   alert("Usuário não autenticado.");
   window.location.href = "index.html";
