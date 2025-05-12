@@ -1,77 +1,19 @@
 [
-  {
-    "nome": "Rafael Lacerda",
-    "email": "rafaellacerda2004@gmail.com",
-    "senha": "rafael12",
-    "cep": "4170",
-    "endereco": "uma rua"
-  },
-  {
-    "nome": "aaa",
-    "email": "a@a",
-    "senha": "rafael12",
-    "cep": "417",
-    "endereco": "Rua"
-  },
-  {
-    "nome": "d",
-    "email": "d@d",
-    "senha": "d",
-    "cep": "417",
-    "endereco": "Rua"
-  },
-  {
-    "nome": "c@c",
-    "email": "c@c",
-    "senha": "rafael12",
-    "cep": "417",
-    "endereco": "Rua"
-  },
-  {
-    "nome": "RAFAEL PEREIRA GRIGORIO DE LACERDA",
-    "email": "grigorio.lacerda@gmail.com",
-    "senha": "rafael12",
-    "cep": "41",
-    "endereco": "Rua"
-  },
-  {
-    "nome": "dwadwa",
-    "email": "dwadwa@dwadwa",
-    "senha": "dwadwa",
-    "cep": "dwadwa",
-    "endereco": "dwadwa",
-    "quantidadeReciclada": 0
-  },
-  {
-    "nome": "Joao",
-    "email": "joao@gmail.com",
-    "senha": "rafael12",
-    "cep": "4170",
-    "endereco": "Rua",
-    "quantidadeReciclada": 0
-  },
-  {
-    "nome": "dwadwa",
-    "email": "daw@daw",
-    "senha": "rafael12",
-    "cep": "41342",
-    "endereco": "Rua",
-    "quantidadeReciclada": 0
-  },
-  {
-    "nome": "Rafael",
-    "email": "willian@gmail.com",
-    "senha": "rafael12",
-    "cep": "417",
-    "endereco": "um endereco",
-    "quantidadeReciclada": 0
-  },
-  {
-    "nome": "D8HUWY7ADJOIWAKPOLDPWA",
-    "email": "xdd@gmail.com",
-    "senha": "rafael12",
-    "cep": "400",
-    "endereco": "Rua",
-    "quantidadeReciclada": 0
-  }
+{
+  "nome": "Rafael Lacerda",
+  "email": "rafaellacerda2004@gmail.com",
+  "senha": "rafael12",
+  "cep": "400",
+  "endereco": "Rua",
+  "quantidadeReciclada": 0,
+  "agendamentos": [
+    {
+      "nome": "",
+      "data": "",
+      "hora": "",
+      "cep": "",
+      "cooperativa": ""
+    }
+  ]
+}
 ]

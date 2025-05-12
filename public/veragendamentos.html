@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <title>Meus Agendamentos - ReciclaSLA</title>
+  <link rel="stylesheet" href="css/sidebar.css">
+  <link rel="stylesheet" href="css/agendamento.css">
+  <style>
+    table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+    th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+    th { background-color: #f2f2f2; }
+  </style>
+</head>
+<body>
+  <div id="sidebar-container"></div>
+
+  <main class="content">
+    <h2>📋 Meus Agendamentos</h2>
+    <table id="tabelaAgendamentos">
+      <thead>
+        <tr>
+          <th>Nome</th>
+          <th>Data</th>
+          <th>Hora</th>
+          <th>CEP</th>
+          <th>Cooperativa</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+  </main>
+<script>
+  fetch("sidebar.html")
+    .then(response => response.text())
+    .then(data => {
+      document.getElementById("sidebar-container").innerHTML = data;
+    });
+
+  const email = localStorage.getItem('usuarioLogado');
+  const tbody = document.querySelector('#tabelaAgendamentos tbody');
+
+  if (!email) {
+    tbody.innerHTML = '<tr><td colspan="5">⚠️ Usuário não está logado.</td></tr>';
+  } else {
+    fetch(`/api/agendamentos/${email}`)
+      .then(res => res.json())
+      .then(agendamentos => {
+        if (agendamentos.length === 0) {
+          tbody.innerHTML = '<tr><td colspan="5">❌ Nenhum agendamento encontrado.</td></tr>';
+        } else {
+          agendamentos.forEach(ag => {
+            const row = document.createElement('tr');
+            row.innerHTML = `
+              <td>${ag.nome}</td>
+              <td>${ag.data}</td>
+              <td>${ag.hora}</td>
+              <td>${ag.cep}</td>
+              <td>${ag.cooperativa}</td>
+            `;
+            tbody.appendChild(row);
+          });
+        }
+      })
+      .catch(err => {
+        tbody.innerHTML = `<tr><td colspan="5">❌ Erro ao carregar agendamentos: ${err.message}</td></tr>`;
+      });
+  }
+</script>
+
+</body>
+</html>
