@@ -14,11 +14,11 @@ git clone https://github.com/RafaelGLacerda/A3.git
 # Acesse a pasta do projeto
 cd A3
 
-# Instale as dependências
-npm install
-
 # Vá para a pasta do backend
 cd backend
+
+# Instale as dependências
+npm install
 
 # Inicie o servidor
 node server.js
