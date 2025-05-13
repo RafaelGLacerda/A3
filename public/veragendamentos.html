@@ -42,8 +42,13 @@
   if (!email) {
     tbody.innerHTML = '<tr><td colspan="5">⚠️ Usuário não está logado.</td></tr>';
   } else {
-    fetch(`/api/agendamentos/${email}`)
-      .then(res => res.json())
+    fetch(`https://a3-2lsq.onrender.com/api/agendamentos/${email}`)
+      .then(res => {
+        if (!res.ok) {
+          throw new Error('Falha ao buscar os dados do servidor.');
+        }
+        return res.json();
+      })
       .then(agendamentos => {
         if (agendamentos.length === 0) {
           tbody.innerHTML = '<tr><td colspan="5">❌ Nenhum agendamento encontrado.</td></tr>';
@@ -66,6 +71,7 @@
       });
   }
 </script>
+
 
 </body>
 </html>
