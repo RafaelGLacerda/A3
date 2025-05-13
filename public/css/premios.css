@@ -12,21 +12,18 @@ body {
   padding: 20px;
 }
 
-/* Conteúdo principal com margem para sidebar */
 .content {
-  margin-left: 240px; /* 220px da sidebar + espaçamento */
+  margin-left: 240px; /* 220px da sidebar + um pequeno espaçamento */
   max-width: 1200px;
   padding: 20px;
 }
 
-/* Título principal */
 h2 {
   font-size: 2rem;
   color: #2e7d32;
   margin-bottom: 10px;
 }
 
-/* Texto padrão */
 p {
   font-size: 1rem;
   margin-bottom: 20px;
@@ -39,7 +36,7 @@ p {
   gap: 20px;
 }
 
-/* Card de prêmio individual */
+/* Card de prêmio */
 .card-premio {
   background-color: #ffffff;
   border: 2px solid #c8e6c9;
@@ -90,43 +87,28 @@ p {
   box-shadow: 0 0 0 3px rgba(56, 142, 60, 0.4);
 }
 
-/* Seção Meus Pontos e Resgatados */
-#meus-pontos,
-#resgatados-container {
-  margin-top: 40px;
-  background-color: #ffffff;
-  padding: 20px;
-  border-radius: 12px;
-  border: 1px solid #c8e6c9;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.05);
-}
-
-#meus-pontos h3,
-#resgatados-container h3 {
+/* Títulos e listas adicionais */
+#meus-pontos, h3 {
+  margin-top: 30px;
   font-size: 1.2rem;
   color: #1b5e20;
-  margin-bottom: 10px;
 }
 
 #premios-resgatados {
   margin-top: 10px;
-  padding-left: 20px;
   list-style: disc;
+  padding-left: 20px;
 }
 
 #premios-resgatados li {
   margin-bottom: 5px;
-  color: #333;
 }
 
-/* Responsivo para telas pequenas */
+/* Responsivo para mobile */
 @media (max-width: 600px) {
   .grid-premios {
     grid-template-columns: 1fr;
   }
+}
 
-  .content {
-  margin-left: 240px; /* Deixe espaço para a sidebar */
-  padding: 20px;
-}
-}
+/* Removido botão global — conflita com btn-resgatar */
