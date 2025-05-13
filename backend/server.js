@@ -123,7 +123,9 @@ app.post('/api/agendamento/:email', (req, res) => {
     data,
     hora,
     cep,
-    cooperativa
+    cooperativa,
+    status: 'pendente',
+    comentarioAdm: ''
   };
 
   user.agendamentos.push(novoAgendamento);
@@ -172,8 +174,9 @@ app.put('/api/reciclagem/:id', (req, res) => {
     const agendamento = user.agendamentos?.find(ag => ag.id === id);
 
     if (agendamento) {
-      agendamento.observacao = observacao;
+      agendamento.comentarioAdm = observacao;
       agendamento.pontos = Number(pontos);
+      agendamento.status = 'realizado';
       user.pontos = (user.pontos || 0) + agendamento.pontos;
       agendamentoAtualizado = true;
     }

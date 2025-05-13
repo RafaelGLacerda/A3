@@ -131,15 +131,18 @@
     <h2>📋 Meus Agendamentos</h2>
     <table id="tabelaAgendamentos">
       <thead>
-        <tr>
-          <th>Nome</th>
-          <th>Data</th>
-          <th>Hora</th>
-          <th>CEP</th>
-          <th>Cooperativa</th>
-          <th>Ação</th>
-        </tr>
-      </thead>
+  <tr>
+    <th>Nome</th>
+    <th>Data</th>
+    <th>Hora</th>
+    <th>CEP</th>
+    <th>Cooperativa</th>
+    <th>Status</th>
+    <th>Comentário</th>
+    <th>Ação</th>
+  </tr>
+</thead>
+
       <tbody></tbody>
     </table>
 
@@ -180,7 +183,7 @@
   }
 
   if (!email) {
-    tbody.innerHTML = '<tr><td colspan="6">⚠️ Usuário não está logado.</td></tr>';
+    tbody.innerHTML = '<tr><td colspan="8">⚠️ Usuário não está logado.</td></tr>';
   } else {
     fetch(`/api/agendamentos/${email}`)
       .then(res => {
@@ -189,10 +192,11 @@
       })
       .then(agendamentos => {
         if (agendamentos.length === 0) {
-          tbody.innerHTML = '<tr><td colspan="6">❌ Nenhum agendamento encontrado.</td></tr>';
+          tbody.innerHTML = '<tr><td colspan="8">❌ Nenhum agendamento encontrado.</td></tr>';
         } else {
           agendamentos.forEach((ag, index) => {
             const agId = ag.id || `${email}-${index}`;
+            const realizado = ag.status === "realizado";
             const row = document.createElement('tr');
             row.innerHTML = `
               <td>${ag.nome}</td>
@@ -200,14 +204,18 @@
               <td>${ag.hora}</td>
               <td>${ag.cep}</td>
               <td>${ag.cooperativa}</td>
-              <td><button class="btn-cancelar" onclick="cancelarAgendamento('${agId}')">Desistir da coleta</button></td>
+              <td>${realizado ? "✅ Realizado" : "⌛ Pendente"}</td>
+              <td>${realizado ? ag.comentarioAdm || "Sem observações." : "-"}</td>
+              <td>
+                ${realizado ? "✔️" : `<button class="btn-cancelar" onclick="cancelarAgendamento('${agId}')">Desistir da coleta</button>`}
+              </td>
             `;
             tbody.appendChild(row);
           });
         }
       })
       .catch(err => {
-        tbody.innerHTML = `<tr><td colspan="6">❌ Erro ao carregar agendamentos: ${err.message}</td></tr>`;
+        tbody.innerHTML = `<tr><td colspan="8">❌ Erro ao carregar agendamentos: ${err.message}</td></tr>`;
       });
   }
 
