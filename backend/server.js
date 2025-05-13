@@ -15,7 +15,7 @@ app.use(cors());
 app.use(bodyParser.json());
 app.use(express.static(path.join(__dirname, '..', 'public')));
 
-// Funções utilitárias
+// Utils
 const readUsersData = () => {
   try {
     const data = fs.readFileSync(usersFilePath, 'utf-8');
@@ -29,21 +29,22 @@ const saveUsersData = (users) => {
   fs.writeFileSync(usersFilePath, JSON.stringify(users, null, 2));
 };
 
-// Rota de login
+// ROTAS
+
+// Login
 app.post('/api/login', (req, res) => {
   const { email, senha } = req.body;
   const users = readUsersData();
 
   const user = users.find(u => u.email === email && u.senha === senha);
   if (user) {
-    const tipo = user.tipo === 'ADM' ? 'ADM' : 'USER';
-    res.status(200).json({ message: 'Login bem-sucedido', tipo });
+    res.status(200).json({ message: 'Login bem-sucedido', tipo: user.tipo });
   } else {
     res.status(401).json({ message: 'Email ou senha inválidos' });
   }
 });
 
-// Rota de cadastro
+// Cadastro
 app.post('/api/cadastro', (req, res) => {
   const { nome, email, senha, cep, endereco } = req.body;
   const users = readUsersData();
@@ -73,9 +74,9 @@ app.post('/api/cadastro', (req, res) => {
   res.status(201).json({ message: 'Usuário cadastrado com sucesso' });
 });
 
-// Obter perfil
+// Perfil - visualizar
 app.get('/profile/:email', (req, res) => {
-  const email = req.params.email;
+  const { email } = req.params;
   const users = readUsersData();
   const user = users.find(u => u.email === email);
 
@@ -84,11 +85,10 @@ app.get('/profile/:email', (req, res) => {
     : res.status(404).json({ message: 'Usuário não encontrado' });
 });
 
-// Atualizar perfil
+// Perfil - atualizar
 app.put('/profile/:email', (req, res) => {
   const { email } = req.params;
   const { nome, endereco } = req.body;
-
   const users = readUsersData();
   const index = users.findIndex(u => u.email === email);
 
@@ -103,7 +103,7 @@ app.put('/profile/:email', (req, res) => {
   res.json({ message: 'Perfil atualizado com sucesso' });
 });
 
-// Criar agendamento
+// Agendamento - criar
 app.post('/api/agendamento/:email', (req, res) => {
   const { email } = req.params;
   const { nome, data, hora, cep, cooperativa } = req.body;
@@ -131,9 +131,9 @@ app.post('/api/agendamento/:email', (req, res) => {
   res.status(200).json({ message: 'Agendamento realizado com sucesso' });
 });
 
-// Obter agendamentos do usuário
+// Agendamentos - por usuário
 app.get('/api/agendamentos/:email', (req, res) => {
-  const email = req.params.email;
+  const { email } = req.params;
   const users = readUsersData();
   const user = users.find(u => u.email === email);
 
@@ -142,33 +142,38 @@ app.get('/api/agendamentos/:email', (req, res) => {
   res.json(user.agendamentos || []);
 });
 
-// Obter todos os agendamentos (para ADM)
+// Agendamentos - todos (ADM)
 app.get('/api/agendamentos', (req, res) => {
   const users = readUsersData();
+
   const todosAgendamentos = users.flatMap(user =>
     user.agendamentos?.map(ag => ({
       ...ag,
       emailUsuario: user.email
     })) || []
   );
+
   res.json(todosAgendamentos);
 });
 
-// Registrar reciclagem (ADM marca como feita)
+// Reciclagem - registrar (ADM)
 app.put('/api/reciclagem/:id', (req, res) => {
   const { id } = req.params;
   const { observacao, pontos } = req.body;
   const users = readUsersData();
 
+  if (!observacao || pontos === undefined || isNaN(Number(pontos))) {
+    return res.status(400).json({ message: 'Observação e pontos válidos são obrigatórios.' });
+  }
+
   let agendamentoAtualizado = false;
 
-  // Iterar sobre os usuários e atualizar os agendamentos
   users.forEach(user => {
-    const agendamento = user.agendamentos.find(ag => ag.id === id);
+    const agendamento = user.agendamentos?.find(ag => ag.id === id);
 
     if (agendamento) {
       agendamento.observacao = observacao;
-      agendamento.pontos = Number(pontos) || 0;
+      agendamento.pontos = Number(pontos);
       user.pontos = (user.pontos || 0) + agendamento.pontos;
       agendamentoAtualizado = true;
     }
@@ -182,18 +187,17 @@ app.put('/api/reciclagem/:id', (req, res) => {
   res.json({ message: 'Reciclagem registrada com sucesso' });
 });
 
-// Excluir agendamento (desistir da coleta)
+// Agendamento - excluir
 app.delete('/api/agendamentos/:id', (req, res) => {
-  const agendamentoId = req.params.id;
+  const { id } = req.params;
   const users = readUsersData();
-
   let encontrado = false;
 
   users.forEach(user => {
     if (Array.isArray(user.agendamentos)) {
-      const agendamentosAntes = user.agendamentos.length;
-      user.agendamentos = user.agendamentos.filter(ag => ag.id !== agendamentoId);
-      if (user.agendamentos.length < agendamentosAntes) {
+      const inicial = user.agendamentos.length;
+      user.agendamentos = user.agendamentos.filter(ag => ag.id !== id);
+      if (user.agendamentos.length < inicial) {
         encontrado = true;
       }
     }
