@@ -116,7 +116,7 @@ document.getElementById('form-agendamento').addEventListener('submit', async fun
   const hora = document.getElementById('horaColeta').value;
   const cep = document.getElementById('cep').value;
   const cooperativa = document.getElementById('cooperativaSelecionada').value;
-  const imagemInput = document.getElementById('imagemMaterial');
+  const imagemInput = document.getElementById('imagemReciclagem');
 
   if (!cooperativa) {
     alert("Por favor, clique em 'Buscar Coleta Mais Próxima' antes de agendar.");
