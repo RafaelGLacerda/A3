@@ -3,6 +3,7 @@ const path = require('path');
 const fs = require('fs');
 const bodyParser = require('body-parser');
 const cors = require('cors');
+const { v4: uuidv4 } = require('uuid'); // Para gerar IDs únicos
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -14,24 +15,18 @@ app.use(cors());
 app.use(bodyParser.json());
 app.use(express.static(path.join(__dirname, '..', 'public')));
 
-// Função para ler os dados do JSON
+// Funções utilitárias
 const readUsersData = () => {
   try {
     const data = fs.readFileSync(usersFilePath, 'utf-8');
     return JSON.parse(data);
-  } catch (err) {
-    console.error('Erro ao ler o arquivo:', err);
+  } catch {
     return [];
   }
 };
 
-// Função para salvar os dados no JSON
 const saveUsersData = (users) => {
-  try {
-    fs.writeFileSync(usersFilePath, JSON.stringify(users, null, 2));
-  } catch (err) {
-    console.error('Erro ao salvar os dados:', err);
-  }
+  fs.writeFileSync(usersFilePath, JSON.stringify(users, null, 2));
 };
 
 // Rota de login
@@ -40,11 +35,9 @@ app.post('/api/login', (req, res) => {
   const users = readUsersData();
 
   const user = users.find(u => u.email === email && u.senha === senha);
-  if (user) {
-    res.status(200).json({ message: 'Login bem-sucedido' });
-  } else {
-    res.status(401).json({ message: 'Email ou senha inválidos' });
-  }
+  user
+    ? res.status(200).json({ message: 'Login bem-sucedido' })
+    : res.status(401).json({ message: 'Email ou senha inválidos' });
 });
 
 // Rota de cadastro
@@ -56,7 +49,7 @@ app.post('/api/cadastro', (req, res) => {
     return res.status(400).json({ message: 'Email já cadastrado' });
   }
 
-  const newUser = {
+  const novoUsuario = {
     nome,
     email,
     senha,
@@ -66,82 +59,103 @@ app.post('/api/cadastro', (req, res) => {
     agendamentos: []
   };
 
-  users.push(newUser);
+  users.push(novoUsuario);
   saveUsersData(users);
-
   res.status(201).json({ message: 'Usuário cadastrado com sucesso' });
 });
 
+// Obter perfil
 app.get('/profile/:email', (req, res) => {
   const email = req.params.email;
-  console.log("Buscando perfil para:", email); // <---- debug
-
   const users = readUsersData();
   const user = users.find(u => u.email === email);
 
-  if (!user) {
-    return res.status(404).json({ message: 'Usuário não encontrado' });
-  }
-
-  res.json(user);
+  user
+    ? res.json(user)
+    : res.status(404).json({ message: 'Usuário não encontrado' });
 });
 
-
-// Rota para atualizar perfil
+// Atualizar perfil
 app.put('/profile/:email', (req, res) => {
   const { email } = req.params;
   const { nome, endereco } = req.body;
 
   const users = readUsersData();
-  const userIndex = users.findIndex(u => u.email === email);
+  const index = users.findIndex(u => u.email === email);
 
-  if (userIndex === -1) {
+  if (index === -1) {
     return res.status(404).json({ message: 'Usuário não encontrado' });
   }
 
-  if (nome) users[userIndex].nome = nome;
-  if (endereco) users[userIndex].endereco = endereco;
+  if (nome) users[index].nome = nome;
+  if (endereco) users[index].endereco = endereco;
 
   saveUsersData(users);
   res.json({ message: 'Perfil atualizado com sucesso' });
 });
 
-// Rota para criar agendamento
+// Criar agendamento
 app.post('/api/agendamento/:email', (req, res) => {
-  const email = req.params.email;
+  const { email } = req.params;
   const { nome, data, hora, cep, cooperativa } = req.body;
 
   if (!nome || !data || !hora || !cep || !cooperativa) {
-    return res.status(400).json({ message: 'Todos os campos são obrigatórios para o agendamento.' });
+    return res.status(400).json({ message: 'Todos os campos são obrigatórios.' });
   }
 
-  const users = readUsersData(); // função que lê o JSON
+  const users = readUsersData();
   const user = users.find(u => u.email === email);
 
-  if (!user) {
-    return res.status(404).json({ message: 'Usuário não encontrado' });
-  }
+  if (!user) return res.status(404).json({ message: 'Usuário não encontrado' });
 
-  if (!Array.isArray(user.agendamentos)) {
-    user.agendamentos = [];
-  }
+  const novoAgendamento = {
+    id: uuidv4(),
+    nome,
+    data,
+    hora,
+    cep,
+    cooperativa
+  };
 
-  user.agendamentos.push({ nome, data, hora, cep, cooperativa });
+  user.agendamentos.push(novoAgendamento);
   saveUsersData(users);
   res.status(200).json({ message: 'Agendamento realizado com sucesso' });
 });
 
-// Rota para obter agendamentos de um usuário
+// Obter agendamentos
 app.get('/api/agendamentos/:email', (req, res) => {
   const email = req.params.email;
   const users = readUsersData();
   const user = users.find(u => u.email === email);
 
-  if (!user) {
-    return res.status(404).json({ message: 'Usuário não encontrado' });
-  }
+  if (!user) return res.status(404).json({ message: 'Usuário não encontrado' });
 
   res.json(user.agendamentos || []);
+});
+
+// Excluir agendamento (desistir da coleta)
+app.delete('/api/agendamentos/:id', (req, res) => {
+  const agendamentoId = req.params.id;
+  const users = readUsersData();
+
+  let encontrado = false;
+
+  users.forEach(user => {
+    if (Array.isArray(user.agendamentos)) {
+      const agendamentosAntes = user.agendamentos.length;
+      user.agendamentos = user.agendamentos.filter(ag => ag.id !== agendamentoId);
+      if (user.agendamentos.length < agendamentosAntes) {
+        encontrado = true;
+      }
+    }
+  });
+
+  if (!encontrado) {
+    return res.status(404).json({ message: 'Agendamento não encontrado' });
+  }
+
+  saveUsersData(users);
+  res.json({ message: 'Agendamento excluído com sucesso' });
 });
 
 // Página inicial
@@ -149,7 +163,7 @@ app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, '..', 'public', 'index.html'));
 });
 
-// Inicia o servidor
+// Iniciar servidor
 app.listen(PORT, () => {
-  console.log(`Servidor rodando na porta ${PORT}`);
+  console.log(`✅ Servidor rodando em http://localhost:${PORT}`);
 });
