@@ -40,6 +40,34 @@
     .btn-cancelar:hover {
       background-color: #b71c1c;
     }
+
+    /* Mensagem interativa */
+    .mensagem {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      padding: 15px 20px;
+      border-radius: 8px;
+      font-weight: bold;
+      color: white;
+      z-index: 1000;
+      opacity: 0;
+      transform: translateY(-20px);
+      transition: opacity 0.4s ease, transform 0.4s ease;
+    }
+
+    .mensagem.sucesso {
+      background-color: #4caf50;
+    }
+
+    .mensagem.erro {
+      background-color: #f44336;
+    }
+
+    .mensagem.visivel {
+      opacity: 1;
+      transform: translateY(0);
+    }
   </style>
 </head>
 <body>
@@ -55,18 +83,19 @@
           <th>Hora</th>
           <th>CEP</th>
           <th>Cooperativa</th>
-          <th>Ação</th> <!-- Nova coluna -->
+          <th>Ação</th>
         </tr>
       </thead>
       <tbody></tbody>
     </table>
 
-    <!-- Botão Voltar -->
     <a href="agendamento.html" class="btn-voltar">Voltar</a>
   </main>
 
+  <!-- Mensagem interativa -->
+  <div id="mensagem" class="mensagem"></div>
+
 <script>
-  // Carregar sidebar
   fetch("sidebar.html")
     .then(response => response.text())
     .then(data => {
@@ -75,6 +104,16 @@
 
   const email = localStorage.getItem('email');
   const tbody = document.querySelector('#tabelaAgendamentos tbody');
+
+  function mostrarMensagem(texto, tipo) {
+    const msg = document.getElementById("mensagem");
+    msg.textContent = texto;
+    msg.className = `mensagem ${tipo} visivel`;
+
+    setTimeout(() => {
+      msg.classList.remove("visivel");
+    }, 3000);
+  }
 
   if (!email) {
     tbody.innerHTML = '<tr><td colspan="6">⚠️ Usuário não está logado.</td></tr>';
@@ -91,9 +130,7 @@
           tbody.innerHTML = '<tr><td colspan="6">❌ Nenhum agendamento encontrado.</td></tr>';
         } else {
           agendamentos.forEach((ag, index) => {
-            // Cria um ID se não existir (compatível com versão antiga do JSON)
             const agId = ag.id || `${email}-${index}`;
-
             const row = document.createElement('tr');
             row.innerHTML = `
               <td>${ag.nome}</td>
@@ -119,11 +156,11 @@
       })
       .then(res => {
         if (!res.ok) throw new Error('Erro ao cancelar agendamento.');
-        alert("✅ Agendamento cancelado com sucesso!");
-        location.reload();
+        mostrarMensagem("✅ Agendamento cancelado com sucesso!", "sucesso");
+        setTimeout(() => location.reload(), 1000); // Aguarda 1s antes de recarregar
       })
       .catch(err => {
-        alert("❌ Erro ao cancelar agendamento: " + err.message);
+        mostrarMensagem("❌ Erro ao cancelar agendamento: " + err.message, "erro");
       });
     }
   }
