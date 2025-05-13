@@ -12,18 +12,21 @@ body {
   padding: 20px;
 }
 
+/* Conteúdo principal com margem para sidebar */
 .content {
+  margin-left: 240px; /* 220px da sidebar + espaçamento */
   max-width: 1200px;
-  margin: auto;
   padding: 20px;
 }
 
+/* Título principal */
 h2 {
   font-size: 2rem;
   color: #2e7d32;
   margin-bottom: 10px;
 }
 
+/* Texto padrão */
 p {
   font-size: 1rem;
   margin-bottom: 20px;
@@ -36,7 +39,7 @@ p {
   gap: 20px;
 }
 
-/* Card de prêmio */
+/* Card de prêmio individual */
 .card-premio {
   background-color: #ffffff;
   border: 2px solid #c8e6c9;
@@ -44,6 +47,9 @@ p {
   padding: 20px;
   box-shadow: 0 2px 6px rgba(0,0,0,0.1);
   transition: transform 0.2s ease, box-shadow 0.2s ease;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 }
 
 .card-premio:hover {
@@ -63,7 +69,7 @@ p {
 
 /* Botão de resgatar */
 .btn-resgatar {
-  margin-top: 10px;
+  margin-top: auto;
   padding: 10px 15px;
   background-color: #b10101;
   color: white;
@@ -72,6 +78,7 @@ p {
   font-weight: bold;
   cursor: pointer;
   transition: background-color 0.3s ease;
+  width: 100%;
 }
 
 .btn-resgatar:hover {
@@ -83,25 +90,43 @@ p {
   box-shadow: 0 0 0 3px rgba(56, 142, 60, 0.4);
 }
 
-/* Responsivo para mobile */
+/* Seção Meus Pontos e Resgatados */
+#meus-pontos,
+#resgatados-container {
+  margin-top: 40px;
+  background-color: #ffffff;
+  padding: 20px;
+  border-radius: 12px;
+  border: 1px solid #c8e6c9;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+}
+
+#meus-pontos h3,
+#resgatados-container h3 {
+  font-size: 1.2rem;
+  color: #1b5e20;
+  margin-bottom: 10px;
+}
+
+#premios-resgatados {
+  margin-top: 10px;
+  padding-left: 20px;
+  list-style: disc;
+}
+
+#premios-resgatados li {
+  margin-bottom: 5px;
+  color: #333;
+}
+
+/* Responsivo para telas pequenas */
 @media (max-width: 600px) {
   .grid-premios {
     grid-template-columns: 1fr;
   }
+
+  .content {
+  margin-left: 240px; /* Deixe espaço para a sidebar */
+  padding: 20px;
 }
-button {
-  width: 50%;
-  padding: 12px;
-  font-size: 1rem;
-  background-color: #388e3c;
-  color: white;
-  border: none;
-  border-radius: 10px;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-  margin-top: 15px;
-}
-button:hover {
-  background-color: #870101;
-  transition: (1.1);
 }
