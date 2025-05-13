@@ -116,37 +116,44 @@ function fecharModal() {
 }
 
 // ─── Resgate ───────────────────────────────────────────────────────
-function resgatarPremio(nome, custo) {
+// ─── Resgate ───────────────────────────────────────────────────────
+function resgatarPremio(nome, custo, premio) {
   if (pontosAtuais < custo) {
     mostrarMensagem("❌ Você não tem pontos suficientes para esse prêmio.", true);
     return;
   }
-  abrirModal({ nome, pontos: custo });
+  abrirModal({ nome, pontos: custo, premio });
 }
 
 document.getElementById("btn-confirmar").addEventListener("click", async () => {
   if (!premioSelecionado) return;
 
-  const { nome, pontos } = premioSelecionado;
+  const { nome, pontos, premio } = premioSelecionado;
   const codigo = gerarCodigo();
 
   try {
     const res = await fetch(`${API_URL}/api/resgatar-premio`, {
-      method : "POST",
+      method: "POST",
       headers: { "Content-Type": "application/json" },
-      body   : JSON.stringify({
-        email      : emailUsuario,
-        nomePremio : nome,
+      body: JSON.stringify({
+        email: emailUsuario,
+        nomePremio: nome,
         codigo,
-        custo      : pontos
+        custo: pontos
       })
     });
     if (!res.ok) throw new Error(`HTTP ${res.status}`);
     await res.json();
 
+    // Subtrair a quantidade do prêmio
+    premio.quantidade -= 1;
+
     mostrarMensagem(`🎉 Prêmio "${nome}" resgatado com sucesso! Código: ${codigo}`);
     await carregarPontos();
     await carregarPremiosResgatados();
+
+    // Atualizar o estoque exibido
+    atualizarEstoque();
   } catch (e) {
     console.error("Erro ao resgatar prêmio:", e);
     mostrarMensagem("❌ Erro ao resgatar prêmio. Tente novamente.", true);
@@ -155,7 +162,18 @@ document.getElementById("btn-confirmar").addEventListener("click", async () => {
   }
 });
 
-document.getElementById("btn-cancelar").addEventListener("click", fecharModal);
+function atualizarEstoque() {
+  // Atualiza o estoque no frontend
+  const cards = document.querySelectorAll(".card-premio");
+  cards.forEach(card => {
+    const nome = card.querySelector("h3").textContent;
+    const premio = premios.find(p => p.nome === nome);
+    if (premio) {
+      const estoqueElement = card.querySelector("p strong + p");
+      estoqueElement.textContent = `Estoque: ${premio.quantidade}`;
+    }
+  });
+}
 
 // ─── Renderizar prêmios disponíveis ────────────────────────────────
 premios.forEach(premio => {
@@ -168,9 +186,10 @@ premios.forEach(premio => {
     <button class="btn-resgatar">Resgatar</button>
   `;
   card.querySelector(".btn-resgatar")
-      .addEventListener("click", () => resgatarPremio(premio.nome, premio.pontos));
+      .addEventListener("click", () => resgatarPremio(premio.nome, premio.pontos, premio));
   container.appendChild(card);
 });
+
 
 // ─── Inicialização ─────────────────────────────────────────────────
 carregarPontos();
