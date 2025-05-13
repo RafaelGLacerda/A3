@@ -31,11 +31,36 @@ const gerarCodigo = () =>
 
 function mostrarMensagem(texto, erro = false) {
   const msg = document.getElementById("mensagem-resgate");
-  msg.textContent           = texto;
+  
+  // Definindo o conteúdo e a cor de fundo
+  msg.textContent = texto;
   msg.style.backgroundColor = erro ? "#d32f2f" : "#388e3c";
+  
+  // Estilos dinâmicos
+  msg.style.position = 'fixed';
+  msg.style.top = '100px';  // Ajuste o valor de "top" conforme necessário
+  msg.style.left = '50%';
+  msg.style.transform = 'translateX(-50%)';
+  msg.style.padding = '12px 20px';
+  msg.style.borderRadius = '8px';
+  msg.style.boxShadow = '0 2px 8px rgba(0, 0, 0, 0.2)';
+  msg.style.zIndex = '1000';
+  msg.style.opacity = '0'; // Inicia invisível
+  msg.style.transition = 'opacity 0.3s ease, transform 0.3s ease';
+  
+  // Exibe a mensagem
   msg.classList.add("mensagem-visivel");
+  
+  // Define o comportamento da visibilidade
   setTimeout(() => msg.classList.remove("mensagem-visivel"), 4000);
+
+  // Torna a mensagem visível
+  setTimeout(() => {
+    msg.style.opacity = '1';
+    msg.style.transform = 'translateY(0)';
+  }, 10); // Espera um pouco antes de mostrar a animação
 }
+
 
 // ─── Carregar dados do usuário ─────────────────────────────────────
 async function carregarPontos() {
