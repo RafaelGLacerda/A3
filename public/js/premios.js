@@ -119,6 +119,23 @@ document.getElementById("btn-confirmar").addEventListener("click", () => {
 // Evento do botão cancelar
 document.getElementById("btn-cancelar").addEventListener("click", fecharModal);
 
+// Renderiza os prêmios disponíveis
+premios.forEach(premio => {
+  const card = document.createElement("div");
+  card.className = "card-premio";
+  card.innerHTML = `
+    <h3>${premio.nome}</h3>
+    <p><strong>Estoque:</strong> ${premio.quantidade}</p>
+    <p><strong>Pontos:</strong> ${premio.pontos}</p>
+    <button class="btn-resgatar">Resgatar</button>
+  `;
 
-    carregarPontos();
-    carregarPremiosResgatados();
+  card.querySelector(".btn-resgatar").addEventListener("click", () => {
+    resgatarPremio(premio.nome, premio.pontos);
+  });
+
+  container.appendChild(card);
+});
+
+carregarPontos();
+carregarPremiosResgatados();
