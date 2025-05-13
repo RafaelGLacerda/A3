@@ -31,7 +31,7 @@ document.getElementById('loginForm').addEventListener('submit', function(event) 
 
       setTimeout(() => {
         if (data.tipo === 'ADM') {
-          window.location.href = 'painel_adm.html';
+          window.location.href = 'adm.html';
         } else {
           window.location.href = 'bemvindo.html';
         }
