@@ -9,6 +9,25 @@
     table { width: 100%; border-collapse: collapse; margin-top: 20px; }
     th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
     th { background-color: #f2f2f2; }
+
+    /* Estilo do botão voltar */
+    .btn-voltar {
+      display: inline-block;
+      background-color: #388e3c;
+      color: white;
+      padding: 10px 20px;
+      border-radius: 5px;
+      font-size: 1rem;
+      margin-top: 20px;
+      text-decoration: none;
+      text-align: center;
+      width: 15%;
+      cursor: pointer;
+    }
+
+    .btn-voltar:hover {
+      background-color: #a00c0c;
+    }
   </style>
 </head>
 <body>
@@ -28,7 +47,11 @@
       </thead>
       <tbody></tbody>
     </table>
+
+    <!-- Botão Voltar -->
+    <a href="agendamento.html" class="btn-voltar">Voltar</a>
   </main>
+
 <script>
   fetch("sidebar.html")
     .then(response => response.text())
@@ -71,7 +94,6 @@
       });
   }
 </script>
-
 
 </body>
 </html>

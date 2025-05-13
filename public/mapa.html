@@ -5,6 +5,7 @@
   <title>Mapa de Ecopontos - ReciclaSLA</title>
   <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
   <link rel="stylesheet" href="css/sidebar.css">
+  <link rel="stylesheet" href="css/mapa.css">
   <style>
     body {
       margin: 0;
@@ -59,6 +60,13 @@
       .then(html => {
         document.getElementById("sidebar-container").innerHTML = html;
       });
+        function sair() {
+    // Limpa o localStorage (remove dados do usuário)
+    localStorage.removeItem('email');  // Ou 'usuarioLogado', dependendo de como você armazena os dados
+
+    // Redireciona para a página inicial (index.html)
+    window.location.href = "index.html";
+  }
   </script>
 </body>
 </html>

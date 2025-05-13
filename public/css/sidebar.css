@@ -1,11 +1,16 @@
 /* Estilo da sidebar */
 .sidebar {
+  position: fixed;  /* Adicionado */
+  left: 0;
+  top: 0;
   width: 220px;
   background-color: #2e7d32;
   color: white;
   height: 100vh;
   padding-top: 20px;
+  z-index: 1000; /* Garante que fique sobre o conteúdo */
 }
+
 
 .sidebar nav ul {
   list-style: none;

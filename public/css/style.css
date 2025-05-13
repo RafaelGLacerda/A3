@@ -82,4 +82,22 @@
   .return-button:hover {
     background-color: #0d47a1;
   }
-  
+  .status-message {
+  margin-top: 12px;
+  font-weight: bold;
+  text-align: center;
+  font-size: 14px;
+  transition: all 0.3s ease;
+}
+
+.status-message.success {
+  color: #2e7d32; /* verde */
+}
+
+.status-message.error {
+  color: #c62828; /* vermelho */
+}
+
+.status-message.loading {
+  color: #1565c0; /* azul */
+}

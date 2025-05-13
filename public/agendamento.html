@@ -24,9 +24,12 @@
       </div>
 
       <div class="form-group">
-        <label for="horaColeta">Hora:</label>
-        <input type="time" id="horaColeta" required>
+      <label for="horaColeta">Hora:</label>
+      <input type="time" id="horaColeta" required min="08:00" max="21:00">
+     <small id="horaMensagem" style="color: red; display: none;">Por favor, selecione um horário entre 08:00 e 21:00.</small>
       </div>
+
+
 
       <div class="form-group">
         <label for="cep">CEP:</label>
@@ -55,6 +58,21 @@
 </html>
 
 <script>
+const horaInput = document.getElementById('horaColeta');
+const mensagem = document.getElementById('horaMensagem');
+
+horaInput.addEventListener('input', () => {
+  const hora = horaInput.value;
+  if (hora < "08:00" || hora > "21:00") {
+    mensagem.style.display = "inline";
+    horaInput.value = "";
+  } else {
+    mensagem.style.display = "none";
+  }
+});
+</script>
+
+  <script class="test">
   function sair() {
     // Limpa o localStorage (remove dados do usuário)
     localStorage.removeItem('email');  // Ou 'usuarioLogado', dependendo de como você armazena os dados

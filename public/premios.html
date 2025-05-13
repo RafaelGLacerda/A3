@@ -7,18 +7,21 @@
   <link rel="stylesheet" href="css/premios.css">
 </head>
 <body>
+
+  <!-- Sidebar será carregada aqui -->
   <div id="sidebar-container"></div>
 
   <main class="content">
     <h2>🎁 Prêmios Disponíveis</h2>
-    <p>Troque seus pontos por prêmios sustentáveis!</p>
+    <p>Troque seus pontos por prêmios sustentáveis e ajude o planeta enquanto ganha recompensas!</p>
 
-    <div class="grid-premios" id="lista-premios">
-      <!-- Prêmios serão inseridos aqui via JS -->
-    </div>
+    <section class="grid-premios" id="lista-premios">
+      <!-- Cards de prêmios serão inseridos aqui via JavaScript -->
+    </section>
   </main>
 
   <script>
+    // Lista de prêmios
     const premios = [
       { nome: "Vale R$ 50", quantidade: 100, pontos: 1000 },
       { nome: "Vale R$ 100", quantidade: 100, pontos: 1800 },
@@ -36,16 +39,23 @@
 
     const container = document.getElementById("lista-premios");
 
+    // Cria os cards dinamicamente
     premios.forEach(premio => {
       const card = document.createElement("div");
       card.className = "card-premio";
       card.innerHTML = `
         <h3>${premio.nome}</h3>
-        <p>Estoque: ${premio.quantidade}</p>
-        <p>Pontos necessários: ${premio.pontos}</p>
+        <p><strong>Estoque:</strong> ${premio.quantidade}</p>
+        <p><strong>Pontos:</strong> ${premio.pontos}</p>
+        <button class="btn-resgatar" onclick="resgatarPremio('${premio.nome}', ${premio.pontos})">Resgatar</button>
       `;
       container.appendChild(card);
     });
+
+    // Função fictícia de resgate
+    function resgatarPremio(nome, pontos) {
+      alert(`Você escolheu o prêmio "${nome}" que custa ${pontos} pontos. A função de resgate será implementada futuramente.`);
+    }
 
     // Carregar barra lateral
     fetch("sidebar.html")
@@ -53,6 +63,13 @@
       .then(data => {
         document.getElementById("sidebar-container").innerHTML = data;
       });
+
+    // Função para sair
+    function sair() {
+      localStorage.removeItem('email');
+      window.location.href = "index.html";
+    }
   </script>
+
 </body>
 </html>

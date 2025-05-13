@@ -7,9 +7,13 @@
   <link rel="stylesheet" href="css/perfil.css">
 </head>
 <body>
+  
+  <!-- Sidebar injetada dinamicamente -->
   <div id="sidebar-container"></div>
 
+  <!-- Conteúdo principal -->
   <main class="content">
+    <p id="statusMessage" class="status-message"></p>
     <h2>Perfil do Usuário</h2>
 
     <div class="perfil-info">
@@ -24,7 +28,21 @@
       <button onclick="editarEndereco()">Editar Endereço</button>
     </div>
   </main>
- <script src="js/perfil.js"></script>
+  <!-- Modal interativo -->
+<div id="editModal" class="modal">
+  <div class="modal-content">
+    <h3 id="modalTitle">Editar</h3>
+    <input type="text" id="modalInput" placeholder="Digite o novo valor">
+    <div class="modal-buttons">
+      <button id="modalSave">Salvar</button>
+      <button id="modalCancel">Cancelar</button>
+    </div>
+  </div>
+</div>
+
+
+  <!-- Scripts -->
+  <script src="js/perfil.js"></script>
   <script>
     // Carrega a sidebar
     fetch("sidebar.html")
@@ -32,6 +50,12 @@
       .then(html => {
         document.getElementById("sidebar-container").innerHTML = html;
       });
+
+    // Função de logout
+    function sair() {
+      localStorage.removeItem('email');
+      window.location.href = "index.html";
+    }
   </script>
 </body>
 </html>

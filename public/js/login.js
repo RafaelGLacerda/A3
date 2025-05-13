@@ -1,9 +1,15 @@
 const API_URL = "https://a3-2lsq.onrender.com";
+
 document.getElementById('loginForm').addEventListener('submit', function(event) {
   event.preventDefault();
 
   const email = event.target.email.value;
   const senha = event.target.senha.value;
+
+  // Exibe mensagem de carregando
+  const statusMessage = document.getElementById('statusMessage');
+  statusMessage.textContent = 'Entrando na sua conta...';
+  statusMessage.style.color = '#007bff'; // azul
 
   fetch(`${API_URL}/api/login`, {
     method: 'POST',
@@ -15,14 +21,20 @@ document.getElementById('loginForm').addEventListener('submit', function(event) 
   .then(response => response.json())
   .then(data => {
     if (data.message === 'Login bem-sucedido') {
-      // SALVA o email do usuário logado
       localStorage.setItem('email', email);
-      window.location.href = 'bemvindo.html';
+      statusMessage.textContent = `Bem-vindo(a), ${email}! Redirecionando...`;
+      statusMessage.style.color = 'green';
+
+      setTimeout(() => {
+        window.location.href = 'bemvindo.html';
+      }, 1500);
     } else {
-      alert(data.message);
+      statusMessage.textContent = data.message;
+      statusMessage.style.color = 'red';
     }
   })
   .catch(() => {
-    alert('Erro ao tentar logar');
+    statusMessage.textContent = 'Erro ao tentar logar. Tente novamente.';
+    statusMessage.style.color = 'red';
   });
 });

@@ -1,9 +1,13 @@
 const API_URL = "https://a3-2lsq.onrender.com";
 const emailUsuario = localStorage.getItem("email");
+const statusMessage = document.getElementById("statusMessage");
 
 if (!emailUsuario) {
-  alert("Usuário não autenticado.");
-  window.location.href = "index.html";
+  statusMessage.textContent = "Usuário não autenticado. Redirecionando...";
+  statusMessage.className = "status-message error";
+  setTimeout(() => {
+    window.location.href = "index.html";
+  }, 2000);
 }
 
 function carregarPerfil() {
@@ -22,40 +26,78 @@ function carregarPerfil() {
       document.getElementById("quantidadeReciclada").textContent = dados.quantidadeReciclada + " kg";
     })
     .catch((err) => {
-      alert("Falha ao carregar dados do usuário: " + err.message);
-      window.location.href = "index.html";
+      statusMessage.textContent = "Falha ao carregar dados do usuário: " + err.message;
+      statusMessage.className = "status-message error";
+      setTimeout(() => {
+        window.location.href = "index.html";
+      }, 3000);
     });
 }
 
+function abrirModal(titulo, valorAtual, callback) {
+  const modal = document.getElementById('editModal');
+  const modalTitle = document.getElementById('modalTitle');
+  const modalInput = document.getElementById('modalInput');
+  const modalSave = document.getElementById('modalSave');
+  const modalCancel = document.getElementById('modalCancel');
+
+  modalTitle.textContent = titulo;
+  modalInput.value = valorAtual || '';
+  modal.style.display = 'block';
+
+  // Salvar
+  modalSave.onclick = () => {
+    const novoValor = modalInput.value.trim();
+    if (novoValor) {
+      callback(novoValor);
+      modal.style.display = 'none';
+    }
+  };
+
+  // Cancelar
+  modalCancel.onclick = () => {
+    modal.style.display = 'none';
+  };
+
+  // Fechar ao clicar fora
+  window.onclick = (event) => {
+    if (event.target === modal) {
+      modal.style.display = 'none';
+    }
+  };
+}
+
 function editarNome() {
-  const novoNome = prompt("Digite o novo nome:");
-  if (novoNome) {
+  const nomeAtual = document.getElementById("nomeUsuario").textContent;
+  abrirModal("Editar Nome", nomeAtual, (novoNome) => {
     const emailCodificado = encodeURIComponent(emailUsuario);
     fetch(`${API_URL}/profile/${emailCodificado}`, {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ nome: novoNome })
-    }).then(() => carregarPerfil());
-  }
+    })
+    .then(() => {
+      statusMessage.textContent = "Nome atualizado com sucesso!";
+      statusMessage.className = "status-message success";
+      carregarPerfil();
+    });
+  });
 }
 
 function editarEndereco() {
-  const novoEndereco = prompt("Digite o novo endereço:");
-  if (novoEndereco) {
+  const enderecoAtual = document.getElementById("enderecoUsuario").textContent;
+  abrirModal("Editar Endereço", enderecoAtual, (novoEndereco) => {
     const emailCodificado = encodeURIComponent(emailUsuario);
     fetch(`${API_URL}/profile/${emailCodificado}`, {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ endereco: novoEndereco })
-    }).then(() => carregarPerfil());
-  }
-}
-
-// Carrega barra lateral e perfil
-fetch("sidebar.html")
-  .then(res => res.text())
-  .then(html => {
-    document.getElementById("sidebar-container").innerHTML = html;
+    })
+    .then(() => {
+      statusMessage.textContent = "Endereço atualizado com sucesso!";
+      statusMessage.className = "status-message success";
+      carregarPerfil();
+    });
   });
-
+}
 carregarPerfil();
