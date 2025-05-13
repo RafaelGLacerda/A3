@@ -1,5 +1,6 @@
- // Carrega a sidebar
-    fetch("sidebar.html")
+const API_URL = "https://a3-2lsq.onrender.com";
+// Carrega a sidebar
+ fetch("sidebar.html")
       .then(response => response.text())
       .then(data => {
         document.getElementById("sidebar-container").innerHTML = data;
@@ -40,7 +41,7 @@ document.addEventListener("DOMContentLoaded", () => {
     if (!email) {
       tbody.innerHTML = '<tr><td colspan="9">⚠️ Usuário não está logado.</td></tr>';
     } else {
-      fetch(`/api/agendamentos/${email}`)
+      fetch(`${API_URL}/api/agendamentos/${email}`)
         .then(res => {
           if (!res.ok) throw new Error('Falha ao buscar os dados do servidor.');
           return res.json();
@@ -98,7 +99,7 @@ document.addEventListener("DOMContentLoaded", () => {
     btnConfirmar.addEventListener("click", () => {
       if (!idAgendamentoAtual) return;
 
-      fetch(`/api/agendamentos/${idAgendamentoAtual}`, {
+      fetch(`${API_URL}/api/agendamentos/${idAgendamentoAtual}`, {
         method: 'DELETE'
       })
       .then(res => {
