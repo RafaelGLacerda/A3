@@ -88,5 +88,25 @@
     "endereco": "Rua 2",
     "quantidadeReciclada": 0,
     "agendamentos": []
-  }
+  },
+  { "email": "JoaoADM@cooperativas.com.br", "senha": "admin123", "tipo": "ADM", "nome": "João" },
+  { "email": "MariaADM@cooperativas.com.br", "senha": "admin123", "tipo": "ADM", "nome": "Maria" },
+  { "email": "CarlosADM@cooperativas.com.br", "senha": "admin123", "tipo": "ADM", "nome": "Carlos" },
+  { "email": "AnaADM@cooperativas.com.br", "senha": "admin123", "tipo": "ADM", "nome": "Ana" },
+  { "email": "PedroADM@cooperativas.com.br", "senha": "admin123", "tipo": "ADM", "nome": "Pedro" },
+  { "email": "LucasADM@cooperativas.com.br", "senha": "admin123", "tipo": "ADM", "nome": "Lucas" },
+  { "email": "JuliaADM@cooperativas.com.br", "senha": "admin123", "tipo": "ADM", "nome": "Julia" },
+  { "email": "FernandaADM@cooperativas.com.br", "senha": "admin123", "tipo": "ADM", "nome": "Fernanda" },
+  { "email": "BrunoADM@cooperativas.com.br", "senha": "admin123", "tipo": "ADM", "nome": "Bruno" },
+  { "email": "PaulaADM@cooperativas.com.br", "senha": "admin123", "tipo": "ADM", "nome": "Paula" },
+  { "email": "TiagoADM@cooperativas.com.br", "senha": "admin123", "tipo": "ADM", "nome": "Tiago" },
+  { "email": "LarissaADM@cooperativas.com.br", "senha": "admin123", "tipo": "ADM", "nome": "Larissa" },
+  { "email": "RafaelADM@cooperativas.com.br", "senha": "admin123", "tipo": "ADM", "nome": "Rafael" },
+  { "email": "CamilaADM@cooperativas.com.br", "senha": "admin123", "tipo": "ADM", "nome": "Camila" },
+  { "email": "AndersonADM@cooperativas.com.br", "senha": "admin123", "tipo": "ADM", "nome": "Anderson" },
+  { "email": "VanessaADM@cooperativas.com.br", "senha": "admin123", "tipo": "ADM", "nome": "Vanessa" },
+  { "email": "MarcosADM@cooperativas.com.br", "senha": "admin123", "tipo": "ADM", "nome": "Marcos" },
+  { "email": "BeatrizADM@cooperativas.com.br", "senha": "admin123", "tipo": "ADM", "nome": "Beatriz" },
+  { "email": "RodrigoADM@cooperativas.com.br", "senha": "admin123", "tipo": "ADM", "nome": "Rodrigo" },
+  { "email": "IsabelaADM@cooperativas.com.br", "senha": "admin123", "tipo": "ADM", "nome": "Isabela" }
 ]

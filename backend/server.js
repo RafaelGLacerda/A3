@@ -3,7 +3,7 @@ const path = require('path');
 const fs = require('fs');
 const bodyParser = require('body-parser');
 const cors = require('cors');
-const { v4: uuidv4 } = require('uuid'); // Para gerar IDs únicos
+const { v4: uuidv4 } = require('uuid');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -35,9 +35,12 @@ app.post('/api/login', (req, res) => {
   const users = readUsersData();
 
   const user = users.find(u => u.email === email && u.senha === senha);
-  user
-    ? res.status(200).json({ message: 'Login bem-sucedido' })
-    : res.status(401).json({ message: 'Email ou senha inválidos' });
+  if (user) {
+    const tipo = user.tipo === 'ADM' ? 'ADM' : 'USER';
+    res.status(200).json({ message: 'Login bem-sucedido', tipo });
+  } else {
+    res.status(401).json({ message: 'Email ou senha inválidos' });
+  }
 });
 
 // Rota de cadastro
@@ -49,13 +52,19 @@ app.post('/api/cadastro', (req, res) => {
     return res.status(400).json({ message: 'Email já cadastrado' });
   }
 
+  if (email.includes('ADM@cooperativas.com.br')) {
+    return res.status(403).json({ message: 'Não é possível cadastrar administradores.' });
+  }
+
   const novoUsuario = {
     nome,
     email,
     senha,
     cep,
     endereco,
+    tipo: 'USER',
     quantidadeReciclada: 0,
+    pontos: 0,
     agendamentos: []
   };
 
@@ -122,7 +131,7 @@ app.post('/api/agendamento/:email', (req, res) => {
   res.status(200).json({ message: 'Agendamento realizado com sucesso' });
 });
 
-// Obter agendamentos
+// Obter agendamentos do usuário
 app.get('/api/agendamentos/:email', (req, res) => {
   const email = req.params.email;
   const users = readUsersData();
@@ -131,6 +140,46 @@ app.get('/api/agendamentos/:email', (req, res) => {
   if (!user) return res.status(404).json({ message: 'Usuário não encontrado' });
 
   res.json(user.agendamentos || []);
+});
+
+// Obter todos os agendamentos (para ADM)
+app.get('/api/agendamentos', (req, res) => {
+  const users = readUsersData();
+  const todosAgendamentos = users.flatMap(user =>
+    user.agendamentos?.map(ag => ({
+      ...ag,
+      emailUsuario: user.email
+    })) || []
+  );
+  res.json(todosAgendamentos);
+});
+
+// Registrar reciclagem (ADM marca como feita)
+app.put('/api/reciclagem/:id', (req, res) => {
+  const { id } = req.params;
+  const { observacao, pontos } = req.body;
+  const users = readUsersData();
+
+  let agendamentoAtualizado = null;
+
+  users.forEach(user => {
+    user.agendamentos = user.agendamentos.map(ag => {
+      if (ag.id === id) {
+        ag.observacao = observacao;
+        ag.pontos = Number(pontos) || 0;
+        user.pontos = (user.pontos || 0) + ag.pontos;
+        agendamentoAtualizado = ag;
+      }
+      return ag;
+    });
+  });
+
+  if (!agendamentoAtualizado) {
+    return res.status(404).json({ message: 'Agendamento não encontrado' });
+  }
+
+  saveUsersData(users);
+  res.json({ message: 'Reciclagem registrada com sucesso' });
 });
 
 // Excluir agendamento (desistir da coleta)
