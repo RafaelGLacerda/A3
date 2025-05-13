@@ -13,10 +13,10 @@
     <h2>Perfil do Usuário</h2>
 
     <div class="perfil-info">
-      <p><strong>Nome:</strong> <span id="nomeUsuario"></span></p>
-      <p><strong>Email:</strong> <span id="emailUsuario"></span></p>
-      <p><strong>Endereço:</strong> <span id="enderecoUsuario"></span></p>
-      <p><strong>Quantidade reciclada:</strong> <span id="quantidadeReciclada"></span></p>
+      <p><strong>Nome:</strong> <span id="nomeUsuario">Carregando...</span></p>
+      <p><strong>Email:</strong> <span id="emailUsuario">Carregando...</span></p>
+      <p><strong>Endereço:</strong> <span id="enderecoUsuario">Carregando...</span></p>
+      <p><strong>Quantidade reciclada:</strong> <span id="quantidadeReciclada">Carregando...</span></p>
     </div>
 
     <div class="botoes">
@@ -24,16 +24,14 @@
       <button onclick="editarEndereco()">Editar Endereço</button>
     </div>
   </main>
-
-  <script src="js/perfil.js">
-    
+ <script src="js/perfil.js"></script>
+  <script>
+    // Carrega a sidebar
+    fetch("sidebar.html")
+      .then(res => res.text())
+      .then(html => {
+        document.getElementById("sidebar-container").innerHTML = html;
+      });
   </script>
 </body>
-<script>
-fetch("sidebar.html")
-  .then(res => res.text())
-  .then(html => {
-    document.getElementById("sidebar-container").innerHTML = html;
-  });
-</script>
 </html>

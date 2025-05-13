@@ -1,35 +1,69 @@
+/* Estilo da sidebar */
 .sidebar {
-    width: 220px;
-    background-color: #2e7d32;
-    color: white;
-    height: 100vh;
-    padding-top: 20px;
-  }
-  
-  .sidebar nav ul {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-  }
-  
-  .sidebar nav ul li {
-    margin: 15px 0;
-  }
-  
-  .sidebar nav ul li a {
-    color: white;
-    text-decoration: none;
-    display: block;
-    padding: 12px 20px;
-    background-color: #388e3c;
-    border-radius: 8px;
-    margin: 0 10px;
-    transition: background-color 0.3s ease;
-    text-align: center;
-  }
-  
-  .sidebar nav ul li a:hover,
-  .sidebar nav ul li a.active {
-    background-color: #1b5e20;
-  }
-  
+  width: 220px;
+  background-color: #2e7d32;
+  color: white;
+  height: 100vh;
+  padding-top: 20px;
+}
+
+.sidebar nav ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.sidebar nav ul li {
+  margin: 15px 0;
+}
+
+/* Estilo dos links na sidebar */
+.sidebar nav ul li a {
+  color: white;
+  text-decoration: none;
+  display: block;
+  padding: 12px 20px;
+  background-color: #388e3c;
+  border-radius: 8px;
+  margin: 0 10px;
+  transition: background-color 0.3s ease;
+  text-align: center;
+}
+
+.sidebar nav ul li a:hover,
+.sidebar nav ul li a.active {
+  background-color: #1b5e20;
+}
+
+/* Estilo do botão Sair */
+.sidebar-btn {
+  color: white;
+  background-color: #388e3c;
+  border: none;
+  padding: 12px 20px;
+  border-radius: 8px;
+  margin: 0 10px;
+  transition: background-color 0.3s ease;
+  width: 100%;
+  text-align: center;
+}
+
+.sidebar-btn:hover {
+  background-color: #1b5e20;
+}
+.btn-sair{
+  color: white;
+  background-color: #d32f2f; /* Cor vermelha para destacar */
+  border: none;
+  padding: 12px 20px;
+  border-radius: 8px;
+  margin: 20px 10px; /* Dá um espaço maior em relação aos outros itens */
+  transition: background-color 0.3s ease;
+  width: 100%;
+  text-align: center;
+  font-weight: bold;
+}
+
+.btn-sair:hover {
+  background-color: #c2185b; /* Um tom mais escuro de vermelho ao passar o mouse */
+}

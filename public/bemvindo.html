@@ -8,7 +8,7 @@
 
 </head>
 <body>
-  <div class="container">
+  <div class="container">  
     <div id="sidebar-container"></div>
     <main class="content">
       <div class="boas-vindas">
@@ -28,14 +28,32 @@
     </main>
   </div>
 
-  <script src="main.js"></script>
+  <script src="js/main.js"></script>
+  
 </body>
+
+  <script>
+    fetch('sidebar.html')
+      .then(response => response.text())
+      .then(data => {
+        document.getElementById("sidebar-container").innerHTML = data;
+      });
+      
+  </script>
 <script>
-  fetch("sidebar.html")
-    .then(response => response.text())
-    .then(data => {
-      document.getElementById("sidebar-container").innerHTML = data;
-    });
+  document.addEventListener('DOMContentLoaded', function () {
+    document.getElementById("btnSair").onclick = function () {
+      sair();
+    };
+  });
+
+  function sair() {
+    // Limpa o localStorage
+    localStorage.removeItem('email');  // Ou 'usuarioLogado', dependendo de como você armazena os dados
+
+    // Redireciona para a página inicial
+    window.location.href = "index.html";
+  }
 </script>
 
 </html>
