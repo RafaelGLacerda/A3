@@ -1,95 +1,122 @@
+/* Reset básico */
 body {
-      font-family: Arial, sans-serif;
-      margin: 0;
-      padding: 0;
-      background-color: #f9f9f9;
-    }
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: #f9f9f9;
+}
 
-    header {
-      background-color: #388e3c;
-      color: white;
-      padding: 20px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
+/* Header */
+header {
+  background-color: #0077ff;
+  color: white;
+  padding: 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
 
-    header h1 {
-      margin: 0;
-    }
+header h1 {
+  margin: 0;
+}
 
-    header button {
-      background-color: #d32f2f;
-      color: white;
-      padding: 10px 16px;
-      border: none;
-      border-radius: 4px;
-      cursor: pointer;
-      font-weight: bold;
-    }
+header button {
+  background-color: #d32f2f;
+  color: white;
+  padding: 10px 16px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: bold;
+}
 
-    header button:hover {
-      background-color: #b71c1c;
-    }
+header button:hover {
+  background-color: #b71c1c;
+}
 
-    main {
-      padding: 20px;
-    }
+/* Main */
+main {
+  padding: 20px;
+}
 
-    .agendamentos-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-      gap: 20px;
-      margin-top: 20px;
-    }
+/* Lista de agendamentos */
+.agendamentos-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 20px;
+  margin-top: 20px;
+}
 
-    .agendamento-card {
-      background-color: white;
-      border-radius: 8px;
-      box-shadow: 0 0 8px rgba(0,0,0,0.1);
-      padding: 15px;
-      transition: transform 0.2s ease;
-    }
+.agendamento-card {
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 0 8px rgba(0,0,0,0.1);
+  padding: 15px;
+  transition: transform 0.2s ease;
+}
 
-    .agendamento-card:hover {
-      transform: scale(1.01);
-    }
+.agendamento-card:hover {
+  transform: scale(1.01);
+}
 
-    .agendamento-card p {
-      margin: 5px 0;
-    }
+.agendamento-card p {
+  margin: 5px 0;
+}
 
-    textarea, input[type="number"] {
-      width: 100%;
-      margin-top: 8px;
-      padding: 8px;
-      border-radius: 4px;
-      border: 1px solid #ccc;
-      box-sizing: border-box;
-    }
+/* Formulário de pontos */
+#atribuir-pontos {
+  margin-top: 40px;
+  padding: 20px;
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 0 8px rgba(0,0,0,0.05);
+  max-width: 500px;
+}
 
-    .confirmar-btn {
-      margin-top: 10px;
-      width: 100%;
-      background-color: #388e3c;
-      color: white;
-      border: none;
-      padding: 10px;
-      border-radius: 5px;
-      font-weight: bold;
-      cursor: pointer;
-    }
+#formPontos input[type="email"],
+#formPontos input[type="number"] {
+  width: 100%;
+  margin-bottom: 10px;
+  padding: 10px;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+  box-sizing: border-box;
+}
 
-    .confirmar-btn:hover {
-      background-color: #2e7d32;
-    }
+#formPontos button {
+  width: 100%;
+  background-color: #388e3c;
+  color: white;
+  padding: 12px;
+  border: none;
+  border-radius: 4px;
+  font-weight: bold;
+  cursor: pointer;
+}
 
-    @media (max-width: 600px) {
-      header, main {
-        padding: 10px;
-      }
-    }
-    #mensagem {
+#formPontos button:hover {
+  background-color: #2e7d32;
+}
+
+/* Botão confirmar em cartões */
+.confirmar-btn {
+  margin-top: 10px;
+  width: 100%;
+  background-color: #388e3c;
+  color: white;
+  border: none;
+  padding: 10px;
+  border-radius: 5px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.confirmar-btn:hover {
+  background-color: #2e7d32;
+}
+
+/* Mensagens de feedback */
+#mensagem {
   position: fixed;
   top: 20px;
   left: 50%;
@@ -119,4 +146,15 @@ body {
 #mensagem.aviso {
   background-color: #ffc107;
   color: #000;
+}
+
+/* Responsividade */
+@media (max-width: 600px) {
+  header, main {
+    padding: 10px;
+  }
+
+  #atribuir-pontos {
+    padding: 10px;
+  }
 }

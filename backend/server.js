@@ -247,28 +247,34 @@ app.post('/api/pontos', (req, res) => {
 
 // ✅ Nova rota: resgatar prêmio
 app.post('/api/resgatar-premio', (req, res) => {
-  const { email, codigoPremio } = req.body;
+  const { email, nomePremio, codigo, custo } = req.body;
+
+  if (!email || !nomePremio || !codigo || !custo) {
+    return res.status(400).json({ message: 'Dados incompletos.' });
+  }
+
   const users = readUsersData();
   const user = users.find(u => u.email === email);
-
   if (!user) return res.status(404).json({ message: 'Usuário não encontrado.' });
 
   if (!user.resgatados) user.resgatados = [];
 
-  if (user.resgatados.includes(codigoPremio)) {
+  const jaResgatado = user.resgatados.find(r => r.codigo === codigo);
+  if (jaResgatado) {
     return res.status(400).json({ message: 'Código já resgatado.' });
   }
 
-  user.resgatados.push(codigoPremio);
+  if (user.pontos < custo) {
+    return res.status(400).json({ message: 'Pontos insuficientes.' });
+  }
+
+  user.pontos -= custo;
+  user.resgatados.push({ nome: nomePremio, codigo, data: new Date().toISOString(), custo });
   saveUsersData(users);
 
   res.json({ message: 'Prêmio resgatado com sucesso!', resgatados: user.resgatados });
 });
 
-// Página inicial
-app.get('/', (req, res) => {
-  res.sendFile(path.join(__dirname, '..', 'public', 'index.html'));
-});
 
 // Inicializar servidor
 app.listen(PORT, () => {
