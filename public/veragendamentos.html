@@ -162,16 +162,10 @@
       </div>
     </div>
   </div>
-  <script src="js/agendamento.js"></script>
-   <script>
- // Carregar barra lateral
-    fetch("sidebar.html")
-      .then(response => response.text())
-      .then(data => {
-        document.getElementById("sidebar-container").innerHTML = data;
-      });
+  
+<script src="js/veragendamento.js"></script>
 
-    // Função para sair
+<script>   // Função de logout
     function sair() {
       localStorage.removeItem('email');
       window.location.href = "index.html";

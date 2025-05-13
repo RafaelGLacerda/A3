@@ -143,9 +143,3 @@ document.getElementById('form-agendamento').addEventListener('submit', async fun
     mensagemDiv.style.color = "red";
   }
 });
-
-fetch("sidebar.html")
-  .then(response => response.text())
-  .then(data => {
-    document.getElementById("sidebar-container").innerHTML = data;
-  });
