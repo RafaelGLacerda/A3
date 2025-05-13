@@ -100,4 +100,40 @@ function editarEndereco() {
     });
   });
 }
+
+function carregarHistoricoReciclagem() {
+  const emailCodificado = encodeURIComponent(emailUsuario);
+
+  fetch(`${API_URL}/api/reciclagens/${emailCodificado}`)
+    .then(res => {
+      if (!res.ok) throw new Error("Não foi possível carregar o histórico.");
+      return res.json();
+    })
+    .then(registros => {
+      const container = document.getElementById("historico-reciclagem");
+      container.innerHTML = "";
+
+      if (!Array.isArray(registros) || registros.length === 0) {
+        container.innerHTML = "<p>Você ainda não recebeu comentários ou pontos.</p>";
+        return;
+      }
+
+      registros.forEach(reg => {
+        const item = document.createElement("div");
+        item.className = "registro";
+
+        item.innerHTML = `
+          <p><strong>Data:</strong> ${reg.data || "Desconhecida"}</p>
+          <p><strong>Pontos:</strong> ${reg.pontos}</p>
+          <p><strong>Comentário do ADM:</strong> ${reg.comentarioAdm || "Sem comentário"}</p>
+        `;
+
+        container.appendChild(item);
+      });
+    })
+    .catch((err) => {
+      const container = document.getElementById("historico-reciclagem");
+      container.innerHTML = `<p>Erro ao carregar: ${err.message}</p>`;
+    });
+}
 carregarPerfil();
