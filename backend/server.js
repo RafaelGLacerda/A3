@@ -107,7 +107,7 @@ app.put('/profile/:email', (req, res) => {
 });
 
 // Rota para criar agendamento
-app.post('/agendamento/:email', (req, res) => {
+app.post('/api/agendamento/:email', (req, res) => {
   const email = req.params.email;
   const { nome, data, hora, cep, cooperativa } = req.body;
 
@@ -115,7 +115,7 @@ app.post('/agendamento/:email', (req, res) => {
     return res.status(400).json({ message: 'Todos os campos são obrigatórios para o agendamento.' });
   }
 
-  const users = readUsersData();
+  const users = readUsersData(); // função que lê o JSON
   const user = users.find(u => u.email === email);
 
   if (!user) {

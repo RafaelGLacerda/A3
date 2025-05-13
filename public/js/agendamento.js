@@ -116,11 +116,11 @@ document.getElementById('form-agendamento').addEventListener('submit', async fun
   }
 
   try {
-    const resposta = await fetch(`${API_URL}/api/agendamentos/${email}`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ nome, data, hora, cep, cooperativa })
-    });
+   const resposta = await fetch(`/api/agendamento/${encodeURIComponent(email)}`, {
+  method: 'POST',
+  headers: { 'Content-Type': 'application/json' },
+  body: JSON.stringify({ nome, data, hora, cep, cooperativa })
+});
 
     let resultado = {};
     try {
