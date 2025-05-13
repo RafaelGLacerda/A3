@@ -153,18 +153,3 @@ h2 {
 .status-message.loading {
   color: #3182ce;
 }
-.historico-container {
-  margin-top: 30px;
-  background: #f3f3f3;
-  padding: 15px;
-  border-radius: 8px;
-}
-
-.registro {
-  border-bottom: 1px solid #ccc;
-  padding: 10px 0;
-}
-
-.registro:last-child {
-  border-bottom: none;
-}
