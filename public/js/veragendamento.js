@@ -112,6 +112,7 @@ document.addEventListener("DOMContentLoaded", () => {
         mostrarMensagem("❌ Erro ao cancelar agendamento: " + err.message, "erro");
         modal.style.display = "none";
       });
+      
 
       idAgendamentoAtual = null;
     });
