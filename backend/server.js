@@ -208,28 +208,27 @@ app.put('/api/reciclagem/:id', (req, res) => {
 // Excluir agendamento
 app.delete('/api/agendamentos/:id', (req, res) => {
   const { id } = req.params;
-  const email = req.body.email; // Supondo que você passe o email junto com a requisição DELETE
+  const { email } = req.body;  // Recebendo o email do corpo da requisição
   const users = readUsersData();
   let encontrado = false;
 
   users.forEach(user => {
-    if (user.email === email) { // Verifique se o usuário correto está sendo processado
+    if (user.email === email) {  // Verifica se o email corresponde ao usuário
       const original = user.agendamentos.length;
-      user.agendamentos = user.agendamentos.filter(ag => ag.id !== id);
+      user.agendamentos = user.agendamentos.filter(ag => ag.id !== id);  // Exclui o agendamento pelo ID
       if (user.agendamentos.length < original) {
-        encontrado = true;
+        encontrado = true;  // Marca como encontrado se a exclusão ocorreu
       }
     }
   });
 
   if (!encontrado) {
-    return res.status(404).json({ message: 'Agendamento não encontrado' });
+    return res.status(404).json({ message: 'Agendamento não encontrado' });  // Caso o agendamento não tenha sido encontrado
   }
 
-  saveUsersData(users);
-  res.json({ message: 'Agendamento excluído com sucesso' });
+  saveUsersData(users);  // Salva as alterações no arquivo
+  res.json({ message: 'Agendamento excluído com sucesso' });  // Retorna sucesso
 });
-
 
 // Adicionar pontos (ADM)
 app.post('/api/pontos', (req, res) => {
