@@ -2,57 +2,70 @@
 <html lang="pt-br">
 <head>
   <meta charset="UTF-8" />
-  <title>Como Funciona - ReciclaSLA</title>
+  <link rel="icon" href="img/reciclaSSA.png" type="image/png">
+  <title>Como Funciona?</title>
   <link rel="stylesheet" href="css/sidebar.css" />
   <link rel="stylesheet" href="css/como-funciona.css" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
 <body>
 
-  <div id="sidebar-container"></div> <!-- Agora está dentro do <body> -->
+  <div id="sidebar-container"></div>
 
   <div class="container">
     <main class="content">
-      <h2>♻️ Como Funciona</h2>
+      <h2>♻️ Como Funciona?</h2>
       <p>Nosso sistema conecta você a pontos de coleta e promove a reciclagem de forma simples e recompensadora. Veja como participar:</p>
 
       <div class="etapas">
         <div class="etapa">
-          <span class="emoji">📦</span>
+          <span class="emoji">📝</span>
           <div>
-            <strong>Cadastre-se</strong><br />
-            Informe seu endereço e crie sua conta para começar.
+            <strong>1. Cadastre-se</strong><br />
+            Crie sua conta informando nome, endereço e e-mail. É rápido e gratuito.
           </div>
         </div>
 
         <div class="etapa">
-          <span class="emoji">📅</span>
+          <span class="emoji">🧺</span>
           <div>
-            <strong>Agende uma coleta</strong><br />
-            Marque uma data para coleta em sua casa ou leve até um ecoponto parceiro.
+            <strong>2. Marque uma coleta</strong><br />
+            Agende a coleta informando os itens recicláveis, com foto, data e horário preferido. O sistema localiza a cooperativa mais próxima para atendimento.
+          </div>
+        </div>
+
+        <div class="etapa">
+          <span class="emoji">⭐</span>
+          <div>
+            <strong>3. Receba pontos</strong><br />
+            Após a coleta confirmada, você acumula pontos automaticamente conforme a quantidade e tipo de material reciclado.
           </div>
         </div>
 
         <div class="etapa">
           <span class="emoji">🎁</span>
           <div>
-            <strong>Ganhe pontos</strong><br />
-            Ao reciclar, você acumula pontos que podem ser trocados por recompensas.
-          </div>
-        </div>
-
-        <div class="etapa">
-          <span class="emoji">🏆</span>
-          <div>
-            <strong>Troque por prêmios</strong><br />
-            Use seus pontos para resgatar prêmios em nosso catálogo exclusivo.
+            <strong>4. Troque por prêmios</strong><br />
+            Utilize seus pontos na aba de resgates e receba prêmios disponíveis.
           </div>
         </div>
       </div>
 
-      <div class="importancia">
-        <h3>🌱 Por que é importante reciclar?</h3>
-        <p>Reciclar reduz a poluição, economiza recursos naturais, diminui o impacto ambiental e ajuda a preservar o planeta para as futuras gerações.</p>
+      <div class="extras">
+        <h3>📍 Ecopontos e Cooperativas</h3>
+        <p>Explore nosso <strong>mapa interativo de Salvador</strong> com todos os ecopontos e cooperativas parceiras, facilitando o descarte correto dos materiais.</p>
+
+        <h3>📢 Conscientização Ambiental</h3>
+        <p>Na seção de conscientização, você encontra informações e dicas sobre reciclagem, impacto ambiental e como ajudar o planeta no dia a dia.</p>
+
+        <h3>📆 Visualize seus agendamentos</h3>
+        <p>Veja todos os seus agendamentos em uma <strong>tabela completa</strong>, contendo data, hora, itens reciclados, cooperativa responsável e status da coleta.</p>
       </div>
+
+        <h3>👤 Visualize seu Perfil</h3>
+        <p>Veja suas informações de perfil contendo uma <strong>tabela completa</strong> com nome, email, endereço, e quantidade de pontos (sendo possível alterar suas informações)</p>
+      </div>
+
     </main>
   </div>
 
@@ -63,10 +76,26 @@
         document.getElementById("sidebar-container").innerHTML = data;
       });
 
-    function sair() {
-      localStorage.removeItem('email');  // ou 'usuarioLogado'
-      window.location.href = "index.html";
-    }
+    document.addEventListener("DOMContentLoaded", () => {
+      fetch("sidebar.html")
+        .then(res => res.text())
+        .then(html => {
+          document.getElementById("sidebar-container").innerHTML = html;
+
+          window.toggleSidebar = function () {
+            const sidebar = document.getElementById("sidebar");
+            const toggleBtn = document.querySelector(".sidebar-toggle");
+            const isCollapsed = sidebar.classList.toggle("collapsed");
+            document.body.classList.toggle("sidebar-collapsed", isCollapsed);
+            toggleBtn.textContent = isCollapsed ? "»" : "☰";
+          };
+
+          window.sair = function () {
+            localStorage.removeItem('email');
+            window.location.href = "index.html";
+          };
+        });
+    });
   </script>
 </body>
 </html>

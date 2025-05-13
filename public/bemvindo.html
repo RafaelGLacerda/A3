@@ -2,58 +2,61 @@
 <html lang="pt-br">
 <head>
   <meta charset="UTF-8">
+  <link rel="icon" href="img/reciclaSSA.png" type="image/png">
   <title>Bem-vindo ao ReciclaSLA</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="css/bemvindo.css">
   <link rel="stylesheet" href="css/sidebar.css">
-
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
 </head>
 <body>
-  <div class="container">  
-    <div id="sidebar-container"></div>
-    <main class="content">
-      <div class="boas-vindas">
-        <h2 id="boas-vindas">Bem-vindo ao ReciclaSLA</h2>
-      </div>
-      <p class="descricao">
-        Conheça nosso site e veja como você pode usar nossos serviços
-      </p>
 
-      <section class="empresas">
-        <div class="empresa">EMPRESA PARCEIRA 1</div>
-        <div class="empresa">EMPRESA PARCEIRA 2</div>
-        <div class="empresa">EMPRESA PARCEIRA 3</div>
-        <div class="empresa">EMPRESA PARCEIRA 4</div>
-        <div class="empresa">EMPRESA PARCEIRA 5</div>
-      </section>
-    </main>
-  </div>
+  <div id="sidebar-container"></div>
+
+  <main class="content">
+    <div class="boas-vindas">
+      <h2 id="boas-vindas">Bem-vindo ao <span>ReciclaSLA</span></h2>
+      <p class="descricao">
+        Recicle com a gente e acumule pontos! Veja como funciona abaixo:
+      </p>
+      <div class="info-sistema">
+        <p><strong>Como funciona?</strong></p>
+        <p>Troque materiais recicláveis por pontos e use-os para conquistar prêmios incríveis! O sistema é simples: colete e separe os recicláveis, faça o agendamento na cooperativa mais proxima, e pronto, seus itens reciclados serão transformados em pontos que serão creditados em sua conta. Quanto mais você reciclar, mais pontos você acumula, até poder trocá-los por prêmios e benefícios exclusivos.</p>
+      </div>
+    </div>
+
+    <section class="empresas">
+      <div class="empresa">Governo da Bahia</div>
+      <div class="empresa">Natura</div>
+      <div class="empresa">Itaú</div>
+      <div class="empresa">CEMIG</div>
+      <div class="empresa">Suzano</div>
+      <div class="empresa">Nestlé</div>
+    </section>
+  </main>
 
   <script src="js/main.js"></script>
-  
-</body>
-
   <script>
-    fetch('sidebar.html')
-      .then(response => response.text())
-      .then(data => {
-        document.getElementById("sidebar-container").innerHTML = data;
-      });
-      
+    document.addEventListener("DOMContentLoaded", () => {
+      fetch("sidebar.html")
+        .then(res => res.text())
+        .then(html => {
+          document.getElementById("sidebar-container").innerHTML = html;
+
+          window.toggleSidebar = function () {
+            const sidebar = document.getElementById("sidebar");
+            const toggleBtn = document.querySelector(".sidebar-toggle");
+            const isCollapsed = sidebar.classList.toggle("collapsed");
+            document.body.classList.toggle("sidebar-collapsed", isCollapsed);
+            toggleBtn.textContent = isCollapsed ? "»" : "☰";
+          };
+
+          window.sair = function () {
+            localStorage.removeItem('email');
+            window.location.href = "index.html";
+          };
+        });
+    });
   </script>
-<script>
-  document.addEventListener('DOMContentLoaded', function () {
-    document.getElementById("btnSair").onclick = function () {
-      sair();
-    };
-  });
-
-  function sair() {
-    // Limpa o localStorage
-    localStorage.removeItem('email');  // Ou 'usuarioLogado', dependendo de como você armazena os dados
-
-    // Redireciona para a página inicial
-    window.location.href = "index.html";
-  }
-</script>
-
+</body>
 </html>

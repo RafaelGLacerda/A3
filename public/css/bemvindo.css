@@ -1,56 +1,94 @@
 body {
   margin: 0;
-  font-family: Arial, sans-serif;
-  background-color: #f5f5f5;
+  font-family: 'Poppins', sans-serif;
+  background: linear-gradient(135deg, #f2f2f2, #e0e0e0);
+  color: #333;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
 }
 
-/* Deixa espaço para a sidebar fixa */
 .content {
-  margin-left: 220px; /* largura da sidebar */
-  padding: 40px;
-  min-height: 100vh;
-  background-color: #fff;
+  flex: 1;
+  padding: 50px 60px;
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
 }
 
 .boas-vindas h2 {
-  color: #2e7d32;
-  margin-bottom: 10px;
+  font-size: 2.5rem;
+  font-weight: 700;
+  margin-bottom: 20px;
+  color: #2e8b57;
+}
+
+.boas-vindas h2 span {
+  color: #4b8c34;
 }
 
 .descricao {
-  font-size: 18px;
+  font-size: 1.3rem;
+  font-weight: 300;
   color: #555;
-  margin-bottom: 30px;
+}
+
+.info-sistema {
+  background-color: #ffffff;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  margin-top: 30px;
+}
+
+.info-sistema p {
+  font-size: 1.1rem;
+  color: #333;
+}
+
+.info-sistema p strong {
+  font-weight: 600;
 }
 
 .empresas {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 20px;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 25px;
+  margin-top: 40px;
 }
 
 .empresa {
-  background-color: #e0f2f1;
-  border-left: 5px solid #2e7d32;
-  padding: 20px;
-  border-radius: 8px;
-  flex: 1 1 200px;
-  font-weight: bold;
+  background-color: #ffffff;
+  padding: 25px;
+  border-radius: 12px;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.12);
   text-align: center;
-}
-button {
-  width: 50%;
-  padding: 12px;
-  font-size: 1rem;
-  background-color: #388e3c;
-  color: white;
-  border: none;
-  border-radius: 10px;
+  font-weight: 600;
+  color: #2e8b57;
+  transition: transform 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease;
   cursor: pointer;
-  transition: background-color 0.3s ease;
-  margin-top: 15px;
 }
-button:hover {
-  background-color: #870101;
-  transition: (1.1);
+
+.empresa:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+  background-color: #e4f6e4;
+}
+
+@media (max-width: 768px) {
+  .content {
+    padding: 20px;
+  }
+
+  .boas-vindas h2 {
+    font-size: 2rem;
+  }
+
+  .descricao {
+    font-size: 1.1rem;
+  }
+
+  .empresas {
+    grid-template-columns: 1fr 1fr;
+  }
 }

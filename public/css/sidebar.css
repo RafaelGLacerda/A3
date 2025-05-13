@@ -1,17 +1,113 @@
-/* Estilo da sidebar */
+/* Variáveis para facilitar ajustes */
+:root {
+  --sidebar-width: 220px;
+  --sidebar-collapsed-width: 60px;
+  --sidebar-bg: linear-gradient(to bottom, #115f29, #277545, #39a058);
+  --sidebar-link-bg: #388e3c;
+  --sidebar-link-hover: #1b5e20;
+  --sidebar-toggle-bg: #2e7d32;
+  --sidebar-toggle-hover: #1b5e20;
+  --btn-sair-bg: #d32f2f;
+  --btn-sair-hover: #740505;
+}
+
+/* Reset básico */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+/* Botão de toggle da sidebar */
+.sidebar-toggle {
+  position: fixed;
+  top: -18px;
+  left: var(--sidebar-width);
+  z-index: 1100;
+  background-color: var(--sidebar-toggle-bg);
+  color: white;
+  border: none;
+  font-size: 24px;
+  padding: 10px; /* Ajuste o padding para garantir tamanho consistente */
+  border-radius: 1px;
+  cursor: pointer;
+  transition: left 0.3s ease;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 44px;
+  height: 44px;
+}
+
+.sidebar-toggle:hover {
+  background-color: var(--sidebar-toggle-hover);
+}
+
+/* Sidebar */
 .sidebar {
-  position: fixed;  /* Adicionado */
+  position: fixed;
   left: 0;
   top: 0;
-  width: 220px;
-  background-color: #2e7d32;
-  color: white;
+  width: var(--sidebar-width);
   height: 100vh;
   padding-top: 20px;
-  z-index: 1000; /* Garante que fique sobre o conteúdo */
+  z-index: 1000;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  background: var(--sidebar-bg);
+  color: white;
+  transition: width 0.3s ease;
+  overflow: hidden;
+}
+
+/* Sidebar colapsada */
+.sidebar.collapsed {
+  width: var(--sidebar-collapsed-width);
+}
+
+/* Conteúdo principal */
+.content {
+  margin-left: var(--sidebar-width);
+  padding: 40px;
+  min-height: 100vh;
+  transition: margin-left 0.3s ease;
+}
+
+.content.collapsed {
+  margin-left: var(--sidebar-collapsed-width); /* Ajusta o conteúdo para ocupar o espaço quando a sidebar for recolhida */
+}
+body.sidebar-collapsed .sidebar-toggle {
+  left: var(--sidebar-collapsed-width);
+}
+
+/* Responsividade para dispositivos móveis */
+@media (max-width: 768px) {
+  .sidebar {
+    transform: translateX(-100%);
+    width: var(--sidebar-width);
+    transition: transform 0.3s ease;
+  }
+
+  body.sidebar-open .sidebar {
+    transform: translateX(0);
+  }
+
+  .sidebar-toggle {
+    left: 10px;
+  }
+
+  body.sidebar-open {
+    overflow: hidden;
+  }
+
+  .content {
+    margin-left: 0;
+  }
 }
 
 
+/* Navegação */
 .sidebar nav ul {
   list-style: none;
   padding: 0;
@@ -22,13 +118,12 @@
   margin: 15px 0;
 }
 
-/* Estilo dos links na sidebar */
 .sidebar nav ul li a {
   color: white;
   text-decoration: none;
   display: block;
   padding: 12px 20px;
-  background-color: #388e3c;
+  background-color: var(--sidebar-link-bg);
   border-radius: 8px;
   margin: 0 10px;
   transition: background-color 0.3s ease;
@@ -37,32 +132,22 @@
 
 .sidebar nav ul li a:hover,
 .sidebar nav ul li a.active {
-  background-color: #1b5e20;
+  background-color: var(--sidebar-link-hover);
 }
 
-/* Estilo do botão Sair */
-.sidebar-btn {
+/* Container inferior da sidebar */
+.sidebar-bottom {
+  margin: 20px 0;
+  padding: 0 10px;
+}
+
+/* Botão "Sair" */
+.btn-sair {
   color: white;
-  background-color: #388e3c;
+  background-color: var(--btn-sair-bg);
   border: none;
   padding: 12px 20px;
   border-radius: 8px;
-  margin: 0 10px;
-  transition: background-color 0.3s ease;
-  width: 100%;
-  text-align: center;
-}
-
-.sidebar-btn:hover {
-  background-color: #1b5e20;
-}
-.btn-sair{
-  color: white;
-  background-color: #d32f2f; /* Cor vermelha para destacar */
-  border: none;
-  padding: 12px 20px;
-  border-radius: 8px;
-  margin: 20px 10px; /* Dá um espaço maior em relação aos outros itens */
   transition: background-color 0.3s ease;
   width: 100%;
   text-align: center;
@@ -70,5 +155,35 @@
 }
 
 .btn-sair:hover {
-  background-color: #c2185b; /* Um tom mais escuro de vermelho ao passar o mouse */
+  background-color: var(--btn-sair-hover);
+}
+
+
+body.sidebar-collapsed .content {
+  margin-left: var(--sidebar-collapsed-width);
+}
+
+/* Responsividade para dispositivos móveis */
+@media (max-width: 768px) {
+  .sidebar {
+    transform: translateX(-100%);
+    width: var(--sidebar-width);
+    transition: transform 0.3s ease;
+  }
+
+  body.sidebar-open .sidebar {
+    transform: translateX(0);
+  }
+
+  .sidebar-toggle {
+    left: 10px;
+  }
+
+  body.sidebar-open {
+    overflow: hidden;
+  }
+
+  .content {
+    margin-left: 0;
+  }
 }

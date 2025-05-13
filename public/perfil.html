@@ -2,12 +2,14 @@
 <html lang="pt-br">
 <head>
   <meta charset="UTF-8">
-  <title>Perfil do Usuário - ReciclaSLA</title>
+  <link rel="icon" href="img/reciclaSSA.png" type="image/png">
+  <title>Perfil do Usuário</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="css/sidebar.css">
   <link rel="stylesheet" href="css/perfil.css">
 </head>
 <body>
-  
+
   <!-- Sidebar injetada dinamicamente -->
   <div id="sidebar-container"></div>
 
@@ -20,9 +22,7 @@
       <p><strong>Nome:</strong> <span id="nomeUsuario">Carregando...</span></p>
       <p><strong>Email:</strong> <span id="emailUsuario">Carregando...</span></p>
       <p><strong>Endereço:</strong> <span id="enderecoUsuario">Carregando...</span></p>
-      <p><strong>Quantidade reciclada:</strong> <span id="quantidadeReciclada">Carregando...</span></p>
       <p><strong>Pontos:</strong> <span id="pontosUsuario">0</span></p>
-
     </div>
 
     <div class="botoes">
@@ -30,18 +30,18 @@
       <button onclick="editarEndereco()">Editar Endereço</button>
     </div>
   </main>
+
   <!-- Modal interativo -->
-<div id="editModal" class="modal">
-  <div class="modal-content">
-    <h3 id="modalTitle">Editar</h3>
-    <input type="text" id="modalInput" placeholder="Digite o novo valor">
-    <div class="modal-buttons">
-      <button id="modalSave">Salvar</button>
-      <button id="modalCancel">Cancelar</button>
+  <div id="editModal" class="modal">
+    <div class="modal-content">
+      <h3 id="modalTitle">Editar</h3>
+      <input type="text" id="modalInput" placeholder="Digite o novo valor">
+      <div class="modal-buttons">
+        <button id="modalSave">Salvar</button>
+        <button id="modalCancel">Cancelar</button>
+      </div>
     </div>
   </div>
-</div>
-
 
   <!-- Scripts -->
   <script src="js/perfil.js"></script>
@@ -53,11 +53,26 @@
         document.getElementById("sidebar-container").innerHTML = html;
       });
 
-    // Função de logout
-    function sair() {
-      localStorage.removeItem('email');
-      window.location.href = "index.html";
-    }
+    document.addEventListener("DOMContentLoaded", () => {
+      fetch("sidebar.html")
+        .then(res => res.text())
+        .then(html => {
+          document.getElementById("sidebar-container").innerHTML = html;
+
+          window.toggleSidebar = function () {
+            const sidebar = document.getElementById("sidebar");
+            const toggleBtn = document.querySelector(".sidebar-toggle");
+            const isCollapsed = sidebar.classList.toggle("collapsed");
+            document.body.classList.toggle("sidebar-collapsed", isCollapsed);
+            toggleBtn.textContent = isCollapsed ? "»" : "☰";
+          };
+
+          window.sair = function () {
+            localStorage.removeItem('email');
+            window.location.href = "index.html";
+          };
+        });
+    });
   </script>
 </body>
 </html>

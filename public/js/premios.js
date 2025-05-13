@@ -1,6 +1,26 @@
 fetch("sidebar.html")
   .then(res => res.text())
   .then(html => { document.getElementById("sidebar-container").innerHTML = html; });
+document.addEventListener("DOMContentLoaded", () => {
+  fetch("sidebar.html")
+    .then(res => res.text())
+    .then(html => {
+      document.getElementById("sidebar-container").innerHTML = html;
+
+      window.toggleSidebar = function () {
+        const sidebar = document.getElementById("sidebar");
+        const toggleBtn = document.querySelector(".sidebar-toggle");
+        const isCollapsed = sidebar.classList.toggle("collapsed");
+        document.body.classList.toggle("sidebar-collapsed", isCollapsed);
+        toggleBtn.textContent = isCollapsed ? "»" : "☰";
+      };
+
+      window.sair = function () {
+        localStorage.removeItem('email');
+        window.location.href = "index.html";
+      };
+    });
+});
 
 const API_URL      = "https://a3-2lsq.onrender.com";
 const emailUsuario = localStorage.getItem("email");
@@ -116,44 +136,37 @@ function fecharModal() {
 }
 
 // ─── Resgate ───────────────────────────────────────────────────────
-// ─── Resgate ───────────────────────────────────────────────────────
-function resgatarPremio(nome, custo, premio) {
+function resgatarPremio(nome, custo) {
   if (pontosAtuais < custo) {
     mostrarMensagem("❌ Você não tem pontos suficientes para esse prêmio.", true);
     return;
   }
-  abrirModal({ nome, pontos: custo, premio });
+  abrirModal({ nome, pontos: custo });
 }
 
 document.getElementById("btn-confirmar").addEventListener("click", async () => {
   if (!premioSelecionado) return;
 
-  const { nome, pontos, premio } = premioSelecionado;
+  const { nome, pontos } = premioSelecionado;
   const codigo = gerarCodigo();
 
   try {
     const res = await fetch(`${API_URL}/api/resgatar-premio`, {
-      method: "POST",
+      method : "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        email: emailUsuario,
-        nomePremio: nome,
+      body   : JSON.stringify({
+        email      : emailUsuario,
+        nomePremio : nome,
         codigo,
-        custo: pontos
+        custo      : pontos
       })
     });
     if (!res.ok) throw new Error(`HTTP ${res.status}`);
     await res.json();
 
-    // Subtrair a quantidade do prêmio
-    premio.quantidade -= 1;
-
     mostrarMensagem(`🎉 Prêmio "${nome}" resgatado com sucesso! Código: ${codigo}`);
     await carregarPontos();
     await carregarPremiosResgatados();
-
-    // Atualizar o estoque exibido
-    atualizarEstoque();
   } catch (e) {
     console.error("Erro ao resgatar prêmio:", e);
     mostrarMensagem("❌ Erro ao resgatar prêmio. Tente novamente.", true);
@@ -162,18 +175,7 @@ document.getElementById("btn-confirmar").addEventListener("click", async () => {
   }
 });
 
-function atualizarEstoque() {
-  // Atualiza o estoque no frontend
-  const cards = document.querySelectorAll(".card-premio");
-  cards.forEach(card => {
-    const nome = card.querySelector("h3").textContent;
-    const premio = premios.find(p => p.nome === nome);
-    if (premio) {
-      const estoqueElement = card.querySelector("p strong + p");
-      estoqueElement.textContent = `Estoque: ${premio.quantidade}`;
-    }
-  });
-}
+document.getElementById("btn-cancelar").addEventListener("click", fecharModal);
 
 // ─── Renderizar prêmios disponíveis ────────────────────────────────
 premios.forEach(premio => {
@@ -186,10 +188,9 @@ premios.forEach(premio => {
     <button class="btn-resgatar">Resgatar</button>
   `;
   card.querySelector(".btn-resgatar")
-      .addEventListener("click", () => resgatarPremio(premio.nome, premio.pontos, premio));
+      .addEventListener("click", () => resgatarPremio(premio.nome, premio.pontos));
   container.appendChild(card);
 });
-
 
 // ─── Inicialização ─────────────────────────────────────────────────
 carregarPontos();

@@ -23,7 +23,6 @@ function carregarPerfil() {
       document.getElementById("nomeUsuario").textContent = dados.nome;
       document.getElementById("emailUsuario").textContent = dados.email;
       document.getElementById("enderecoUsuario").textContent = dados.endereco;
-      document.getElementById("quantidadeReciclada").textContent = dados.quantidadeReciclada + " kg";
       document.getElementById("pontosUsuario").textContent = dados.pontos + " pontos";
     })
     .catch((err) => {

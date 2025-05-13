@@ -1,84 +1,65 @@
 body {
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  background-color: #f0f4f8;
   margin: 0;
-}
-
-.container {
-  display: flex;
-  width: 100%;
-  justify-content: center;
-  padding: 40px 20px;
-}
-
-.content {
-  background-color: #ffffff;
-  padding: 40px;
-  max-width: 900px;
-  width: 100%;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-  border-radius: 8px;
-}
-
-h2 {
-  color: #2e7d32;
-  margin-bottom: 20px;
-}
-
-p {
-  font-size: 16px;
-  line-height: 1.6;
+  font-family: 'Segoe UI', sans-serif;
+  background: linear-gradient(to bottom, #e4e4e4, #d1d1d1);
   color: #333;
 }
 
+.container {
+  margin-left: 20px; /* Espaço para a sidebar */
+  padding: 40px;
+}
+
+.content {
+  background-color: #fefefe;
+  padding: 40px;
+  border-radius: 20px;
+  box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+}
+
+h2 {
+  font-size: 32px;
+  margin-bottom: 20px;
+  color: #2e7d32;
+}
+
 .etapas {
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
+  display: grid;
+  gap: 30px;
   margin-top: 30px;
-  margin-bottom: 40px;
 }
 
 .etapa {
   display: flex;
+  gap: 20px;
+  background-color: #f0f0f0;
+  border-radius: 15px;
+  padding: 20px;
   align-items: flex-start;
-  gap: 15px;
-  background-color: #e8f5e9;
-  padding: 15px 20px;
-  border-left: 5px solid #2e7d32;
-  border-radius: 6px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.08);
 }
 
 .emoji {
-  font-size: 28px;
-  margin-top: 4px;
+  font-size: 32px;
 }
 
-.importancia {
-  background-color: #fff3e0;
-  padding: 20px;
-  border-left: 5px solid #fb8c00;
-  border-radius: 6px;
-  margin-top: 30px;
+.etapa strong {
+  color: #2e7d32;
+  font-size: 18px;
 }
 
-.importancia h3 {
-  margin-top: 0;
-  color: #e65100;
+.extras {
+  margin-top: 50px;
 }
-button {
-  width: 50%;
-  padding: 12px;
-  font-size: 1rem;
-  background-color: #388e3c;
-  color: white;
-  border: none;
-  border-radius: 10px;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-  margin-top: 15px;
+
+.extras h3 {
+  font-size: 24px;
+  margin-bottom: 10px;
+  color: #1b5e20;
 }
-button:hover {
-  background-color: #870101;
-  transition: (1.1);
+
+.extras p {
+  font-size: 16px;
+  line-height: 1.6;
+  margin-bottom: 30px;
 }

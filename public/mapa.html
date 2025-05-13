@@ -2,33 +2,44 @@
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
-  <title>Mapa de Ecopontos - ReciclaSLA</title>
+  <link rel="icon" href="img/reciclaSSA.png" type="image/png">
+  <title>Mapa de Ecopontos</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
   <link rel="stylesheet" href="css/sidebar.css">
   <link rel="stylesheet" href="css/mapa.css">
   <style>
-    body {
+    html, body {
       margin: 0;
-      display: flex;
-    }
-
-    #sidebar-container {
-      width: 250px;
-      background-color: #f0f0f0;
+      padding: 0;
+      height: 100%;
     }
 
     #map {
-      flex: 1;
       height: 100vh;
+      width: 100%;
+      margin-left: var(--sidebar-width);
+      transition: margin-left 0.3s ease;
+    }
+
+    body.sidebar-collapsed #map {
+      margin-left: var(--sidebar-collapsed-width);
     }
   </style>
 </head>
 <body>
-  <div id="sidebar-container"></div>
+  <!-- Botão e Sidebar -->
+  <button class="sidebar-toggle" onclick="toggleSidebar()">☰</button>
+  <div id="sidebar" class="sidebar">
+    <div class="container"><!-- sidebar.html será carregado aqui --></div>
+  </div>
+
+  <!-- Mapa -->
   <div id="map"></div>
 
   <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
   <script>
+    // Inicializa o mapa
     const recyclePoints = [
       { id: 1, name: "Campo Grande", lat: -12.988572736686292, lng: -38.520103895353984 },
       { id: 2, name: "Ondina", lat: -13.0115, lng: -38.4995 },
@@ -42,7 +53,7 @@
       { id: 10, name: "Cajazeiras", lat: -12.899468912209896, lng: -38.4077516879381 }
     ];
 
-    const map = L.map('map').setView([-12.97, -38.50], 12); // Salvador
+    const map = L.map('map').setView([-12.97, -38.50], 12);
 
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
       attribution: '© OpenStreetMap'
@@ -54,19 +65,28 @@
         .bindPopup(`<strong>${point.name}</strong>`);
     });
 
-    // Carrega a barra lateral
-    fetch("sidebar.html")
-      .then(res => res.text())
-      .then(html => {
-        document.getElementById("sidebar-container").innerHTML = html;
-      });
-        function sair() {
-    // Limpa o localStorage (remove dados do usuário)
-    localStorage.removeItem('email');  // Ou 'usuarioLogado', dependendo de como você armazena os dados
+    // Carrega o HTML da sidebar e define ações
+    document.addEventListener("DOMContentLoaded", () => {
+      fetch("sidebar.html")
+        .then(res => res.text())
+        .then(html => {
+          document.querySelector(".container").innerHTML = html;
 
-    // Redireciona para a página inicial (index.html)
-    window.location.href = "index.html";
-  }
+           window.toggleSidebar = function () {
+        const sidebar = document.getElementById("sidebar");
+        const toggleBtn = document.querySelector(".sidebar-toggle");
+        const isCollapsed = sidebar.classList.toggle("collapsed");
+        document.body.classList.toggle("sidebar-collapsed", isCollapsed);
+        toggleBtn.textContent = isCollapsed ? "»" : "☰";
+      };
+
+      window.sair = function () {
+        localStorage.removeItem('email');
+        window.location.href = "index.html";
+      };
+    });
+    });
+    
   </script>
 </body>
 </html>
