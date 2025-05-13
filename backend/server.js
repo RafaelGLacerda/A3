@@ -11,18 +11,15 @@ const PORT = process.env.PORT || 3000;
 const usersFilePath = path.join(__dirname, 'data', 'users.json');
 const uploadsDir = path.join(__dirname, 'uploads');
 
-// Criar diretório de uploads se não existir
 if (!fs.existsSync(uploadsDir)) {
   fs.mkdirSync(uploadsDir);
 }
 
-// Middlewares
 app.use(cors());
 app.use(bodyParser.json());
-app.use('/uploads', express.static(uploadsDir)); // Servir imagens
+app.use('/uploads', express.static(uploadsDir));
 app.use(express.static(path.join(__dirname, '..', 'public')));
 
-// Funções utilitárias
 const readUsersData = () => {
   try {
     const data = fs.readFileSync(usersFilePath, 'utf-8');
@@ -35,8 +32,6 @@ const readUsersData = () => {
 const saveUsersData = (users) => {
   fs.writeFileSync(usersFilePath, JSON.stringify(users, null, 2));
 };
-
-// ROTAS
 
 // Login
 app.post('/api/login', (req, res) => {
@@ -73,7 +68,8 @@ app.post('/api/cadastro', (req, res) => {
     tipo: 'USER',
     quantidadeReciclada: 0,
     pontos: 0,
-    agendamentos: []
+    agendamentos: [],
+    resgatados: [] // Adicionado campo
   };
 
   users.push(novoUsuario);
@@ -81,7 +77,7 @@ app.post('/api/cadastro', (req, res) => {
   res.status(201).json({ message: 'Usuário cadastrado com sucesso' });
 });
 
-// Perfil - visualizar
+// Visualizar perfil
 app.get('/profile/:email', (req, res) => {
   const { email } = req.params;
   const users = readUsersData();
@@ -92,16 +88,14 @@ app.get('/profile/:email', (req, res) => {
     : res.status(404).json({ message: 'Usuário não encontrado' });
 });
 
-// Perfil - atualizar
+// Atualizar perfil
 app.put('/profile/:email', (req, res) => {
   const { email } = req.params;
   const { nome, endereco } = req.body;
   const users = readUsersData();
   const index = users.findIndex(u => u.email === email);
 
-  if (index === -1) {
-    return res.status(404).json({ message: 'Usuário não encontrado' });
-  }
+  if (index === -1) return res.status(404).json({ message: 'Usuário não encontrado' });
 
   if (nome) users[index].nome = nome;
   if (endereco) users[index].endereco = endereco;
@@ -110,7 +104,7 @@ app.put('/profile/:email', (req, res) => {
   res.json({ message: 'Perfil atualizado com sucesso' });
 });
 
-// Agendamento - criar
+// Agendamento
 app.post('/api/agendamento/:email', (req, res) => {
   const { email } = req.params;
   const { nome, data, hora, cep, cooperativa, imagem } = req.body;
@@ -148,7 +142,7 @@ app.post('/api/agendamento/:email', (req, res) => {
   res.status(200).json({ message: 'Agendamento realizado com sucesso' });
 });
 
-// Agendamentos - por usuário
+// Listar agendamentos do usuário
 app.get('/api/agendamentos/:email', (req, res) => {
   const { email } = req.params;
   const users = readUsersData();
@@ -159,7 +153,7 @@ app.get('/api/agendamentos/:email', (req, res) => {
   res.json(user.agendamentos || []);
 });
 
-// Agendamentos - todos (ADM)
+// Listar todos agendamentos (ADM)
 app.get('/api/agendamentos', (req, res) => {
   const users = readUsersData();
   const todosAgendamentos = users.flatMap(user =>
@@ -171,7 +165,7 @@ app.get('/api/agendamentos', (req, res) => {
   res.json(todosAgendamentos);
 });
 
-// Reciclagem - registrar (ADM)
+// Registrar reciclagem
 app.put('/api/reciclagem/:id', (req, res) => {
   const { id } = req.params;
   const { observacao, pontos, imagem } = req.body;
@@ -189,7 +183,7 @@ app.put('/api/reciclagem/:id', (req, res) => {
     imagemUrl = `/uploads/${path.basename(imagemPath)}`;
   }
 
-  let agendamentoAtualizado = false;
+  let atualizado = false;
 
   users.forEach(user => {
     const agendamento = user.agendamentos?.find(ag => ag.id === id);
@@ -197,15 +191,13 @@ app.put('/api/reciclagem/:id', (req, res) => {
       agendamento.comentarioAdm = observacao;
       agendamento.pontos = Number(pontos);
       agendamento.status = 'realizado';
-      if (imagemUrl) {
-        agendamento.imagem = imagemUrl;
-      }
+      if (imagemUrl) agendamento.imagem = imagemUrl;
       user.pontos = (user.pontos || 0) + agendamento.pontos;
-      agendamentoAtualizado = true;
+      atualizado = true;
     }
   });
 
-  if (!agendamentoAtualizado) {
+  if (!atualizado) {
     return res.status(404).json({ message: 'Agendamento não encontrado' });
   }
 
@@ -213,19 +205,17 @@ app.put('/api/reciclagem/:id', (req, res) => {
   res.json({ message: 'Reciclagem registrada com sucesso' });
 });
 
-// Agendamento - excluir
+// Excluir agendamento
 app.delete('/api/agendamentos/:id', (req, res) => {
   const { id } = req.params;
   const users = readUsersData();
   let encontrado = false;
 
   users.forEach(user => {
-    if (Array.isArray(user.agendamentos)) {
-      const original = user.agendamentos.length;
-      user.agendamentos = user.agendamentos.filter(ag => ag.id !== id);
-      if (user.agendamentos.length < original) {
-        encontrado = true;
-      }
+    const original = user.agendamentos.length;
+    user.agendamentos = user.agendamentos.filter(ag => ag.id !== id);
+    if (user.agendamentos.length < original) {
+      encontrado = true;
     }
   });
 
@@ -237,12 +227,50 @@ app.delete('/api/agendamentos/:id', (req, res) => {
   res.json({ message: 'Agendamento excluído com sucesso' });
 });
 
+// Adicionar pontos (ADM)
+app.post('/api/pontos', (req, res) => {
+  const { emailAdm, emailUsuario, pontos } = req.body;
+  const users = readUsersData();
+
+  const adm = users.find(u => u.email === emailAdm && u.tipo === 'ADM');
+  if (!adm) return res.status(403).json({ message: 'Apenas administradores podem distribuir pontos.' });
+
+  const usuario = users.find(u => u.email === emailUsuario);
+  if (!usuario) return res.status(404).json({ message: 'Usuário não encontrado.' });
+  if (usuario.tipo === 'ADM') return res.status(400).json({ message: 'Você não pode adicionar pontos a outro ADM.' });
+
+  usuario.pontos = (usuario.pontos || 0) + Number(pontos);
+  saveUsersData(users);
+
+  res.json({ message: `Pontos adicionados com sucesso. Total: ${usuario.pontos}` });
+});
+
+// ✅ Nova rota: resgatar prêmio
+app.post('/api/resgatar-premio', (req, res) => {
+  const { email, codigoPremio } = req.body;
+  const users = readUsersData();
+  const user = users.find(u => u.email === email);
+
+  if (!user) return res.status(404).json({ message: 'Usuário não encontrado.' });
+
+  if (!user.resgatados) user.resgatados = [];
+
+  if (user.resgatados.includes(codigoPremio)) {
+    return res.status(400).json({ message: 'Código já resgatado.' });
+  }
+
+  user.resgatados.push(codigoPremio);
+  saveUsersData(users);
+
+  res.json({ message: 'Prêmio resgatado com sucesso!', resgatados: user.resgatados });
+});
+
 // Página inicial
 app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, '..', 'public', 'index.html'));
 });
 
-// Inicialização do servidor
+// Inicializar servidor
 app.listen(PORT, () => {
   console.log(`✅ Servidor rodando em http://localhost:${PORT}`);
 });

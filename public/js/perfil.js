@@ -24,6 +24,7 @@ function carregarPerfil() {
       document.getElementById("emailUsuario").textContent = dados.email;
       document.getElementById("enderecoUsuario").textContent = dados.endereco;
       document.getElementById("quantidadeReciclada").textContent = dados.quantidadeReciclada + " kg";
+      document.getElementById("pontosUsuario").textContent = dados.pontos + " pontos";
     })
     .catch((err) => {
       statusMessage.textContent = "Falha ao carregar dados do usuário: " + err.message;

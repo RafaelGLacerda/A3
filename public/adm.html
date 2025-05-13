@@ -15,6 +15,16 @@
   <main>
     <h2>📦 Agendamentos Pendentes</h2>
     <div id="agendamentosContainer" class="agendamentos-grid"></div>
+
+    <!-- Seção de atribuição de pontos -->
+    <section id="atribuir-pontos">
+      <h3>Atribuir Pontos Manualmente</h3>
+      <form id="formPontos" style="margin-bottom: 20px;">
+        <input type="email" id="emailUsuario" placeholder="Email do usuário" required />
+        <input type="number" id="quantidadePontos" placeholder="Quantidade de pontos" required min="1" />
+        <button type="submit">Atribuir Pontos</button>
+      </form>
+    </section>
   </main>
 
   <script src="js/adm.js"></script>

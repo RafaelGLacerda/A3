@@ -124,3 +124,34 @@ function logout() {
   localStorage.clear();
   window.location.href = "index.html";
 }
+// Formulário para atribuir pontos diretamente
+document.getElementById("formPontos").addEventListener("submit", (e) => {
+  e.preventDefault();
+
+  const emailAdm = localStorage.getItem("email");
+  const emailUsuario = document.getElementById("emailUsuario").value.trim();
+  const pontos = parseInt(document.getElementById("quantidadePontos").value);
+
+  if (!emailUsuario || isNaN(pontos) || pontos <= 0) {
+    mostrarMensagem("Preencha corretamente o email do usuário e a quantidade de pontos.", "aviso");
+    return;
+  }
+
+  fetch(`${API_URL}/api/pontos`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ emailAdm, emailUsuario, pontos })
+  })
+    .then(res => res.json())
+    .then(data => {
+      if (data.message?.includes("sucesso")) {
+        mostrarMensagem("✅ " + data.message, "sucesso");
+        document.getElementById("formPontos").reset();
+      } else {
+        mostrarMensagem("⚠️ " + data.message, "aviso");
+      }
+    })
+    .catch(() => {
+      mostrarMensagem("❌ Erro ao atribuir pontos. Verifique os dados.", "erro");
+    });
+});

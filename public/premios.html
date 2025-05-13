@@ -19,57 +19,113 @@
       <!-- Cards de prêmios serão inseridos aqui via JavaScript -->
     </section>
   </main>
+  
+<h3 id="meus-pontos">Carregando pontos...</h3>
+<h3>🎉 Meus Prêmios Resgatados:</h3>
+<ul id="premios-resgatados"></ul>
 
-  <script>
-    // Lista de prêmios
-    const premios = [
-      { nome: "Vale R$ 50", quantidade: 100, pontos: 1000 },
-      { nome: "Vale R$ 100", quantidade: 100, pontos: 1800 },
-      { nome: "Vale gás", quantidade: 50, pontos: 2000 },
-      { nome: "Vale-refeição R$ 50", quantidade: 50, pontos: 1000 },
-      { nome: "Vale-refeição R$ 100", quantidade: 100, pontos: 1800 },
-      { nome: "Vale-refeição R$ 250", quantidade: 50, pontos: 2300 },
-      { nome: "Sacolas ecológicas", quantidade: 50, pontos: 500 },
-      { nome: "Ventilador", quantidade: 5, pontos: 2500 },
-      { nome: "Kit de cozinha", quantidade: 5, pontos: 2000 },
-      { nome: "Mochila ecológica", quantidade: 5, pontos: 5000 },
-      { nome: "Produtos de limpeza", quantidade: 10, pontos: 1000 },
-      { nome: "AIRFRYER", quantidade: 3, pontos: 50000 }
-    ];
 
-    const container = document.getElementById("lista-premios");
+<script>
+const API_URL = "https://a3-2lsq.onrender.com";
+const emailUsuario = localStorage.getItem("email");
+let pontosAtuais = 0;
 
-    // Cria os cards dinamicamente
-    premios.forEach(premio => {
-      const card = document.createElement("div");
-      card.className = "card-premio";
-      card.innerHTML = `
-        <h3>${premio.nome}</h3>
-        <p><strong>Estoque:</strong> ${premio.quantidade}</p>
-        <p><strong>Pontos:</strong> ${premio.pontos}</p>
-        <button class="btn-resgatar" onclick="resgatarPremio('${premio.nome}', ${premio.pontos})">Resgatar</button>
-      `;
-      container.appendChild(card);
-    });
+// Exibe prêmios
+const container = document.getElementById("lista-premios");
+const ulResgatados = document.getElementById("premios-resgatados");
 
-    // Função fictícia de resgate
-    function resgatarPremio(nome, pontos) {
-      alert(`Você escolheu o prêmio "${nome}" que custa ${pontos} pontos. A função de resgate será implementada futuramente.`);
-    }
+const premios = [
+  { nome: "Vale R$ 50", quantidade: 100, pontos: 1000 },
+  { nome: "Vale R$ 100", quantidade: 100, pontos: 1800 },
+  { nome: "Vale gás", quantidade: 50, pontos: 2000 },
+  { nome: "Vale-refeição R$ 50", quantidade: 50, pontos: 1000 },
+  { nome: "Vale-refeição R$ 100", quantidade: 100, pontos: 1800 },
+  { nome: "Vale-refeição R$ 250", quantidade: 50, pontos: 2300 },
+  { nome: "Sacolas ecológicas", quantidade: 50, pontos: 500 },
+  { nome: "Ventilador", quantidade: 5, pontos: 2500 },
+  { nome: "Kit de cozinha", quantidade: 5, pontos: 2000 },
+  { nome: "Mochila ecológica", quantidade: 5, pontos: 5000 },
+  { nome: "Produtos de limpeza", quantidade: 10, pontos: 1000 },
+  { nome: "AIRFRYER", quantidade: 3, pontos: 50000 }
+];
 
-    // Carregar barra lateral
-    fetch("sidebar.html")
-      .then(response => response.text())
-      .then(data => {
-        document.getElementById("sidebar-container").innerHTML = data;
+function gerarCodigo() {
+  return Math.random().toString(36).substring(2, 10).toUpperCase();
+}
+
+function carregarPremiosResgatados() {
+  fetch(`${API_URL}/resgatados/${encodeURIComponent(emailUsuario)}`)
+    .then(res => res.json())
+    .then(data => {
+      ulResgatados.innerHTML = '';
+      if (data.length === 0) {
+        ulResgatados.innerHTML = '<li>Nenhum prêmio resgatado ainda.</li>';
+        return;
+      }
+      data.forEach(pr => {
+        const li = document.createElement('li');
+        li.textContent = `${pr.nome} - Código: ${pr.codigo}`;
+        ulResgatados.appendChild(li);
       });
+    });
+}
 
-    // Função para sair
-    function sair() {
-      localStorage.removeItem('email');
-      window.location.href = "index.html";
-    }
-  </script>
+function carregarPontos() {
+  fetch(`${API_URL}/profile/${encodeURIComponent(emailUsuario)}`)
+    .then(res => res.json())
+    .then(dados => {
+      pontosAtuais = dados.pontos || 0;
+      document.getElementById("meus-pontos").textContent = `Você tem ${pontosAtuais} pontos.`;
+    });
+}
+
+function resgatarPremio(nome, custo) {
+  if (pontosAtuais < custo) {
+    alert("Você não tem pontos suficientes para esse prêmio.");
+    return;
+  }
+
+  const codigo = gerarCodigo();
+
+  fetch(`${API_URL}/resgatar`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      email: emailUsuario,
+      nomePremio: nome,
+      codigo,
+      custo
+    })
+  })
+  .then(res => res.json())
+  .then(data => {
+    alert(`Prêmio "${nome}" resgatado com sucesso!\nCódigo de resgate: ${codigo}`);
+    carregarPontos();
+    carregarPremiosResgatados();
+  });
+}
+
+premios.forEach(premio => {
+  const card = document.createElement("div");
+  card.className = "card-premio";
+  card.innerHTML = `
+    <h3>${premio.nome}</h3>
+    <p><strong>Estoque:</strong> ${premio.quantidade}</p>
+    <p><strong>Pontos:</strong> ${premio.pontos}</p>
+    <button class="btn-resgatar" onclick="resgatarPremio('${premio.nome}', ${premio.pontos})">Resgatar</button>
+  `;
+  container.appendChild(card);
+});
+
+carregarPontos();
+carregarPremiosResgatados();
+
+// Carrega sidebar
+fetch("sidebar.html").then(r => r.text()).then(data => {
+  document.getElementById("sidebar-container").innerHTML = data;
+});
+</script>
+
 
 </body>
 </html>
