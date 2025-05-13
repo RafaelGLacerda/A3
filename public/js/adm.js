@@ -48,8 +48,13 @@ function carregarAgendamentos() {
           <p><strong>Hora:</strong> ${ag.hora}</p>
           <p><strong>CEP:</strong> ${ag.cep}</p>
           <p><strong>Cooperativa:</strong> ${ag.cooperativa}</p>
+          ${ag.imagem
+            ? `<div><strong>Imagem do usuário:</strong><br><img src="${ag.imagem}" alt="Imagem de reciclagem" style="width: 100px; height: 100px; object-fit: cover; border-radius: 8px; margin-bottom: 10px;"></div>`
+            : "<p><em>Sem imagem enviada pelo usuário.</em></p>"}
           <textarea placeholder="Observações..." class="observacao" rows="3"></textarea>
           <input type="number" placeholder="Pontos" class="pontos" min="0">
+          <p><strong>Imagem da Coleta (opcional):</strong></p>
+          <input type="file" accept="image/*" class="imagem-adm" />
           <button class="confirmar-btn">Confirmar Coleta</button>
         `;
 
@@ -68,6 +73,8 @@ function carregarAgendamentos() {
 function registrarReciclagem(agendamentoId, card, button) {
   const observacao = card.querySelector(".observacao").value.trim();
   const pontos = parseInt(card.querySelector(".pontos").value);
+  const inputImagem = card.querySelector(".imagem-adm");
+  const arquivo = inputImagem.files[0];
 
   if (!observacao || isNaN(pontos) || pontos < 0) {
     mostrarMensagem("⚠️ Preencha corretamente a observação e os pontos.", "aviso");
@@ -77,10 +84,24 @@ function registrarReciclagem(agendamentoId, card, button) {
   button.disabled = true;
   button.textContent = "Registrando...";
 
-  fetch(`${API_URL}/api/reciclagem/${agendamentoId}`, {
+  if (arquivo) {
+    const reader = new FileReader();
+    reader.onloadend = () => {
+      const imagemBase64 = reader.result;
+      enviarReciclagem(agendamentoId, observacao, pontos, imagemBase64, card, button);
+    };
+    reader.readAsDataURL(arquivo);
+  } else {
+    enviarReciclagem(agendamentoId, observacao, pontos, null, card, button);
+  }
+}
+
+// Função auxiliar para envio de dados
+function enviarReciclagem(id, observacao, pontos, imagemBase64, card, button) {
+  fetch(`${API_URL}/api/reciclagem/${id}`, {
     method: "PUT",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ observacao, pontos })
+    body: JSON.stringify({ observacao, pontos, imagem: imagemBase64 })
   })
     .then(res => {
       if (!res.ok) throw new Error("Erro ao registrar reciclagem");

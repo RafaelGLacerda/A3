@@ -9,13 +9,20 @@ const app = express();
 const PORT = process.env.PORT || 3000;
 
 const usersFilePath = path.join(__dirname, 'data', 'users.json');
+const uploadsDir = path.join(__dirname, 'uploads');
+
+// Criar diretório de uploads se não existir
+if (!fs.existsSync(uploadsDir)) {
+  fs.mkdirSync(uploadsDir);
+}
 
 // Middlewares
 app.use(cors());
 app.use(bodyParser.json());
+app.use('/uploads', express.static(uploadsDir)); // Servir imagens
 app.use(express.static(path.join(__dirname, '..', 'public')));
 
-// Utils
+// Funções utilitárias
 const readUsersData = () => {
   try {
     const data = fs.readFileSync(usersFilePath, 'utf-8');
@@ -35,8 +42,8 @@ const saveUsersData = (users) => {
 app.post('/api/login', (req, res) => {
   const { email, senha } = req.body;
   const users = readUsersData();
-
   const user = users.find(u => u.email === email && u.senha === senha);
+
   if (user) {
     res.status(200).json({ message: 'Login bem-sucedido', tipo: user.tipo });
   } else {
@@ -106,7 +113,7 @@ app.put('/profile/:email', (req, res) => {
 // Agendamento - criar
 app.post('/api/agendamento/:email', (req, res) => {
   const { email } = req.params;
-  const { nome, data, hora, cep, cooperativa } = req.body;
+  const { nome, data, hora, cep, cooperativa, imagem } = req.body;
 
   if (!nome || !data || !hora || !cep || !cooperativa) {
     return res.status(400).json({ message: 'Todos os campos são obrigatórios.' });
@@ -114,8 +121,15 @@ app.post('/api/agendamento/:email', (req, res) => {
 
   const users = readUsersData();
   const user = users.find(u => u.email === email);
-
   if (!user) return res.status(404).json({ message: 'Usuário não encontrado' });
+
+  let imagemUrl = '';
+  if (imagem) {
+    const base64Data = imagem.split(';base64,').pop();
+    const imagemPath = path.join(uploadsDir, `${uuidv4()}.png`);
+    fs.writeFileSync(imagemPath, base64Data, { encoding: 'base64' });
+    imagemUrl = `/uploads/${path.basename(imagemPath)}`;
+  }
 
   const novoAgendamento = {
     id: uuidv4(),
@@ -125,7 +139,8 @@ app.post('/api/agendamento/:email', (req, res) => {
     cep,
     cooperativa,
     status: 'pendente',
-    comentarioAdm: ''
+    comentarioAdm: '',
+    imagem: imagemUrl
   };
 
   user.agendamentos.push(novoAgendamento);
@@ -147,36 +162,44 @@ app.get('/api/agendamentos/:email', (req, res) => {
 // Agendamentos - todos (ADM)
 app.get('/api/agendamentos', (req, res) => {
   const users = readUsersData();
-
   const todosAgendamentos = users.flatMap(user =>
-    user.agendamentos?.map(ag => ({
+    (user.agendamentos || []).map(ag => ({
       ...ag,
       emailUsuario: user.email
-    })) || []
+    }))
   );
-
   res.json(todosAgendamentos);
 });
 
 // Reciclagem - registrar (ADM)
 app.put('/api/reciclagem/:id', (req, res) => {
   const { id } = req.params;
-  const { observacao, pontos } = req.body;
+  const { observacao, pontos, imagem } = req.body;
   const users = readUsersData();
 
   if (!observacao || pontos === undefined || isNaN(Number(pontos))) {
     return res.status(400).json({ message: 'Observação e pontos válidos são obrigatórios.' });
   }
 
+  let imagemUrl = '';
+  if (imagem) {
+    const base64Data = imagem.split(';base64,').pop();
+    const imagemPath = path.join(uploadsDir, `${uuidv4()}.png`);
+    fs.writeFileSync(imagemPath, base64Data, { encoding: 'base64' });
+    imagemUrl = `/uploads/${path.basename(imagemPath)}`;
+  }
+
   let agendamentoAtualizado = false;
 
   users.forEach(user => {
     const agendamento = user.agendamentos?.find(ag => ag.id === id);
-
     if (agendamento) {
       agendamento.comentarioAdm = observacao;
       agendamento.pontos = Number(pontos);
       agendamento.status = 'realizado';
+      if (imagemUrl) {
+        agendamento.imagem = imagemUrl;
+      }
       user.pontos = (user.pontos || 0) + agendamento.pontos;
       agendamentoAtualizado = true;
     }
@@ -198,9 +221,9 @@ app.delete('/api/agendamentos/:id', (req, res) => {
 
   users.forEach(user => {
     if (Array.isArray(user.agendamentos)) {
-      const inicial = user.agendamentos.length;
+      const original = user.agendamentos.length;
       user.agendamentos = user.agendamentos.filter(ag => ag.id !== id);
-      if (user.agendamentos.length < inicial) {
+      if (user.agendamentos.length < original) {
         encontrado = true;
       }
     }
@@ -219,7 +242,7 @@ app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, '..', 'public', 'index.html'));
 });
 
-// Iniciar servidor
+// Inicialização do servidor
 app.listen(PORT, () => {
   console.log(`✅ Servidor rodando em http://localhost:${PORT}`);
 });

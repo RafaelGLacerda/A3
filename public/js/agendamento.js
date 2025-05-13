@@ -116,25 +116,27 @@ document.getElementById('form-agendamento').addEventListener('submit', async fun
   const hora = document.getElementById('horaColeta').value;
   const cep = document.getElementById('cep').value;
   const cooperativa = document.getElementById('cooperativaSelecionada').value;
+  const imagemInput = document.getElementById('imagemMaterial');
 
   if (!cooperativa) {
     alert("Por favor, clique em 'Buscar Coleta Mais Próxima' antes de agendar.");
     return;
   }
 
-  try {
-   const resposta = await fetch(`/api/agendamento/${encodeURIComponent(email)}`, {
-  method: 'POST',
-  headers: { 'Content-Type': 'application/json' },
-  body: JSON.stringify({ nome, data, hora, cep, cooperativa })
-});
+  let imagemBase64 = '';
+  if (imagemInput.files && imagemInput.files[0]) {
+    const file = imagemInput.files[0];
+    imagemBase64 = await toBase64(file);
+  }
 
-    let resultado = {};
-    try {
-      resultado = await resposta.json();
-    } catch {
-      console.warn("Resposta sem JSON válido.");
-    }
+  try {
+    const resposta = await fetch(`/api/agendamento/${encodeURIComponent(email)}`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ nome, data, hora, cep, cooperativa, imagem: imagemBase64 })
+    });
+
+    const resultado = await resposta.json();
 
     if (resposta.ok) {
       mensagemDiv.textContent = "✅ Agendamento concluído!";
@@ -150,3 +152,12 @@ document.getElementById('form-agendamento').addEventListener('submit', async fun
     mensagemDiv.style.color = "red";
   }
 });
+
+function toBase64(file) {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onload = () => resolve(reader.result); // resultado inclui o tipo + base64
+    reader.onerror = error => reject(error);
+  });
+}
