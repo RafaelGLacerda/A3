@@ -160,18 +160,18 @@ app.put('/api/reciclagem/:id', (req, res) => {
   const { observacao, pontos } = req.body;
   const users = readUsersData();
 
-  let agendamentoAtualizado = null;
+  let agendamentoAtualizado = false;
 
+  // Iterar sobre os usuários e atualizar os agendamentos
   users.forEach(user => {
-    user.agendamentos = user.agendamentos.map(ag => {
-      if (ag.id === id) {
-        ag.observacao = observacao;
-        ag.pontos = Number(pontos) || 0;
-        user.pontos = (user.pontos || 0) + ag.pontos;
-        agendamentoAtualizado = ag;
-      }
-      return ag;
-    });
+    const agendamento = user.agendamentos.find(ag => ag.id === id);
+
+    if (agendamento) {
+      agendamento.observacao = observacao;
+      agendamento.pontos = Number(pontos) || 0;
+      user.pontos = (user.pontos || 0) + agendamento.pontos;
+      agendamentoAtualizado = true;
+    }
   });
 
   if (!agendamentoAtualizado) {
