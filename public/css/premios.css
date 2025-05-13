@@ -110,5 +110,53 @@ p {
     grid-template-columns: 1fr;
   }
 }
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.6);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 999;
+}
+
+.modal.hidden {
+  display: none;
+}
+
+.modal-content {
+  background-color: #fff;
+  padding: 20px 30px;
+  border-radius: 10px;
+  width: 90%;
+  max-width: 400px;
+  text-align: center;
+}
+
+.modal-botoes {
+  margin-top: 20px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.modal-botoes button {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+#btn-confirmar {
+  background-color: #4caf50;
+  color: white;
+}
+
+#btn-cancelar {
+  background-color: #f44336;
+  color: white;
+}
 
 /* Removido botão global — conflita com btn-resgatar */

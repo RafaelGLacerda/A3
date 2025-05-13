@@ -64,47 +64,61 @@ const API_URL = "https://a3-2lsq.onrender.com";
         });
     }
 
-    function resgatarPremio(nome, custo) {
-      if (pontosAtuais < custo) {
-        mostrarMensagem("❌ Você não tem pontos suficientes para esse prêmio.", true);
-        return;
-      }
+    let premioSelecionado = null;
 
-      const confirmar = confirm(`Você tem certeza que deseja resgatar "${nome}" por ${custo} pontos?`);
-      if (!confirmar) return;
+// Função para abrir a modal
+function abrirModal(premio) {
+  premioSelecionado = premio;
+  document.getElementById("modal-texto").textContent = 
+    `Você deseja resgatar "${premio.nome}" por ${premio.pontos} pontos?`;
+  document.getElementById("modal-confirmacao").classList.remove("hidden");
+}
 
-      const codigo = gerarCodigo();
+// Fecha a modal
+function fecharModal() {
+  document.getElementById("modal-confirmacao").classList.add("hidden");
+  premioSelecionado = null;
+}
 
-      fetch(`${API_URL}/api/resgatar-premio`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          email: emailUsuario,
-          nomePremio: nome,
-          codigo,
-          custo
-        })
-      })
-        .then(res => res.json())
-        .then(data => {
-          mostrarMensagem(`🎉 Prêmio "${nome}" resgatado com sucesso! Código: ${codigo}`);
-          carregarPontos();
-          carregarPremiosResgatados();
-        });
-    }
+// Função chamada no botão "Resgatar"
+function resgatarPremio(nome, custo) {
+  if (pontosAtuais < custo) {
+    mostrarMensagem("❌ Você não tem pontos suficientes para esse prêmio.", true);
+    return;
+  }
 
-    // Renderiza os prêmios disponíveis
-    premios.forEach(premio => {
-      const card = document.createElement("div");
-      card.className = "card-premio";
-      card.innerHTML = `
-        <h3>${premio.nome}</h3>
-        <p><strong>Estoque:</strong> ${premio.quantidade}</p>
-        <p><strong>Pontos:</strong> ${premio.pontos}</p>
-        <button class="btn-resgatar" onclick="resgatarPremio('${premio.nome}', ${premio.pontos})">Resgatar</button>
-      `;
-      container.appendChild(card);
+  abrirModal({ nome, pontos: custo });
+}
+
+// Evento do botão confirmar
+document.getElementById("btn-confirmar").addEventListener("click", () => {
+  if (!premioSelecionado) return;
+
+  const { nome, pontos } = premioSelecionado;
+  const codigo = gerarCodigo();
+
+  fetch(`${API_URL}/api/resgatar-premio`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      email: emailUsuario,
+      nomePremio: nome,
+      codigo,
+      custo: pontos
+    })
+  })
+    .then(res => res.json())
+    .then(data => {
+      mostrarMensagem(`🎉 Prêmio "${nome}" resgatado com sucesso! Código: ${codigo}`);
+      carregarPontos();
+      carregarPremiosResgatados();
+      fecharModal();
     });
+});
+
+// Evento do botão cancelar
+document.getElementById("btn-cancelar").addEventListener("click", fecharModal);
+
 
     carregarPontos();
     carregarPremiosResgatados();
