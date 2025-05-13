@@ -56,10 +56,14 @@ function carregarAgendamentos() {
           <p><strong>Imagem da Coleta (opcional):</strong></p>
           <input type="file" accept="image/*" class="imagem-adm" />
           <button class="confirmar-btn">Confirmar Coleta</button>
+          <button class="indeferir-btn">Indeferir Coleta</button>
         `;
 
-        const button = card.querySelector(".confirmar-btn");
-        button.addEventListener("click", () => registrarReciclagem(ag.id, card, button));
+        const confirmarButton = card.querySelector(".confirmar-btn");
+        const indeferirButton = card.querySelector(".indeferir-btn");
+
+        confirmarButton.addEventListener("click", () => registrarReciclagem(ag.id, card, confirmarButton));
+        indeferirButton.addEventListener("click", () => indeferirColeta(ag.id, card, indeferirButton));
 
         container.appendChild(card);
       });
@@ -109,8 +113,12 @@ function enviarReciclagem(id, observacao, pontos, imagemBase64, card, button) {
     })
     .then(data => {
       mostrarMensagem("✅ " + data.message, "sucesso");
-      card.style.opacity = "0.6";
+      card.style.opacity = "0.6";  // Faz o card desaparecer visualmente
       button.textContent = "Confirmado";
+      setTimeout(() => {
+        // Remover o agendamento da tela após um tempo
+        card.remove();
+      }, 2000);
     })
     .catch(() => {
       mostrarMensagem("❌ Erro ao registrar reciclagem. Tente novamente.", "erro");
@@ -119,11 +127,41 @@ function enviarReciclagem(id, observacao, pontos, imagemBase64, card, button) {
     });
 }
 
+// Função para indeferir a coleta
+function indeferirColeta(agendamentoId, card, button) {
+  button.disabled = true;
+  button.textContent = "Indeferindo...";
+
+  fetch(`${API_URL}/api/agendamentos/indeferir/${agendamentoId}`, {
+    method: "PUT",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ status: "indeferido" }) // Envia o novo status
+  })
+    .then(res => {
+      if (!res.ok) throw new Error("Erro ao indeferir coleta");
+      return res.json();
+    })
+    .then(data => {
+      mostrarMensagem("✅ Coleta indeferida com sucesso!", "sucesso");
+      card.style.opacity = "0.6";  // Torna o card semi-transparente
+      button.textContent = "Indeferido";
+      setTimeout(() => {
+        card.remove();  // Remove o card após a operação
+      }, 2000);
+    })
+    .catch(() => {
+      mostrarMensagem("❌ Erro ao indeferir coleta. Tente novamente.", "erro");
+      button.disabled = false;
+      button.textContent = "Indeferir Coleta";
+    });
+}
+
 // Logout e limpeza de sessão
 function logout() {
   localStorage.clear();
   window.location.href = "index.html";
 }
+
 // Formulário para atribuir pontos diretamente
 document.getElementById("formPontos").addEventListener("submit", (e) => {
   e.preventDefault();

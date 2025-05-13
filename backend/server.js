@@ -289,6 +289,41 @@ app.get('/resgatados/:email', (req, res) => {
 
   res.json(user.resgatados || []);
 });
+// Rota para indeferir um agendamento (ADM)
+app.put('/api/agendamentos/indeferir/:id', (req, res) => {
+  const { id } = req.params;
+  const { emailAdm } = req.body;  // Recebe o email do administrador que está indeferindo o agendamento
+  const users = readUsersData();
+  let encontrado = false;
+
+  // Verificar se o administrador existe
+  const adm = users.find(u => u.email === emailAdm && u.tipo === 'ADM');
+  if (!adm) {
+    return res.status(403).json({ message: 'Apenas administradores podem indeferir agendamentos.' });
+  }
+
+  // Percorre todos os usuários para encontrar o agendamento
+  users.forEach(user => {
+    if (user.email === emailAdm) {  // Verifica se o email corresponde ao administrador
+      user.agendamentos.forEach(agendamento => {
+        if (agendamento.id === id) {
+          agendamento.status = 'indeferido';  // Altera o status do agendamento para 'indeferido'
+          encontrado = true;
+        }
+      });
+    }
+  });
+
+  // Verifica se o agendamento foi encontrado e alterado
+  if (!encontrado) {
+    return res.status(404).json({ message: 'Agendamento não encontrado' });
+  }
+
+  // Salva os dados atualizados no arquivo
+  saveUsersData(users);
+  
+  res.json({ message: 'Agendamento indeferido com sucesso.' });
+});
 
 
 // Inicializar servidor
