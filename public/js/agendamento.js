@@ -1,3 +1,10 @@
+ // Carrega a sidebar
+    fetch("sidebar.html")
+      .then(res => res.text())
+      .then(html => {
+        document.getElementById("sidebar-container").innerHTML = html;
+      });
+
 const API_URL = "https://a3-2lsq.onrender.com";
 
 const recyclePoints = [

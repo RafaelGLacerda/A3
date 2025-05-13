@@ -1,10 +1,23 @@
 const API_URL = "https://a3-2lsq.onrender.com";
 
+// Exibe mensagens interativas na tela
+function mostrarMensagem(texto, tipo = "sucesso", duracao = 3000) {
+  const msg = document.getElementById("mensagem");
+  msg.className = `mensagem-visivel ${tipo}`;
+  msg.textContent = texto;
+
+  setTimeout(() => {
+    msg.className = "mensagem-oculta";
+  }, duracao);
+}
+
 document.addEventListener("DOMContentLoaded", () => {
   // Redireciona se o tipo do usuário não for ADM
   if (localStorage.getItem("tipo") !== "ADM") {
-    alert("Acesso restrito! Somente administradores.");
-    window.location.href = "index.html";
+    mostrarMensagem("Acesso restrito! Somente administradores.", "aviso");
+    setTimeout(() => {
+      window.location.href = "index.html";
+    }, 2000);
     return;
   }
 
@@ -47,7 +60,7 @@ function carregarAgendamentos() {
       });
     })
     .catch(() => {
-      alert("Erro ao carregar agendamentos. Verifique a conexão com o servidor.");
+      mostrarMensagem("Erro ao carregar agendamentos. Verifique a conexão.", "erro");
     });
 }
 
@@ -57,7 +70,7 @@ function registrarReciclagem(agendamentoId, card, button) {
   const pontos = parseInt(card.querySelector(".pontos").value);
 
   if (!observacao || isNaN(pontos) || pontos < 0) {
-    alert("⚠️ Preencha corretamente a observação e os pontos.");
+    mostrarMensagem("⚠️ Preencha corretamente a observação e os pontos.", "aviso");
     return;
   }
 
@@ -74,12 +87,12 @@ function registrarReciclagem(agendamentoId, card, button) {
       return res.json();
     })
     .then(data => {
-      alert("✅ " + data.message);
+      mostrarMensagem("✅ " + data.message, "sucesso");
       card.style.opacity = "0.6";
       button.textContent = "Confirmado";
     })
     .catch(() => {
-      alert("❌ Erro ao registrar reciclagem. Tente novamente.");
+      mostrarMensagem("❌ Erro ao registrar reciclagem. Tente novamente.", "erro");
       button.disabled = false;
       button.textContent = "Confirmar Coleta";
     });
