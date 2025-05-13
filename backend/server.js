@@ -274,6 +274,18 @@ app.post('/api/resgatar-premio', (req, res) => {
 
   res.json({ message: 'Prêmio resgatado com sucesso!', resgatados: user.resgatados });
 });
+// ✅ Nova rota: listar prêmios resgatados por usuário
+app.get('/resgatados/:email', (req, res) => {
+  const { email } = req.params;
+  const users = readUsersData();
+  const user = users.find(u => u.email === email);
+
+  if (!user) {
+    return res.status(404).json({ message: 'Usuário não encontrado.' });
+  }
+
+  res.json(user.resgatados || []);
+});
 
 
 // Inicializar servidor
