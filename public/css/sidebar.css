@@ -136,22 +136,40 @@ body.sidebar-collapsed .sidebar-toggle {
 }
 
 /* Container inferior da sidebar */
-.sidebar-bottom {
-  margin: 20px 0;
-  padding: 0 10px;
+.sidebar {
+  display: flex;
+  flex-direction: column;
+  background: var(--sidebar-bg);
+  height: 100vh;
+  width: var(--sidebar-width);
+  padding-top: 20px;
+  overflow: hidden;
+  transition: width 0.3s ease;
 }
 
-/* Botão "Sair" */
+.sidebar nav {
+  flex-grow: 1;
+}
+
+.sidebar-bottom {
+  margin-bottom: 1000px;
+  padding: 8px 10px;
+  display: flex;
+  justify-content: flex-start;
+}
+
 .btn-sair {
-  color: white;
   background-color: var(--btn-sair-bg);
+  color: white;
   border: none;
-  padding: 12px 20px;
-  border-radius: 8px;
+  padding: 10px 16px;
+  border-radius: 6px;
   transition: background-color 0.3s ease;
-  width: 100%;
-  text-align: center;
   font-weight: bold;
+  font-size: 14px;
+  width: auto;
+  text-align: center;
+  cursor: pointer;
 }
 
 .btn-sair:hover {
