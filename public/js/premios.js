@@ -31,18 +31,18 @@ const ulResgatados   = document.getElementById("premios-resgatados");
 
 // Lista fixa de prêmios
 const premios = [
-  { nome: "Vale R$ 50",            quantidade: 100, pontos: 1000 },
-  { nome: "Vale R$ 100",           quantidade: 100, pontos: 1800 },
-  { nome: "Vale gás",              quantidade:  50, pontos: 2000 },
-  { nome: "Vale-refeição R$ 50",   quantidade:  50, pontos: 1000 },
-  { nome: "Vale-refeição R$ 100",  quantidade: 100, pontos: 1800 },
-  { nome: "Vale-refeição R$ 250",  quantidade:  50, pontos: 2300 },
-  { nome: "Sacolas ecológicas",    quantidade:  50, pontos:  500 },
-  { nome: "Ventilador",            quantidade:   5, pontos: 2500 },
-  { nome: "Kit de cozinha",        quantidade:   5, pontos: 2000 },
-  { nome: "Mochila ecológica",     quantidade:   5, pontos: 5000 },
-  { nome: "Produtos de limpeza",   quantidade:  10, pontos: 1000 },
-  { nome: "AIRFRYER",              quantidade:   3, pontos: 50000 }
+  { nome: "Vale R$ 50",           pontos: 1000 },
+  { nome: "Vale R$ 100",          pontos: 1800 },
+  { nome: "Vale gás",             pontos: 2000 },
+  { nome: "Vale-refeição R$ 50",  pontos: 1000 },
+  { nome: "Vale-refeição R$ 100", pontos: 1800 },
+  { nome: "Vale-refeição R$ 250", pontos: 2300 },
+  { nome: "Sacolas ecológicas",   pontos:  500 },
+  { nome: "Ventilador",           pontos: 2500 },
+  { nome: "Kit de cozinha",       pontos: 2000 },
+  { nome: "Mochila ecológica",    pontos: 5000 },
+  { nome: "Produtos de limpeza",  pontos: 1000 },
+  { nome: "AIRFRYER",             pontos: 50000 }
 ];
 
 // ─── Utilitários ───────────────────────────────────────────────────
@@ -183,7 +183,6 @@ premios.forEach(premio => {
   card.className = "card-premio";
   card.innerHTML = `
     <h3>${premio.nome}</h3>
-    <p><strong>Estoque:</strong> ${premio.quantidade}</p>
     <p><strong>Pontos:</strong> ${premio.pontos}</p>
     <button class="btn-resgatar">Resgatar</button>
   `;
