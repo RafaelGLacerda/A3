@@ -24,7 +24,6 @@ document.addEventListener("DOMContentLoaded", () => {
   carregarAgendamentos();
 });
 
-// Função para carregar todos os agendamentos pendentes
 function carregarAgendamentos() {
   fetch(`${API_URL}/api/agendamentos`)
     .then(res => res.json())
@@ -32,8 +31,11 @@ function carregarAgendamentos() {
       const container = document.getElementById("agendamentosContainer");
       container.innerHTML = "";
 
+      // ✅ Filtrar apenas agendamentos pendentes
+      agendamentos = agendamentos.filter(ag => ag.status === "pendente");
+
       if (!Array.isArray(agendamentos) || agendamentos.length === 0) {
-        container.innerHTML = "<p>Nenhum agendamento encontrado.</p>";
+        container.innerHTML = "<p>Nenhum agendamento pendente encontrado.</p>";
         return;
       }
 
@@ -72,6 +74,7 @@ function carregarAgendamentos() {
       mostrarMensagem("Erro ao carregar agendamentos. Verifique a conexão.", "erro");
     });
 }
+
 
 // Função para registrar a reciclagem
 function registrarReciclagem(agendamentoId, card, button) {
