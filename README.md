@@ -15,13 +15,13 @@ Este é um site interativo voltado para o agendamento de coletas de recicláveis
 
 - Cadastro e login
 - Tela inicial com barra lateral contendo:
-  - **Perfil:** visualizar e editar dados
-  - **Como funciona?:** explicação sobre o funcionamento da plataforma
-  - **Conscientização:** dicas e informações sobre reciclagem
-  - **Mapa:** visualização de pontos de coleta e cooperativas próximas
-  - **Prêmios:** visualização e troca de pontos acumulados
-  - **Agendamento:** permite escolher data e local para coleta, com base na cooperativa mais próxima do CEP informado
-  - **Ver agendamentos:** consulta de status, detalhes e possibilidade de exclusão dos agendamentos
+- **Perfil:** visualizar e editar dados
+- **Como funciona?:** explicação sobre o funcionamento da plataforma
+- **Conscientização:** dicas e informações sobre reciclagem
+- **Mapa:** visualização de pontos de coleta e cooperativas próximas
+- **Prêmios:** visualização e troca de pontos acumulados
+- **Agendamento:** permite escolher data e local para coleta, com base na cooperativa mais próxima do CEP informado
+- **Ver agendamentos:** consulta de status, detalhes e possibilidade de exclusão dos agendamentos
 
 Após a confirmação da coleta por um ADM, o usuário poderá visualizar:
 - O **status atualizado**
