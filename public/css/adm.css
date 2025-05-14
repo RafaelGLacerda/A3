@@ -158,3 +158,17 @@ main {
     padding: 10px;
   }
 }
+.indeferir-btn{
+  margin-top: 10px;
+  width: 100%;
+  background-color: #b50c0c;
+  color: white;
+  border: none;
+  padding: 10px;
+  border-radius: 5px;
+  font-weight: bold;
+  cursor: pointer;
+}
+.indeferir-btn:hover {
+  background-color: #851111;
+}
