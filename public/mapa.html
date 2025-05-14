@@ -25,21 +25,23 @@
     body.sidebar-collapsed #map {
       margin-left: var(--sidebar-collapsed-width);
     }
+
+    @media (max-width: 768px) {
+      #map {
+        margin-left: 0;
+      }
+    }
   </style>
 </head>
 <body>
-  <!-- Botão e Sidebar -->
-  <button class="sidebar-toggle" onclick="toggleSidebar()">☰</button>
-  <div id="sidebar" class="sidebar">
-    <div class="container"><!-- sidebar.html será carregado aqui --></div>
-  </div>
+  <!-- Container onde a sidebar será carregada -->
+  <div id="sidebar-container"></div>
 
   <!-- Mapa -->
   <div id="map"></div>
 
   <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
   <script>
-    // Inicializa o mapa
     const recyclePoints = [
       { id: 1, name: "Campo Grande", lat: -12.988572736686292, lng: -38.520103895353984 },
       { id: 2, name: "Ondina", lat: -13.0115, lng: -38.4995 },
@@ -64,29 +66,48 @@
         .addTo(map)
         .bindPopup(`<strong>${point.name}</strong>`);
     });
+  </script>
 
-    // Carrega o HTML da sidebar e define ações
+  <script>
     document.addEventListener("DOMContentLoaded", () => {
       fetch("sidebar.html")
         .then(res => res.text())
         .then(html => {
-          document.querySelector(".container").innerHTML = html;
+          document.getElementById("sidebar-container").innerHTML = html;
 
-           window.toggleSidebar = function () {
-        const sidebar = document.getElementById("sidebar");
-        const toggleBtn = document.querySelector(".sidebar-toggle");
-        const isCollapsed = sidebar.classList.toggle("collapsed");
-        document.body.classList.toggle("sidebar-collapsed", isCollapsed);
-        toggleBtn.textContent = isCollapsed ? "»" : "☰";
-      };
+          window.toggleSidebar = function () {
+            const sidebar = document.getElementById("sidebar");
+            const toggleBtn = document.querySelector(".sidebar-toggle");
+            const isMobile = window.innerWidth <= 768;
 
-      window.sair = function () {
-        localStorage.removeItem('email');
-        window.location.href = "index.html";
-      };
+            if (isMobile) {
+              document.body.classList.toggle("sidebar-open");
+            } else {
+              const isCollapsed = sidebar.classList.toggle("collapsed");
+              document.body.classList.toggle("sidebar-collapsed", isCollapsed);
+              toggleBtn.textContent = isCollapsed ? "»" : "☰";
+            }
+          };
+
+          window.sair = function () {
+            localStorage.removeItem('email');
+            window.location.href = "index.html";
+          };
+
+          // Fecha a sidebar no mobile ao clicar fora
+          document.addEventListener("click", (e) => {
+            const sidebar = document.getElementById("sidebar");
+            const toggleBtn = document.querySelector(".sidebar-toggle");
+            if (
+              document.body.classList.contains("sidebar-open") &&
+              !sidebar.contains(e.target) &&
+              !toggleBtn.contains(e.target)
+            ) {
+              document.body.classList.remove("sidebar-open");
+            }
+          });
+        });
     });
-    });
-    
   </script>
 </body>
 </html>

@@ -1,5 +1,6 @@
 <!-- sidebar.html -->
 <button class="sidebar-toggle" onclick="toggleSidebar()">☰</button>
+
 <aside class="sidebar" id="sidebar">
   <nav>
     <ul>
@@ -17,34 +18,44 @@
   </div>
 </aside>
 
-
-
-
 <script>
-// sidebar-loader.js
-document.addEventListener("DOMContentLoaded", () => {
-  fetch("sidebar.html")
-    .then(res => res.text())
-    .then(html => {
-      document.getElementById("sidebar-container").innerHTML = html;
+  document.addEventListener("DOMContentLoaded", () => {
+    fetch("sidebar.html")
+      .then(res => res.text())
+      .then(html => {
+        document.getElementById("sidebar-container").innerHTML = html;
 
-      // Após injetar o HTML, ativa os eventos
-      window.toggleSidebar = function () {
-        const sidebar = document.getElementById("sidebar");
-        const toggleBtn = document.querySelector(".sidebar-toggle");
-        const isCollapsed = sidebar.classList.toggle("collapsed");
-        document.body.classList.toggle("sidebar-collapsed", isCollapsed);
-        toggleBtn.textContent = isCollapsed ? "»" : "☰";
-      };
+        window.toggleSidebar = function () {
+          const sidebar = document.getElementById("sidebar");
+          const toggleBtn = document.querySelector(".sidebar-toggle");
+          const isMobile = window.innerWidth <= 768;
 
-      window.sair = function () {
-        localStorage.removeItem('email');
-        window.location.href = "index.html";
-      };
-    });
-});
+          if (isMobile) {
+            document.body.classList.toggle("sidebar-open");
+          } else {
+            const isCollapsed = sidebar.classList.toggle("collapsed");
+            document.body.classList.toggle("sidebar-collapsed", isCollapsed);
+            toggleBtn.textContent = isCollapsed ? "»" : "☰";
+          }
+        };
 
+        window.sair = function () {
+          localStorage.removeItem('email');
+          window.location.href = "index.html";
+        };
 
+        // Fecha a sidebar ao clicar fora (mobile)
+        document.addEventListener("click", (e) => {
+          const sidebar = document.getElementById("sidebar");
+          const toggleBtn = document.querySelector(".sidebar-toggle");
+          if (
+            document.body.classList.contains("sidebar-open") &&
+            !sidebar.contains(e.target) &&
+            !toggleBtn.contains(e.target)
+          ) {
+            document.body.classList.remove("sidebar-open");
+          }
+        });
+      });
+  });
 </script>
-
-

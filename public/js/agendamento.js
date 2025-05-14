@@ -1,29 +1,4 @@
- // Carrega a sidebar
-    fetch("sidebar.html")
-      .then(res => res.text())
-      .then(html => {
-        document.getElementById("sidebar-container").innerHTML = html;
-      });
-document.addEventListener("DOMContentLoaded", () => {
-  fetch("sidebar.html")
-    .then(res => res.text())
-    .then(html => {
-      document.getElementById("sidebar-container").innerHTML = html;
 
-      window.toggleSidebar = function () {
-        const sidebar = document.getElementById("sidebar");
-        const toggleBtn = document.querySelector(".sidebar-toggle");
-        const isCollapsed = sidebar.classList.toggle("collapsed");
-        document.body.classList.toggle("sidebar-collapsed", isCollapsed);
-        toggleBtn.textContent = isCollapsed ? "»" : "☰";
-      };
-
-      window.sair = function () {
-        localStorage.removeItem('email');
-        window.location.href = "index.html";
-      };
-    });
-});
 
 const API_URL = "https://a3-2lsq.onrender.com";
 

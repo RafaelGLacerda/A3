@@ -112,7 +112,7 @@ main {
 }
 
 .confirmar-btn:hover {
-  background-color: #2e7d32;
+  background-color: #136217;
 }
 
 /* Mensagens de feedback */
@@ -157,4 +157,18 @@ main {
   #atribuir-pontos {
     padding: 10px;
   }
+}
+.indeferir-btn{
+  margin-top: 10px;
+  width: 100%;
+  background-color: #b50c0c;
+  color: white;
+  border: none;
+  padding: 10px;
+  border-radius: 5px;
+  font-weight: bold;
+  cursor: pointer;
+}
+.indeferir-btn:hover {
+  background-color: #851111;
 }
