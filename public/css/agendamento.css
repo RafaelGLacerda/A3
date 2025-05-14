@@ -163,5 +163,175 @@ small {
     width: auto;
   }
 }
+/* Tabela de Agendamentos */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 30px;
+}
 
+th, td {
+  border: 1px solid #ddd;
+  padding: 12px;
+  text-align: left;
+  font-size: 0.95rem;
+}
+
+th {
+  background-color: #e8f5e9;
+  color: #388e3c;
+  font-weight: bold;
+}
+
+/* Botão cancelar agendamento */
+.btn-cancelar {
+  background-color: #e53935;
+  color: white;
+  border: none;
+  padding: 10px 16px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.btn-cancelar:hover {
+  background-color: #c62828;
+}
+
+/* Mensagem flutuante */
+.mensagem {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  padding: 14px 20px;
+  border-radius: 8px;
+  font-weight: 600;
+  color: white;
+  z-index: 1000;
+  opacity: 0;
+  transform: translateY(-10px);
+  transition: opacity 0.4s ease, transform 0.4s ease;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+}
+
+.mensagem.sucesso {
+  background-color: #43a047;
+}
+
+.mensagem.erro {
+  background-color: #e53935;
+}
+
+.mensagem.visivel {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Modal de confirmação */
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 1001;
+  left: 0;
+  top: 0;
+  width: 100%; height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  align-items: center;
+  justify-content: center;
+}
+
+.modal-content {
+  background-color: #ffffff;
+  padding: 25px;
+  border-radius: 12px;
+  text-align: center;
+  max-width: 90%;
+  width: 400px;
+  animation: aparecer 0.3s ease;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.2);
+}
+
+.modal-botoes {
+  margin-top: 20px;
+  display: flex;
+  justify-content: center;
+  gap: 16px;
+}
+
+.btn-confirmar {
+  background-color: #388e3c;
+  color: white;
+  padding: 10px 18px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.btn-confirmar:hover {
+  background-color: #2e7d32;
+}
+
+.btn-cancelar-modal {
+  background-color: #9e9e9e;
+  color: white;
+  padding: 10px 18px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.btn-cancelar-modal:hover {
+  background-color: #757575;
+}
+
+@keyframes aparecer {
+  from {
+    transform: scale(0.95);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+/* Responsivo extra (tabela em telas pequenas) */
+@media (max-width: 600px) {
+  table, thead, tbody, th, td, tr {
+    display: block;
+  }
+
+  thead tr {
+    display: none;
+  }
+
+  tr {
+    margin-bottom: 20px;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    padding: 12px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+  }
+
+  td {
+    padding-left: 50%;
+    position: relative;
+    text-align: right;
+    border: none;
+  }
+
+  td::before {
+    position: absolute;
+    top: 12px;
+    left: 16px;
+    width: 45%;
+    padding-right: 10px;
+    white-space: nowrap;
+    font-weight: bold;
+    color: #388e3c;
+    content: attr(data-label);
+  }
+}
 
