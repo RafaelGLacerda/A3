@@ -66,4 +66,4 @@ node server.js
 
 ---
 
-Desenvolvido por Rafael Lacerda 🤝
+Desenvolvido por Rafael Lacerda
