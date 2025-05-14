@@ -289,36 +289,34 @@ app.get('/resgatados/:email', (req, res) => {
 
   res.json(user.resgatados || []);
 });
-// Rota para indeferir um agendamento (ADM)
-app.put('/api/agendamentos/indeferir/:id', (req, res) => {
+
+
+
+app.put('/api/indeferir/:id', (req, res) => {
   const { id } = req.params;
-  const { emailAdm, motivo } = req.body; // Agora também recebemos um motivo opcional
+  const { observacao } = req.body;
+
+  console.log(`Indeferindo agendamento com ID: ${id}`);
   const users = readUsersData();
   let encontrado = false;
 
-  // Verificar se o administrador existe
-  const adm = users.find(u => u.email === emailAdm && u.tipo === 'ADM');
-  if (!adm) {
-    return res.status(403).json({ message: 'Apenas administradores podem indeferir agendamentos.' });
-  }
-
-  // Buscar o agendamento entre todos os usuários
   users.forEach(user => {
-    user.agendamentos.forEach(agendamento => {
-      if (agendamento.id === id) {
-        agendamento.status = 'indeferido';
-        if (motivo) agendamento.comentarioAdm = motivo;
-        encontrado = true;
-      }
-    });
+    const agendamento = user.agendamentos?.find(ag => ag.id === id);
+    if (agendamento && agendamento.status !== 'realizado') {
+      agendamento.status = 'indeferido';
+      agendamento.comentarioAdm = observacao || 'Indeferido sem observação';
+      encontrado = true;
+    }
   });
 
   if (!encontrado) {
-    return res.status(404).json({ message: 'Agendamento não encontrado.' });
+    console.log('Agendamento não encontrado ou já realizado');
+    return res.status(404).json({ message: 'Agendamento não encontrado ou já realizado' });
   }
 
   saveUsersData(users);
-  res.json({ message: 'Agendamento indeferido com sucesso.' });
+  console.log('Agendamento indeferido com sucesso');
+  res.json({ message: 'Agendamento indeferido com sucesso' });
 });
 
 

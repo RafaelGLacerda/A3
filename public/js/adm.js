@@ -132,32 +132,49 @@ function enviarReciclagem(id, observacao, pontos, imagemBase64, card, button) {
 
 // Função para indeferir a coleta
 function indeferirColeta(agendamentoId, card, button) {
+  const emailAdm = localStorage.getItem("email");
+
+  if (!emailAdm) {
+    mostrarMensagem("❌ E-mail do administrador não encontrado.", "erro");
+    return;
+  }
+
+  const observacaoInput = card.querySelector(".observacao");
+  const observacao = observacaoInput?.value.trim() || "Agendamento indeferido por motivo administrativo";
+
   button.disabled = true;
   button.textContent = "Indeferindo...";
 
-  fetch(`${API_URL}/api/agendamentos/indeferir/${agendamentoId}`, {
+  fetch(`${API_URL}/api/indeferir/${agendamentoId}`, {
     method: "PUT",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ status: "indeferido" }) // Envia o novo status
+    body: JSON.stringify({ observacao })
   })
     .then(res => {
-      if (!res.ok) throw new Error("Erro ao indeferir coleta");
+      if (!res.ok) {
+        return res.json().then(err => { throw new Error(err.message); });
+      }
       return res.json();
     })
     .then(data => {
-      mostrarMensagem("✅ Coleta indeferida com sucesso!", "sucesso");
-      card.style.opacity = "0.6";  // Torna o card semi-transparente
+      mostrarMensagem("✅ " + data.message, "sucesso");
+      card.style.opacity = "0.6";
       button.textContent = "Indeferido";
+      button.disabled = true;
       setTimeout(() => {
-        card.remove();  // Remove o card após a operação
+        card.remove();
       }, 2000);
     })
-    .catch(() => {
-      mostrarMensagem("❌ Erro ao indeferir coleta. Tente novamente.", "erro");
+    .catch((err) => {
+      mostrarMensagem("❌ " + err.message, "erro");
+      console.error("Erro ao indeferir:", err);
       button.disabled = false;
       button.textContent = "Indeferir Coleta";
     });
 }
+
+
+
 
 // Logout e limpeza de sessão
 function logout() {

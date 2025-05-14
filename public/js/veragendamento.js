@@ -1,4 +1,5 @@
 const API_URL = "https://a3-2lsq.onrender.com";
+
 // Carrega a sidebar
 fetch("sidebar.html")
   .then(response => response.text())
@@ -53,7 +54,13 @@ if (!email) {
       } else {
         agendamentos.forEach((ag, index) => {
           const agId = ag.id || `${email}-${index}`;
-          const realizado = ag.status === "realizado";
+          
+          let statusTexto = "⌛ Pendente";
+          if (ag.status === "realizado") {
+            statusTexto = "✅ Realizado";
+          } else if (ag.status === "indeferido") {
+            statusTexto = "❌ Indeferido";
+          }
 
           const row = document.createElement('tr');
           row.innerHTML = `
@@ -62,10 +69,12 @@ if (!email) {
             <td>${ag.hora}</td>
             <td>${ag.cep}</td>
             <td>${ag.cooperativa}</td>
-            <td>${realizado ? "✅ Realizado" : "⌛ Pendente"}</td>
-            <td>${realizado ? (ag.comentarioAdm || "Sem observações.") : "-"}</td>
+            <td>${statusTexto}</td>
+            <td>${ag.status === "realizado" ? (ag.comentarioAdm || "Sem observações.") : "-"}</td>
             <td>
-              ${realizado ? "✔️" : `<button class="btn-cancelar" onclick="cancelarAgendamento('${agId}')">Desistir da coleta</button>`}
+              ${ag.status === "pendente"
+                ? `<button class="btn-cancelar" onclick="cancelarAgendamento('${agId}')">Desistir da coleta</button>`
+                : "—"}
             </td>
             <td>
               ${ag.imagem
@@ -100,21 +109,20 @@ btnCancelar.addEventListener("click", () => {
 btnConfirmar.addEventListener("click", () => {
   if (!idAgendamentoAtual) return;
 
-  // Pega o email do usuário logado
   const email = localStorage.getItem('email');
-  
+
   fetch(`${API_URL}/api/agendamentos/${idAgendamentoAtual}`, {
     method: 'DELETE',
     headers: {
-      'Content-Type': 'application/json',  // Define o tipo de conteúdo
+      'Content-Type': 'application/json',
     },
-    body: JSON.stringify({ email })  // Envia o email no corpo da requisição
+    body: JSON.stringify({ email })
   })
   .then(res => {
     if (!res.ok) throw new Error('Erro ao cancelar agendamento.');
     mostrarMensagem("✅ Agendamento cancelado com sucesso!", "sucesso");
     modal.style.display = "none";
-    setTimeout(() => location.reload(), 1000);  // Recarrega a página após um segundo
+    setTimeout(() => location.reload(), 1000);
   })
   .catch(err => {
     mostrarMensagem("❌ Erro ao cancelar agendamento: " + err.message, "erro");
