@@ -105,11 +105,14 @@ function registrarReciclagem(agendamentoId, card, button) {
 
 // Função auxiliar para envio de dados
 function enviarReciclagem(id, observacao, pontos, imagemBase64, card, button) {
+  const emailAdm = localStorage.getItem("email"); // <-- ADICIONADO
+
   fetch(`${API_URL}/api/reciclagem/${id}`, {
     method: "PUT",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ observacao, pontos, imagem: imagemBase64 })
+    body: JSON.stringify({ observacao, pontos, imagem: imagemBase64, emailAdm }) // <-- ADICIONADO
   })
+
     .then(res => {
       if (!res.ok) throw new Error("Erro ao registrar reciclagem");
       return res.json();
@@ -146,10 +149,11 @@ function indeferirColeta(agendamentoId, card, button) {
   button.textContent = "Indeferindo...";
 
   fetch(`${API_URL}/api/indeferir/${agendamentoId}`, {
-    method: "PUT",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ observacao })
-  })
+  method: "PUT",
+  headers: { "Content-Type": "application/json" },
+  body: JSON.stringify({ observacao, emailAdm }) // <-- ADICIONADO
+})
+
     .then(res => {
       if (!res.ok) {
         return res.json().then(err => { throw new Error(err.message); });
