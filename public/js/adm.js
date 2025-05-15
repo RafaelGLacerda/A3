@@ -49,6 +49,7 @@ function carregarAgendamentos() {
           <p><strong>Data:</strong> ${ag.data}</p>
           <p><strong>Hora:</strong> ${ag.hora}</p>
           <p><strong>CEP:</strong> ${ag.cep}</p>
+          <p><strong>Endereço:</strong> ${ag.enderecoUsuario || "Não disponível"}</p>
           <p><strong>Cooperativa:</strong> ${ag.cooperativa}</p>
           ${ag.imagem
             ? `<div><strong>Imagem do usuário:</strong><br><img src="${ag.imagem}" alt="Imagem de reciclagem" style="width: 100px; height: 100px; object-fit: cover; border-radius: 8px; margin-bottom: 10px;"></div>`

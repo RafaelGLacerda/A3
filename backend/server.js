@@ -159,7 +159,8 @@ app.get('/api/agendamentos', (req, res) => {
   const todosAgendamentos = users.flatMap(user =>
     (user.agendamentos || []).map(ag => ({
       ...ag,
-      emailUsuario: user.email
+      emailUsuario: user.email,
+      enderecoUsuario: user.endereco // <--- adicionando endereço
     }))
   );
   res.json(todosAgendamentos);
