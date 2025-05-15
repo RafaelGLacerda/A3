@@ -193,7 +193,21 @@ app.put('/api/reciclagem/:id', (req, res) => {
       agendamento.status = 'realizado';
       if (imagemUrl) agendamento.imagem = imagemUrl;
       user.pontos = (user.pontos || 0) + agendamento.pontos;
+      const admin = users.find(u => u.tipo === 'ADM' && u.email === req.body.emailAdm); // se você passar esse dado no front
+
+    if (admin) {
+      if (!admin.historicoAdm) admin.historicoAdm = [];
+      admin.historicoAdm.push({
+    tipo: 'Reciclagem validada',
+    agendamentoId: id,
+    observacao,
+    pontos: Number(pontos),
+    data: new Date().toISOString()
+  });
+}
+
       atualizado = true;
+      
     }
   });
 
@@ -242,7 +256,17 @@ app.post('/api/pontos', (req, res) => {
   if (!usuario) return res.status(404).json({ message: 'Usuário não encontrado.' });
   if (usuario.tipo === 'ADM') return res.status(400).json({ message: 'Você não pode adicionar pontos a outro ADM.' });
 
-  usuario.pontos = (usuario.pontos || 0) + Number(pontos);
+  const valor = Number(pontos);
+usuario.pontos = (usuario.pontos || 0) + valor;
+
+if (!adm.historicoAdm) adm.historicoAdm = [];
+adm.historicoAdm.push({
+  tipo: 'Adição de pontos',
+  destinatario: emailUsuario,
+  valor,
+  data: new Date().toISOString()
+});
+
   saveUsersData(users);
 
   res.json({ message: `Pontos adicionados com sucesso. Total: ${usuario.pontos}` });
@@ -304,6 +328,18 @@ app.put('/api/indeferir/:id', (req, res) => {
     const agendamento = user.agendamentos?.find(ag => ag.id === id);
     if (agendamento && agendamento.status !== 'realizado') {
       agendamento.status = 'indeferido';
+      const admin = users.find(u => u.tipo === 'ADM' && u.email === req.body.emailAdm); // se for passado
+
+if (admin) {
+  if (!admin.historicoAdm) admin.historicoAdm = [];
+  admin.historicoAdm.push({
+    tipo: 'Agendamento indeferido',
+    agendamentoId: id,
+    observacao,
+    data: new Date().toISOString()
+  });
+}
+
       agendamento.comentarioAdm = observacao || 'Indeferido sem observação';
       encontrado = true;
     }
@@ -317,6 +353,18 @@ app.put('/api/indeferir/:id', (req, res) => {
   saveUsersData(users);
   console.log('Agendamento indeferido com sucesso');
   res.json({ message: 'Agendamento indeferido com sucesso' });
+});
+
+app.get('/api/historico/:emailAdm', (req, res) => {
+  const { emailAdm } = req.params;
+  const users = readUsersData();
+  const adm = users.find(u => u.email === emailAdm && u.tipo === 'ADM');
+
+  if (!adm) {
+    return res.status(404).json({ message: 'Administrador não encontrado.' });
+  }
+
+  res.json(adm.historicoAdm || []);
 });
 
 

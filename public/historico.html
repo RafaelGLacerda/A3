@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Histórico de Atividades</title>
+  <link rel="stylesheet" href="css/historico.css" />
+  <style>
+    /* Estilos básicos para visualização */
+    body {
+      font-family: Arial, sans-serif;
+      background: #f5f5f5;
+      margin: 0;
+      padding: 20px;
+    }
+    .container {
+      max-width: 800px;
+      margin: auto;
+      background: white;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+    h1 {
+      text-align: center;
+      margin-bottom: 1rem;
+    }
+    .mensagem-oculta {
+      display: none;
+      margin-bottom: 1rem;
+      color: red;
+      font-weight: bold;
+      text-align: center;
+    }
+    .registro-card {
+      border: 1px solid #ddd;
+      padding: 12px;
+      margin-bottom: 12px;
+      border-radius: 6px;
+      background-color: #fafafa;
+    }
+    .registro-card p {
+      margin: 4px 0;
+    }
+    button {
+      cursor: pointer;
+      background-color: #2d89ef;
+      border: none;
+      color: white;
+      padding: 10px 16px;
+      border-radius: 6px;
+      font-size: 16px;
+      transition: background-color 0.3s ease;
+      display: block;
+      margin: 20px auto 0 auto;
+    }
+    button:hover {
+      background-color: #1b5fbd;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>📜 Histórico de Atividades do Administrador</h1>
+
+    <div id="mensagem" class="mensagem-oculta" aria-live="polite"></div>
+
+    <section id="historicoContainer" class="historico-container">
+      <!-- Cards do histórico serão inseridos aqui -->
+    </section>
+
+    <button onclick="voltar()">⬅ Voltar</button>
+  </div>
+
+  <script>
+    const API_URL = "https://a3-2lsq.onrender.com";
+
+    document.addEventListener("DOMContentLoaded", () => {
+      const tipoUsuario = localStorage.getItem("tipo");
+      const emailAdm = localStorage.getItem("email"); // pegar email do ADM logado
+
+      if (tipoUsuario !== "ADM" || !emailAdm) {
+        const mensagem = document.getElementById("mensagem");
+        mensagem.textContent = "⛔ Acesso restrito! Você precisa estar logado como administrador.";
+        mensagem.classList.remove("mensagem-oculta");
+        setTimeout(() => window.location.href = "index.html", 3000);
+        return;
+      }
+
+      carregarHistorico(emailAdm);
+    });
+
+    function carregarHistorico(emailAdm) {
+      fetch(`${API_URL}/api/historico/${encodeURIComponent(emailAdm)}`)
+        .then(res => {
+          if (!res.ok) throw new Error("Erro na resposta do servidor.");
+          return res.json();
+        })
+        .then(registros => {
+          const container = document.getElementById("historicoContainer");
+
+          if (!Array.isArray(registros) || registros.length === 0) {
+            container.innerHTML = "<p>Nenhum histórico disponível para este administrador.</p>";
+            return;
+          }
+
+          // Mostrar do mais recente para o mais antigo
+          registros.reverse().forEach(entry => {
+            const card = document.createElement("div");
+            card.className = "registro-card";
+
+            card.innerHTML = `
+              <p><strong>Tipo:</strong> ${entry.tipo || "Não informado"}</p>
+              ${entry.destinatario ? `<p><strong>Usuário:</strong> ${entry.destinatario}</p>` : ""}
+              ${entry.agendamentoId ? `<p><strong>ID Agendamento:</strong> ${entry.agendamentoId}</p>` : ""}
+              ${entry.valor !== undefined ? `<p><strong>Pontos:</strong> ${entry.valor}</p>` : ""}
+              ${entry.pontos !== undefined ? `<p><strong>Pontos:</strong> ${entry.pontos}</p>` : ""}
+              <p><strong>Observação:</strong> ${entry.observacao || "Sem observações"}</p>
+              <p><strong>Data:</strong> ${entry.data ? new Date(entry.data).toLocaleString() : "Data indisponível"}</p>
+            `;
+            container.appendChild(card);
+          });
+        })
+        .catch((error) => {
+          const mensagem = document.getElementById("mensagem");
+          mensagem.textContent = "❌ Erro ao carregar histórico.";
+          mensagem.classList.remove("mensagem-oculta");
+          console.error("Erro ao buscar histórico:", error);
+        });
+    }
+
+    function voltar() {
+      window.location.href = "adm.html";
+    }
+  </script>
+</body>
+</html>
