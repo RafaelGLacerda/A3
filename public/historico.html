@@ -6,7 +6,6 @@
   <title>Histórico de Atividades</title>
   <link rel="stylesheet" href="css/historico.css" />
   <style>
-    /* Estilos básicos para visualização */
     body {
       font-family: Arial, sans-serif;
       background: #f5f5f5;
@@ -77,7 +76,7 @@
 
     document.addEventListener("DOMContentLoaded", () => {
       const tipoUsuario = localStorage.getItem("tipo");
-      const emailAdm = localStorage.getItem("email"); // pegar email do ADM logado
+      const emailAdm = localStorage.getItem("email");
 
       if (tipoUsuario !== "ADM" || !emailAdm) {
         const mensagem = document.getElementById("mensagem");
@@ -104,14 +103,13 @@
             return;
           }
 
-          // Mostrar do mais recente para o mais antigo
           registros.reverse().forEach(entry => {
             const card = document.createElement("div");
             card.className = "registro-card";
 
             card.innerHTML = `
               <p><strong>Tipo:</strong> ${entry.tipo || "Não informado"}</p>
-              ${entry.destinatario ? `<p><strong>Usuário:</strong> ${entry.destinatario}</p>` : ""}
+              <p><strong>Usuário:</strong> ${entry.destinatario || "Não informado"}</p>
               ${entry.agendamentoId ? `<p><strong>ID Agendamento:</strong> ${entry.agendamentoId}</p>` : ""}
               ${entry.valor !== undefined ? `<p><strong>Pontos:</strong> ${entry.valor}</p>` : ""}
               ${entry.pontos !== undefined ? `<p><strong>Pontos:</strong> ${entry.pontos}</p>` : ""}

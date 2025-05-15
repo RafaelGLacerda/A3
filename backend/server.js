@@ -198,12 +198,14 @@ app.put('/api/reciclagem/:id', (req, res) => {
     if (admin) {
       if (!admin.historicoAdm) admin.historicoAdm = [];
       admin.historicoAdm.push({
-    tipo: 'Reciclagem validada',
-    agendamentoId: id,
-    observacao,
-    pontos: Number(pontos),
-    data: new Date().toISOString()
-  });
+  tipo: 'Reciclagem validada',
+  agendamentoId: id,
+  destinatario: user.email,
+  observacao,
+  pontos: Number(pontos),
+  data: new Date().toISOString()
+});
+
 }
 
       atualizado = true;
@@ -333,11 +335,13 @@ app.put('/api/indeferir/:id', (req, res) => {
 if (admin) {
   if (!admin.historicoAdm) admin.historicoAdm = [];
   admin.historicoAdm.push({
-    tipo: 'Agendamento indeferido',
-    agendamentoId: id,
-    observacao,
-    data: new Date().toISOString()
-  });
+  tipo: 'Agendamento indeferido',
+  agendamentoId: id,
+  destinatario: user.email,
+  observacao,
+  data: new Date().toISOString()
+});
+
 }
 
       agendamento.comentarioAdm = observacao || 'Indeferido sem observação';
