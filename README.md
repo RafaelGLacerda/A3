@@ -22,6 +22,7 @@ Este é um site interativo voltado para o agendamento de coletas de recicláveis
 - **Prêmios:** visualização e troca de pontos acumulados
 - **Agendamento:** permite escolher data e local para coleta, com base na cooperativa mais próxima do CEP informado
 - **Ver agendamentos:** consulta de status, detalhes e possibilidade de exclusão dos agendamentos
+- **Atendimento:** oferece por email uma forma de suporte ao usuário do site
 
 Após a confirmação da coleta por um ADM, o usuário poderá visualizar:
 - O **status atualizado**
@@ -40,6 +41,7 @@ Após a confirmação da coleta por um ADM, o usuário poderá visualizar:
   - Comentário personalizado
   - Imagem da coleta
   - Pontuação atribuída ao usuário
+  - historico (evitar fraudes)
 
 > ⚠️ Contas ADM são exclusivas e **não podem ser criadas via site**.
 
