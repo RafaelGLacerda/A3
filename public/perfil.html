@@ -7,6 +7,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="css/sidebar.css">
   <link rel="stylesheet" href="css/perfil.css">
+  <link rel="stylesheet" href="css/suporte.css">
 </head>
 <body>
 
@@ -33,13 +34,32 @@
 
   <!-- Modal interativo -->
   <div id="editModal" class="modal">
-    <div class="modal-content">
+    <div class="modal-content2">
       <h3 id="modalTitle">Editar</h3>
       <input type="text" id="modalInput" placeholder="Digite o novo valor">
       <div class="modal-buttons">
         <button id="modalSave">Salvar</button>
         <button id="modalCancel">Cancelar</button>
       </div>
+    </div>
+  </div>
+
+    <!-- Botão Atendimento Flutuante -->
+  <div id="atendimento-btn" title="Atendimento">
+    <span>Atendimento</span> 💬
+  </div>
+
+  <!-- Modal de Suporte com envio assíncrono -->
+  <div id="modal-suporte">
+    <div class="modal-content">
+      <span class="close-btn">&times;</span>
+      <h3>Enviar mensagem ao suporte</h3>
+      <form id="form-suporte">
+        <input type="email" name="email" placeholder="Seu e-mail" required>
+        <textarea name="message" placeholder="Digite sua mensagem..." required></textarea>
+        <input type="submit" value="Enviar">
+        <p id="sucesso-msg">Mensagem enviada com sucesso!</p>
+      </form>
     </div>
   </div>
 
@@ -84,7 +104,54 @@
             }
           });
         });
+
+  const atendimentoBtn = document.getElementById('atendimento-btn');
+      const modalSuporte = document.getElementById('modal-suporte');
+      const closeBtn = document.querySelector('.close-btn');
+      const formSuporte = document.getElementById('form-suporte');
+      const sucessoMsg = document.getElementById('sucesso-msg');
+
+      atendimentoBtn.addEventListener('click', () => {
+        modalSuporte.classList.add('show');
+      });
+
+      closeBtn.addEventListener('click', () => {
+        modalSuporte.classList.remove('show');
+      });
+
+      formSuporte.addEventListener('submit', async (e) => {
+        e.preventDefault();
+
+        const formData = new FormData(formSuporte);
+        const data = Object.fromEntries(formData.entries());
+
+        try {
+          const res = await fetch('https://formsubmit.co/ajax/rafaellacerda2004@gmail.com', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              'Accept': 'application/json'
+            },
+            body: JSON.stringify(data)
+          });
+
+          if (res.ok) {
+            sucessoMsg.style.display = 'block';
+            formSuporte.reset();
+
+            setTimeout(() => {
+              sucessoMsg.style.display = 'none';
+              modalSuporte.classList.remove('show');
+            }, 3000);
+          } else {
+            alert('Erro ao enviar. Tente novamente.');
+          }
+        } catch (err) {
+          alert('Erro de rede. Verifique sua conexão.');
+        }
+      });
     });
+    
   </script>
 </body>
 </html>

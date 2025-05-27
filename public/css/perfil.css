@@ -78,7 +78,7 @@ h2 {
   background-color: rgba(0,0,0,0.5);
 }
 
-.modal-content {
+.modal-content2 {
   background-color: #ffffff;
   margin: 10% auto;
   padding: 30px;
@@ -89,12 +89,12 @@ h2 {
   box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
 }
 
-.modal-content h3 {
+.modal-content2 h3 {
   color: #2f855a;
   margin-bottom: 20px;
 }
 
-.modal-content input {
+.modal-content2 input {
   width: 100%;
   padding: 12px;
   border-radius: 8px;

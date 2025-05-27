@@ -1,0 +1,91 @@
+
+    #atendimento-btn {
+      position: fixed;
+      bottom: 30px;
+      right: 30px;
+      background-color: #28a745;
+      color: white;
+      padding: 12px 18px;
+      border-radius: 30px;
+      cursor: pointer;
+      transition: transform 0.3s ease, background-color 0.3s;
+      font-weight: bold;
+      z-index: 1000;
+    }
+
+    #atendimento-btn:hover {
+      transform: translate(-5px, -5px);
+      background-color: #218838;
+    }
+
+    #modal-suporte {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%) scale(0);
+      background: white;
+      border-radius: 30px;
+      padding: 30px;
+      box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
+      z-index: 1001;
+      transition: transform 0.3s ease;
+      max-width: 90%;
+      width: 400px;
+      height: 300px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    #modal-suporte.show {
+      transform: translate(-50%, -50%) scale(1);
+    }
+
+    .modal-content {
+      width: 100%;
+    }
+     .modal-content h3{
+      padding: 20px;
+    }
+
+    .modal-content h3 {
+      margin-top: 0;
+      text-align: center;
+    }
+
+    .modal-content input,
+    .modal-content textarea {
+      width: 100%;
+      margin-bottom: 10px;
+      padding: 15px;
+      font-size: 14px;
+      border-radius: 15px;
+      border: 1px solid #ccc;
+    }
+
+    .modal-content textarea {
+      resize: none; /* REMOVE a "loucura" de redimensionar com o mouse */
+    }
+
+    .modal-content input[type="submit"] {
+      background-color: #2e7d32;
+      color: white;
+      border: none;
+      border-radius: 30px;
+      cursor: pointer;
+    }
+
+    .close-btn {
+      position: absolute;
+      top: 10px;
+      right: 15px;
+      font-size: 20px;
+      cursor: pointer;
+    }
+
+    #sucesso-msg {
+      display: none;
+      color: green;
+      margin-top: 10px;
+      text-align: center;
+    }

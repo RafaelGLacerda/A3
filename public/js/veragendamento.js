@@ -65,7 +65,7 @@ if (!email) {
           const row = document.createElement('tr');
           row.innerHTML = `
             <td>${ag.nome}</td>
-            <td>${ag.data}</td>
+            <td>${formatarDataBrasileira(ag.data)}</td>
             <td>${ag.hora}</td>
             <td>${ag.cep}</td>
             <td>${ag.cooperativa}</td>
@@ -131,3 +131,8 @@ btnConfirmar.addEventListener("click", () => {
 
   idAgendamentoAtual = null;
 });
+function formatarDataBrasileira(dataISO) {
+  const data = new Date(dataISO);
+  if (isNaN(data)) return dataISO; // fallback se a data for inválida
+  return data.toLocaleDateString('pt-BR', { timeZone: 'UTC' });
+}

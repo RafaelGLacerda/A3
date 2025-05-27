@@ -13,8 +13,9 @@ body {
 }
 
 .content {
-  max-width: 1000px;
+  max-width: 800px;
   margin: auto;
+  width: 800px;
   padding: 20px;
   background-color: #ffffff;
   border-radius: 12px;
@@ -228,7 +229,7 @@ th {
 }
 
 /* Modal de confirmação */
-.modal {
+.modal2 {
   display: none;
   position: fixed;
   z-index: 1001;
@@ -240,7 +241,7 @@ th {
   justify-content: center;
 }
 
-.modal-content {
+.modal-content2 {
   background-color: #ffffff;
   padding: 25px;
   border-radius: 12px;
@@ -335,3 +336,30 @@ th {
   }
 }
 
+select#horaColeta {
+  width: 100%;
+  padding: 12px;
+  font-size: 0.9rem;
+  color: #2a2a2a;
+  background-color: #f7f7f7;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  margin-top: 8px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  background-image: url("data:image/svg+xml;charset=US-ASCII,%3Csvg%20width%3D%2210%22%20height%3D%227%22%20viewBox%3D%220%200%2010%207%22%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%3E%3Cpath%20d%3D%22M0%200l5%207%205-7H0z%22%20fill%3D%22388e3c%22/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+  background-size: 10px 7px;
+}
+
+
+select#horaColeta:focus {
+  outline: none;
+  border-color: #388e3c;
+  background-color: #fff;
+  box-shadow: 0 0 5px rgba(56, 142, 60, 0.2);
+}

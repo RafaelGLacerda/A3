@@ -23,6 +23,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
   carregarAgendamentos();
 });
+function formatarDataBrasileira(dataISO) {
+  const data = new Date(dataISO);
+  if (isNaN(data)) return dataISO;
+  return data.toLocaleDateString('pt-BR', { timeZone: 'UTC' });
+}
 
 function carregarAgendamentos() {
   fetch(`${API_URL}/api/agendamentos`)
@@ -46,7 +51,7 @@ function carregarAgendamentos() {
         card.innerHTML = `
           <p><strong>Usuário:</strong> ${ag.emailUsuario}</p>
           <p><strong>Nome:</strong> ${ag.nome}</p>
-          <p><strong>Data:</strong> ${ag.data}</p>
+          <p><strong>Data:</strong> ${formatarDataBrasileira(ag.data)}</p>
           <p><strong>Hora:</strong> ${ag.hora}</p>
           <p><strong>CEP:</strong> ${ag.cep}</p>
           <p><strong>Endereço:</strong> ${ag.enderecoUsuario || "Não disponível"}</p>

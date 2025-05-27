@@ -1,13 +1,16 @@
 <!DOCTYPE html>
 <html lang="pt-br">
+
 <head>
-  <meta charset="UTF-8">
-  <link rel="icon" href="img/reciclaSSA.png" type="image/png">
+  <meta charset="UTF-8" />
+  <link rel="icon" href="img/reciclaSSA.png" type="image/png" />
   <title>Agendamento de Coleta</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="css/sidebar.css">
-  <link rel="stylesheet" href="css/agendamento.css">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="css/sidebar.css" />
+  <link rel="stylesheet" href="css/agendamento.css" />
+  <link rel="stylesheet" href="css/suporte.css" />
 </head>
+
 <body>
   <div id="sidebar-container"></div>
 
@@ -18,36 +21,37 @@
     <form id="form-agendamento" class="form-agendamento" enctype="multipart/form-data">
       <div class="form-group">
         <label for="nomeRepresentante">Nome do Representante:</label>
-        <input type="text" id="nomeRepresentante" required placeholder="Digite o nome do representante">
+        <input type="text" id="nomeRepresentante" required placeholder="Digite o nome do representante" />
       </div>
 
       <div class="form-group">
         <label for="dataColeta">Data:</label>
-        <input type="date" id="dataColeta" required>
+        <input type="date" id="dataColeta" required />
       </div>
 
       <div class="form-group">
-        <label for="horaColeta">Hora:</label>
-        <input type="time" id="horaColeta" required min="08:00" max="21:00">
-        <small id="horaMensagem" style="color: red; display: none;">
-          Por favor, selecione um horário entre 08:00 e 21:00.
-        </small>
+        <label for="horaColeta">Horário:</label>
+        <select id="horaColeta" required>
+          <option value="">Selecione um horário</option>
+        </select>
       </div>
 
       <div class="form-group">
         <label for="cep">CEP:</label>
-        <input type="text" id="cep" required placeholder="Digite seu CEP">
+        <input type="text" id="cep" required placeholder="Digite seu CEP" />
       </div>
- <!-- Novo campo de imagem -->
+
+      <!-- Novo campo de imagem -->
       <div class="form-group">
         <label for="imagemReciclagem">Imagem da Reciclagem (opcional):</label>
-        <input type="file" id="imagemReciclagem" accept="image/*">
+        <input type="file" id="imagemReciclagem" accept="image/*" />
       </div>
+
       <div class="form-group">
         <button type="button" id="btnBuscarColeta">Buscar Coleta Mais Próxima</button>
       </div>
 
-      <input type="hidden" id="cooperativaSelecionada">
+      <input type="hidden" id="cooperativaSelecionada" />
 
       <div class="form-group">
         <button type="submit">Agendar Coleta</button>
@@ -63,67 +67,140 @@
     </form>
   </main>
 
+  <!-- Botão Atendimento Flutuante -->
+  <div id="atendimento-btn" title="Atendimento">
+    <span>Atendimento</span> 💬
+  </div>
+
+  <!-- Modal de Suporte com envio assíncrono -->
+  <div id="modal-suporte">
+    <div class="modal-content">
+      <span class="close-btn">&times;</span>
+      <h3>Enviar mensagem ao suporte</h3>
+      <form id="form-suporte">
+        <input type="email" name="email" placeholder="Seu e-mail" required />
+        <textarea name="message" placeholder="Digite sua mensagem..." required></textarea>
+        <input type="submit" value="Enviar" />
+        <p id="sucesso-msg">Mensagem enviada com sucesso!</p>
+      </form>
+    </div>
+  </div>
+
   <script src="js/agendamento.js"></script>
-</body>
-</html>
 
-<script>
-  const horaInput = document.getElementById('horaColeta');
-  const mensagem = document.getElementById('horaMensagem');
+  <script>
+    // Carrega a sidebar e inicializa a página
+    document.addEventListener("DOMContentLoaded", () => {
+      fetch("sidebar.html")
+        .then(res => res.text())
+        .then(html => {
+          document.getElementById("sidebar-container").innerHTML = html;
 
-  horaInput.addEventListener('input', () => {
-    const hora = horaInput.value;
-    if (hora < "08:00" || hora > "21:00") {
-      mensagem.style.display = "inline";
-      horaInput.value = "";
-    } else {
-      mensagem.style.display = "none";
-    }
-  });
+          // Ajusta data mínima para hoje
+          const dataInput = document.getElementById("dataColeta");
+          const hoje = new Date().toISOString().split("T")[0];
+          dataInput.setAttribute("min", hoje);
 
-   // Carrega a sidebar
-    fetch("sidebar.html")
-      .then(res => res.text())
-      .then(html => {
-        document.getElementById("sidebar-container").innerHTML = html;
-      });
-  document.addEventListener("DOMContentLoaded", () => {
-    fetch("sidebar.html")
-      .then(res => res.text())
-      .then(html => {
-        document.getElementById("sidebar-container").innerHTML = html;
-
-        window.toggleSidebar = function () {
-          const sidebar = document.getElementById("sidebar");
-          const toggleBtn = document.querySelector(".sidebar-toggle");
-          const isMobile = window.innerWidth <= 768;
-
-          if (isMobile) {
-            document.body.classList.toggle("sidebar-open");
-          } else {
-            const isCollapsed = sidebar.classList.toggle("collapsed");
-            document.body.classList.toggle("sidebar-collapsed", isCollapsed);
-            toggleBtn.textContent = isCollapsed ? "»" : "☰";
-          }
-        };
-
-        window.sair = function () {
-          localStorage.removeItem('email');
-          window.location.href = "index.html";
-        };
-
-        // Fecha a sidebar ao clicar fora (mobile)
-        document.addEventListener("click", (e) => {
-          const sidebar = document.getElementById("sidebar");
-          const toggleBtn = document.querySelector(".sidebar-toggle");
-          if (
-            document.body.classList.contains("sidebar-open") &&
-            !sidebar.contains(e.target) &&
-            !toggleBtn.contains(e.target)
-          ) {
-            document.body.classList.remove("sidebar-open");
-          }
+          // Preenche os horários no select
+          preencherHorarios();
         });
+
+      window.toggleSidebar = function () {
+        const sidebar = document.getElementById("sidebar");
+        const toggleBtn = document.querySelector(".sidebar-toggle");
+        const isMobile = window.innerWidth <= 768;
+
+        if (isMobile) {
+          document.body.classList.toggle("sidebar-open");
+        } else {
+          const isCollapsed = sidebar.classList.toggle("collapsed");
+          document.body.classList.toggle("sidebar-collapsed", isCollapsed);
+          toggleBtn.textContent = isCollapsed ? "»" : "☰";
+        }
+      };
+
+      window.sair = function () {
+        localStorage.removeItem('email');
+        window.location.href = "index.html";
+      };
+
+      // Fecha a sidebar ao clicar fora (mobile)
+      document.addEventListener("click", (e) => {
+        const sidebar = document.getElementById("sidebar");
+        const toggleBtn = document.querySelector(".sidebar-toggle");
+        if (
+          document.body.classList.contains("sidebar-open") &&
+          !sidebar.contains(e.target) &&
+          !toggleBtn.contains(e.target)
+        ) {
+          document.body.classList.remove("sidebar-open");
+        }
       });
-  });
-</script>
+    });
+
+    // Função para preencher o select de horários
+    function preencherHorarios() {
+      const select = document.getElementById("horaColeta");
+      select.innerHTML = '<option value="">Selecione um horário</option>';
+
+      for (let h = 8; h <= 21; h++) {
+        for (let m = 0; m < 60; m += 30) {
+          const hora = `${String(h).padStart(2, '0')}:${String(m).padStart(2, '0')}`;
+          const option = document.createElement("option");
+          option.value = hora;
+          option.textContent = hora;
+          select.appendChild(option);
+        }
+      }
+    }
+
+    // Atendimento e modal suporte
+    const atendimentoBtn = document.getElementById('atendimento-btn');
+    const modalSuporte = document.getElementById('modal-suporte');
+    const closeBtn = document.querySelector('.close-btn');
+    const formSuporte = document.getElementById('form-suporte');
+    const sucessoMsg = document.getElementById('sucesso-msg');
+
+    atendimentoBtn.addEventListener('click', () => {
+      modalSuporte.classList.add('show');
+    });
+
+    closeBtn.addEventListener('click', () => {
+      modalSuporte.classList.remove('show');
+    });
+
+    formSuporte.addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      const formData = new FormData(formSuporte);
+      const data = Object.fromEntries(formData.entries());
+
+      try {
+        const res = await fetch('https://formsubmit.co/ajax/rafaellacerda2004@gmail.com', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json'
+          },
+          body: JSON.stringify(data)
+        });
+
+        if (res.ok) {
+          sucessoMsg.style.display = 'block';
+          formSuporte.reset();
+
+          setTimeout(() => {
+            sucessoMsg.style.display = 'none';
+            modalSuporte.classList.remove('show');
+          }, 3000);
+        } else {
+          alert('Erro ao enviar. Tente novamente.');
+        }
+      } catch (err) {
+        alert('Erro de rede. Verifique sua conexão.');
+      }
+    });
+  </script>
+</body>
+
+</html>
