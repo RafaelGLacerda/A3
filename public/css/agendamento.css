@@ -73,7 +73,7 @@ input[type="file"]:focus {
   box-shadow: 0 0 5px rgba(56, 142, 60, 0.2);
 }
 
-button {
+.form-group button {
   width: 100%;
   padding: 14px;
   font-size: 1.1rem;
@@ -86,16 +86,16 @@ button {
   margin-top: 20px;
 }
 
-button:hover {
+.form-group button:hover {
   background-color: #2e7d32;
   transform: translateY(-4px);
 }
 
-button:active {
+.form-group button:active {
   transform: translateY(0);
 }
 
-button:focus {
+.form-group button:focus {
   outline: none;
   box-shadow: 0 0 0 3px rgba(56, 142, 60, 0.4);
 }

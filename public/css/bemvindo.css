@@ -1,11 +1,7 @@
 body {
-  margin: 0;
-  font-family: 'Poppins', sans-serif;
-  background: linear-gradient(135deg, #f2f2f2, #e0e0e0);
-  color: #333;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
+  font-family: "Inter", "Segoe UI", sans-serif;
+  background: #f3f4f6;
+  color: #1f2937; 
 }
 
 .content {
@@ -14,6 +10,7 @@ body {
   display: flex;
   flex-direction: column;
   gap: 40px;
+  font-weight: 400;
 }
 
 .boas-vindas h2 {
@@ -29,7 +26,7 @@ body {
 
 .descricao {
   font-size: 1.3rem;
-  font-weight: 300;
+  font-weight: 800;
   color: #555;
 }
 
@@ -42,12 +39,12 @@ body {
 }
 
 .info-sistema p {
-  font-size: 1.1rem;
+  font-size: 1.2rem;
   color: #333;
 }
 
 .info-sistema p strong {
-  font-weight: 600;
+  font-weight: 1000;
 }
 
 .empresas {
@@ -55,6 +52,7 @@ body {
   grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
   gap: 25px;
   margin-top: 40px;
+  font-size: 20px;
 }
 
 .empresa {
@@ -67,6 +65,7 @@ body {
   color: #2e8b57;
   transition: transform 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease;
   cursor: pointer;
+  font-weight: 700;
 }
 
 .empresa:hover {
