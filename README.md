@@ -3,7 +3,7 @@
 ## 🚀 Como rodar o projeto
 
 ### 🌐 Acesse o site online
-🔗 https://a3-2lsq.onrender.com/
+🔗 https://reciclassa.onrender.com/
 
 ---
 
