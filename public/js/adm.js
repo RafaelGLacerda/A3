@@ -57,7 +57,7 @@ function carregarAgendamentos() {
           <p><strong>Endereço:</strong> ${ag.enderecoUsuario || "Não disponível"}</p>
           <p><strong>Cooperativa:</strong> ${ag.cooperativa}</p>
           ${ag.imagem
-            ? `<div><strong>Imagem do usuário:</strong><br><img src="${ag.imagem}" alt="Imagem de reciclagem" style="width: 100px; height: 100px; object-fit: cover; border-radius: 8px; margin-bottom: 10px;"></div>`
+            ? `<div><strong>Imagem do usuário:</strong><br><img src="${API_URL}${ag.imagem}" alt="Imagem de reciclagem" style="width: 100px; height: 100px; object-fit: cover; border-radius: 8px; margin-bottom: 10px;"></div>`
             : "<p><em>Sem imagem enviada pelo usuário.</em></p>"}
           <textarea placeholder="Observações..." class="observacao" rows="3"></textarea>
           <input type="number" placeholder="Pontos" class="pontos" min="0">

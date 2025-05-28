@@ -54,7 +54,7 @@ if (!email) {
       } else {
         agendamentos.forEach((ag, index) => {
           const agId = ag.id || `${email}-${index}`;
-          
+
           let statusTexto = "⌛ Pendente";
           if (ag.status === "realizado") {
             statusTexto = "✅ Realizado";
@@ -73,13 +73,13 @@ if (!email) {
             <td>${ag.status === "realizado" ? (ag.comentarioAdm || "Sem observações.") : "-"}</td>
             <td>
               ${ag.status === "pendente"
-                ? `<button class="btn-cancelar" onclick="cancelarAgendamento('${agId}')">Desistir da coleta</button>`
-                : "—"}
+              ? `<button class="btn-cancelar" onclick="cancelarAgendamento('${agId}')">Desistir da coleta</button>`
+              : "—"}
             </td>
             <td>
               ${ag.imagem
-                ? `<img src="${ag.imagem}" alt="Imagem de reciclagem" style="width: 60px; height: 60px; object-fit: cover; border-radius: 5px;" />`
-                : "Sem imagem"}
+              ? `<img src="${API_URL}${ag.imagem}" alt="Imagem de reciclagem" style="width: 60px; height: 60px; object-fit: cover; border-radius: 5px;" />`
+              : "Sem imagem"}
             </td>
           `;
           tbody.appendChild(row);
@@ -118,16 +118,16 @@ btnConfirmar.addEventListener("click", () => {
     },
     body: JSON.stringify({ email })
   })
-  .then(res => {
-    if (!res.ok) throw new Error('Erro ao cancelar agendamento.');
-    mostrarMensagem("✅ Agendamento cancelado com sucesso!", "sucesso");
-    modal.style.display = "none";
-    setTimeout(() => location.reload(), 1000);
-  })
-  .catch(err => {
-    mostrarMensagem("❌ Erro ao cancelar agendamento: " + err.message, "erro");
-    modal.style.display = "none";
-  });
+    .then(res => {
+      if (!res.ok) throw new Error('Erro ao cancelar agendamento.');
+      mostrarMensagem("✅ Agendamento cancelado com sucesso!", "sucesso");
+      modal.style.display = "none";
+      setTimeout(() => location.reload(), 1000);
+    })
+    .catch(err => {
+      mostrarMensagem("❌ Erro ao cancelar agendamento: " + err.message, "erro");
+      modal.style.display = "none";
+    });
 
   idAgendamentoAtual = null;
 });
