@@ -1,4 +1,4 @@
-const API_URL = "https://a3-2lsq.onrender.com";
+const API_URL = "https://reciclassa.onrender.com/";
 
 document.getElementById('cadastroForm').addEventListener('submit', function(event) {
   event.preventDefault();

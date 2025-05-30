@@ -1,4 +1,4 @@
-const API_URL = "https://a3-2lsq.onrender.com";
+const API_URL = "https://reciclassa.onrender.com/";
 const emailUsuario = localStorage.getItem("email");
 const statusMessage = document.getElementById("statusMessage");
 

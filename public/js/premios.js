@@ -22,7 +22,7 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 });
 
-const API_URL      = "https://a3-2lsq.onrender.com";
+const API_URL      = "https://reciclassa.onrender.com/";
 const emailUsuario = localStorage.getItem("email");
 let   pontosAtuais = 0;
 
