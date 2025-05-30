@@ -91,3 +91,62 @@ body {
     grid-template-columns: 1fr 1fr;
   }
 }
+.parcerias {
+  text-align: start;
+  margin-top: 60px;
+}
+
+.parcerias h3 {
+  font-size: 1.8rem;
+  font-weight: 600;
+  color: #2e8b57;
+  margin-bottom: 30px;
+}
+
+.logos-empresas {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 15px;
+}
+
+.logos-empresas span {
+  background-color: #fff;
+  padding: 12px 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  font-weight: 600;
+  color: #2e8b57;
+  transition: transform 0.2s ease, background-color 0.2s ease;
+  cursor: default;
+}
+
+.empresa a {
+  text-decoration: none;
+  color: #2e8b57;
+  display: block;
+  font-weight: 700;
+}
+
+.empresa a:hover {
+  text-decoration: none;
+  color: #276947;
+}
+.empresas span:hover {
+  transform: scale(1.05);
+  background-color: #e9fbe9;
+}
+.empresa {
+  margin-top: 8px;
+  font-size: 1.1rem;
+}
+
+.empresa {
+  text-decoration: none;
+  color: #2e8b57;
+  font-weight: 500;
+}
+
+.empresa a:hover {
+  text-decoration: underline;
+}
