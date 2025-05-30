@@ -231,3 +231,24 @@ a{
   box-shadow: 0 0 6px rgba(0, 119, 255, 0.5);
   background-color: #fff;
 }
+.botoes-topo {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+/* Estilo específico para o botão da tabela */
+.btn-padrao {
+  background-color: #2fc932;
+  color: white;
+  padding: 10px 16px;
+  border: none;
+  border-radius: 4px;
+  font-weight: bold;
+  text-decoration: none;
+  transition: background-color 0.3s ease;
+}
+
+.btn-padrao:hover {
+  background-color: #1b5e20;
+}

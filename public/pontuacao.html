@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <title>Tabela de Pontuação</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" href="img/reciclaSSA.png" type="image/png">
+  <link rel="stylesheet" href="css/sidebar.css">
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #f2f2f2, #e0e0e0);
+      color: #2e3d2f;
+      padding: 20px;
+    }
+
+    .content {
+      margin-left: 240px;
+      max-width: 1000px;
+      padding: 20px;
+    }
+
+    h2 {
+      font-size: 2rem;
+      color: #2e7d32;
+      margin-bottom: 10px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      background-color: #fff;
+      border: 2px solid #c8e6c9;
+      border-radius: 10px;
+      overflow: hidden;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    }
+
+    th, td {
+      padding: 12px 15px;
+      text-align: left;
+      border-bottom: 1px solid #ddd;
+    }
+
+    th {
+      background-color: #2e7d32;
+      color: white;
+    }
+
+    tr:hover {
+      background-color: #f1f8e9;
+    }
+
+    @media (max-width: 600px) {
+      .content {
+        margin-left: 0;
+        padding: 10px;
+      }
+
+      table {
+        font-size: 14px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div id="sidebar-container"></div>
+  <main class="content">
+    <h2>📊 Tabela de Pontuação por Material Reciclado</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Material</th>
+          <th>Quantidade Base</th>
+          <th>Pontos Recebidos</th>
+          <th>Justificativa</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Plástico</td>
+          <td>10 kg</td>
+          <td>500 pontos</td>
+          <td>Muito comum, baixo valor de mercado, ocupa muito espaço</td>
+        </tr>
+        <tr>
+          <td>Vidro</td>
+          <td>10 kg</td>
+          <td>800 pontos</td>
+          <td>Pesado, difícil de transportar, valor baixo</td>
+        </tr>
+        <tr>
+          <td>Metal</td>
+          <td>10 kg</td>
+          <td>2000 pontos</td>
+          <td>Mais escasso, alto valor de revenda</td>
+        </tr>
+        <tr>
+          <td>Papel</td>
+          <td>10 kg</td>
+          <td>300 pontos</td>
+          <td>Fácil de encontrar, mas valor muito baixo</td>
+        </tr>
+        <tr>
+          <td>Lixo Eletrônico</td>
+          <td>1 kg</td>
+          <td>1500 pontos</td>
+          <td>Difícil de obter, contém metais valiosos</td>
+        </tr>
+      </tbody>
+    </table>
+  </main>
+
+  <script>
+     document.addEventListener("DOMContentLoaded", () => {
+      fetch("sidebar.html")
+        .then(res => res.text())
+        .then(html => {
+          document.getElementById("sidebar-container").innerHTML = html;
+
+          window.toggleSidebar = function () {
+            const sidebar = document.getElementById("sidebar");
+            const toggleBtn = document.querySelector(".sidebar-toggle");
+            const isMobile = window.innerWidth <= 768;
+
+            if (isMobile) {
+              document.body.classList.toggle("sidebar-open");
+            } else {
+              const isCollapsed = sidebar.classList.toggle("collapsed");
+              document.body.classList.toggle("sidebar-collapsed", isCollapsed);
+              toggleBtn.textContent = isCollapsed ? "»" : "☰";
+            }
+          };
+
+          window.sair = function () {
+            localStorage.removeItem('email');
+            window.location.href = "index.html";
+          };
+
+          // Fecha a sidebar no mobile ao clicar fora
+          document.addEventListener("click", (e) => {
+            const sidebar = document.getElementById("sidebar");
+            const toggleBtn = document.querySelector(".sidebar-toggle");
+            if (
+              document.body.classList.contains("sidebar-open") &&
+              !sidebar.contains(e.target) &&
+              !toggleBtn.contains(e.target)
+            ) {
+              document.body.classList.remove("sidebar-open");
+            }
+          });
+        });
+    });
+  </script>
+</body>
+</html>
