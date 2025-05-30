@@ -1,4 +1,4 @@
-const API_URL = "https://reciclassa.onrender.com/";
+const API_URL = "https://reciclassa.onrender.com";
 
 // Carrega a sidebar
 fetch("sidebar.html")

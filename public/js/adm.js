@@ -1,4 +1,4 @@
-const API_URL = "https://reciclassa.onrender.com/";
+const API_URL = "https://reciclassa.onrender.com";
 
 // Exibe mensagens interativas na tela
 function mostrarMensagem(texto, tipo = "sucesso", duracao = 3000) {

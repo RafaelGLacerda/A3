@@ -1,4 +1,4 @@
-const API_URL = "https://reciclassa.onrender.com/";
+const API_URL = "https://reciclassa.onrender.com";
 
 document.getElementById('loginForm').addEventListener('submit', function(event) {
   event.preventDefault();

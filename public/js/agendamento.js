@@ -1,6 +1,6 @@
 
 
-const API_URL = "https://reciclassa.onrender.com/";
+const API_URL = "https://reciclassa.onrender.com";
 
     const recyclePoints = [
       { id: 1, name: "Limpurb Itaigara", lat: -12.9897037, lng: -38.4671861},
