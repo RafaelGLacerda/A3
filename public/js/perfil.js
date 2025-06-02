@@ -21,6 +21,7 @@ function carregarPerfil() {
     })
     .then(dados => {
       document.getElementById("nomeUsuario").textContent = dados.nome;
+      document.getElementById("cpfUsuario").textContent = dados.cpf;
       document.getElementById("emailUsuario").textContent = dados.email;
       document.getElementById("enderecoUsuario").textContent = dados.endereco;
       document.getElementById("pontosUsuario").textContent = dados.pontos + " pontos";

@@ -48,7 +48,14 @@ app.post('/api/login', (req, res) => {
 
 // Cadastro
 app.post('/api/cadastro', (req, res) => {
-  const { nome, email, senha, cep, endereco } = req.body;
+  const { nome, cpf, email, senha, cep, endereco } = req.body;
+  if (!cpf) {
+  return res.status(400).json({ message: 'CPF é obrigatório.' });
+}
+if (users.some(u => u.cpf === cpf)) {
+  return res.status(400).json({ message: 'CPF já cadastrado' });
+}
+
   const users = readUsersData();
 
   if (users.some(u => u.email === email)) {
@@ -61,6 +68,7 @@ app.post('/api/cadastro', (req, res) => {
 
   const novoUsuario = {
     nome,
+    cpf,
     email,
     senha,
     cep,

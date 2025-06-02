@@ -51,6 +51,7 @@ function carregarAgendamentos() {
         card.innerHTML = `
           <p><strong>Usuário:</strong> ${ag.emailUsuario}</p>
           <p><strong>Nome:</strong> ${ag.nome}</p>
+          <p><strong>CPF:</strong> ${ag.cpf}</p>
           <p><strong>Data:</strong> ${formatarDataBrasileira(ag.data)}</p>
           <p><strong>Hora:</strong> ${ag.hora}</p>
           <p><strong>CEP:</strong> ${ag.cep}</p>
