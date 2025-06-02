@@ -157,3 +157,12 @@ function toBase64(file) {
     reader.onerror = error => reject(error);
   });
 }
+window.addEventListener('DOMContentLoaded', () => {
+  const dataInput = document.getElementById('dataColeta');
+  const hoje = new Date();
+  const yyyy = hoje.getFullYear();
+  const mm = String(hoje.getMonth() + 1).padStart(2, '0');
+  const dd = String(hoje.getDate()).padStart(2, '0');
+  const dataMinima = `${yyyy}-${mm}-${dd}`;
+  dataInput.min = dataMinima;
+});
