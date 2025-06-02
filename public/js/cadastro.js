@@ -1,5 +1,24 @@
 const API_URL = "https://reciclassa.onrender.com";
 
+// Lista de provedores permitidos
+const provedoresPermitidos = [
+  'gmail.com',
+  'hotmail.com',
+  'outlook.com',
+  'yahoo.com',
+  'icloud.com',
+  'aol.com',
+  'protonmail.com',
+  'live.com'
+];
+
+// Função para validar o domínio do e-mail
+function emailEhPermitido(email) {
+  const dominio = email.split('@')[1]?.toLowerCase();
+  return provedoresPermitidos.includes(dominio);
+}
+
+// Lida com o envio do formulário de cadastro
 document.getElementById('cadastroForm').addEventListener('submit', function(event) {
   event.preventDefault();
 
@@ -10,6 +29,14 @@ document.getElementById('cadastroForm').addEventListener('submit', function(even
   const endereco = event.target.endereco.value;
 
   const statusMessage = document.getElementById('statusMessage');
+
+  // Verifica se o e-mail pertence a um provedor permitido
+  if (!emailEhPermitido(email)) {
+    statusMessage.textContent = 'Apenas e-mails de provedores conhecidos como Gmail, Outlook, Hotmail, etc. são aceitos.';
+    statusMessage.className = 'status-message error';
+    return;
+  }
+
   statusMessage.textContent = 'Cadastrando...';
   statusMessage.className = 'status-message loading';
 

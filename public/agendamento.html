@@ -89,91 +89,111 @@
   <script src="js/agendamento.js"></script>
 
   <script>
-    // Carrega a sidebar e inicializa a página
-    document.addEventListener("DOMContentLoaded", () => {
-      fetch("sidebar.html")
-        .then(res => res.text())
-        .then(html => {
-          document.getElementById("sidebar-container").innerHTML = html;
+document.addEventListener("DOMContentLoaded", () => {
+    // Carrega sidebar
+    fetch("sidebar.html")
+      .then(res => res.text())
+      .then(html => {
+        document.getElementById("sidebar-container").innerHTML = html;
 
-          // Ajusta data mínima para hoje
-          const dataInput = document.getElementById("dataColeta");
-          const hoje = new Date().toISOString().split("T")[0];
-          dataInput.setAttribute("min", hoje);
+        window.toggleSidebar = function () {
+          const sidebar = document.getElementById("sidebar");
+          const toggleBtn = document.querySelector(".sidebar-toggle");
+          const isMobile = window.innerWidth <= 768;
 
-          // Preenche os horários no select
-          preencherHorarios();
+          if (isMobile) {
+            document.body.classList.toggle("sidebar-open");
+          } else {
+            const isCollapsed = sidebar.classList.toggle("collapsed");
+            document.body.classList.toggle("sidebar-collapsed", isCollapsed);
+            toggleBtn.textContent = isCollapsed ? "»" : "☰";
+          }
+        };
+
+        window.sair = function () {
+          localStorage.removeItem('email');
+          window.location.href = "index.html";
+        };
+
+        document.addEventListener("click", (e) => {
+          const sidebar = document.getElementById("sidebar");
+          const toggleBtn = document.querySelector(".sidebar-toggle");
+          if (
+            document.body.classList.contains("sidebar-open") &&
+            !sidebar.contains(e.target) &&
+            !toggleBtn.contains(e.target)
+          ) {
+            document.body.classList.remove("sidebar-open");
+          }
         });
-
-      window.toggleSidebar = function () {
-        const sidebar = document.getElementById("sidebar");
-        const toggleBtn = document.querySelector(".sidebar-toggle");
-        const isMobile = window.innerWidth <= 768;
-
-        if (isMobile) {
-          document.body.classList.toggle("sidebar-open");
-        } else {
-          const isCollapsed = sidebar.classList.toggle("collapsed");
-          document.body.classList.toggle("sidebar-collapsed", isCollapsed);
-          toggleBtn.textContent = isCollapsed ? "»" : "☰";
-        }
-      };
-
-      window.sair = function () {
-        localStorage.removeItem('email');
-        window.location.href = "index.html";
-      };
-
-      // Fecha a sidebar ao clicar fora (mobile)
-      document.addEventListener("click", (e) => {
-        const sidebar = document.getElementById("sidebar");
-        const toggleBtn = document.querySelector(".sidebar-toggle");
-        if (
-          document.body.classList.contains("sidebar-open") &&
-          !sidebar.contains(e.target) &&
-          !toggleBtn.contains(e.target)
-        ) {
-          document.body.classList.remove("sidebar-open");
-        }
       });
-    });
 
-    // Função para preencher o select de horários
-    function preencherHorarios() {
-      const select = document.getElementById("horaColeta");
-      select.innerHTML = '<option value="">Selecione um horário</option>';
+    // Lista de provedores aceitos
+    const provedoresPermitidos = [
+      'gmail.com',
+      'hotmail.com',
+      'outlook.com',
+      'yahoo.com',
+      'icloud.com',
+      'aol.com',
+      'protonmail.com',
+      'live.com'
+    ];
 
-      for (let h = 8; h <= 21; h++) {
-        for (let m = 0; m < 60; m += 30) {
-          const hora = `${String(h).padStart(2, '0')}:${String(m).padStart(2, '0')}`;
-          const option = document.createElement("option");
-          option.value = hora;
-          option.textContent = hora;
-          select.appendChild(option);
-        }
-      }
+    function emailEhPermitido(email) {
+      const dominio = email.split('@')[1]?.toLowerCase();
+      return provedoresPermitidos.includes(dominio);
     }
 
-    // Atendimento e modal suporte
     const atendimentoBtn = document.getElementById('atendimento-btn');
     const modalSuporte = document.getElementById('modal-suporte');
     const closeBtn = document.querySelector('.close-btn');
     const formSuporte = document.getElementById('form-suporte');
-    const sucessoMsg = document.getElementById('sucesso-msg');
+    const inputEmail = formSuporte.querySelector('input[name="email"]');
+
+    // Mensagem de erro
+    const erroMsg = document.createElement('p');
+    erroMsg.id = 'erro-msg';
+    erroMsg.style.color = 'red';
+    erroMsg.style.fontSize = '1rem';
+    erroMsg.style.display = 'none';
+    inputEmail.parentNode.insertBefore(erroMsg, inputEmail);
+
+    // Mensagem de sucesso
+    const sucessoMsg = document.createElement('p');
+    sucessoMsg.id = 'sucesso-msg';
+    sucessoMsg.style.color = 'green';
+    sucessoMsg.style.fontSize = '1rem';
+    sucessoMsg.style.display = 'none';
+    inputEmail.parentNode.insertBefore(sucessoMsg, inputEmail);
 
     atendimentoBtn.addEventListener('click', () => {
       modalSuporte.classList.add('show');
+      erroMsg.style.display = 'none';
+      sucessoMsg.style.display = 'none';
     });
 
     closeBtn.addEventListener('click', () => {
       modalSuporte.classList.remove('show');
+      erroMsg.style.display = 'none';
+      sucessoMsg.style.display = 'none';
     });
 
     formSuporte.addEventListener('submit', async (e) => {
       e.preventDefault();
 
-      const formData = new FormData(formSuporte);
-      const data = Object.fromEntries(formData.entries());
+      const email = inputEmail.value;
+      const message = formSuporte.querySelector('textarea[name="message"]').value;
+
+      // Valida domínio do e-mail
+      if (!emailEhPermitido(email)) {
+        erroMsg.textContent = 'Por favor, use um e-mail de provedor conhecido (ex: Gmail, Outlook, Hotmail etc).';
+        erroMsg.style.display = 'block';
+        sucessoMsg.style.display = 'none';
+        return;
+      }
+
+      erroMsg.style.display = 'none';
 
       try {
         const res = await fetch('https://formsubmit.co/ajax/rafaellacerda2004@gmail.com', {
@@ -182,10 +202,11 @@
             'Content-Type': 'application/json',
             'Accept': 'application/json'
           },
-          body: JSON.stringify(data)
+          body: JSON.stringify({ email, message })
         });
 
         if (res.ok) {
+          sucessoMsg.textContent = 'Mensagem enviada com sucesso!';
           sucessoMsg.style.display = 'block';
           formSuporte.reset();
 
@@ -194,12 +215,15 @@
             modalSuporte.classList.remove('show');
           }, 3000);
         } else {
-          alert('Erro ao enviar. Tente novamente.');
+          erroMsg.textContent = 'Erro ao enviar. Tente novamente.';
+          erroMsg.style.display = 'block';
         }
       } catch (err) {
-        alert('Erro de rede. Verifique sua conexão.');
+        erroMsg.textContent = 'Erro de rede. Verifique sua conexão.';
+        erroMsg.style.display = 'block';
       }
     });
+  });
   </script>
 </body>
 
