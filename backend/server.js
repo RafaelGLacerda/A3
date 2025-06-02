@@ -46,23 +46,50 @@ app.post('/api/login', (req, res) => {
   }
 });
 
-// Cadastro
-app.post('/api/cadastro', (req, res) => {
-  const { nome, cpf, email, senha, cep, endereco } = req.body;
-  if (!cpf) {
-  return res.status(400).json({ message: 'CPF é obrigatório.' });
-}
-if (users.some(u => u.cpf === cpf)) {
-  return res.status(400).json({ message: 'CPF já cadastrado' });
+// Função para validar CPF
+function validarCPF(cpf) {
+  cpf = cpf.replace(/[^\d]+/g, '');
+  if (cpf.length !== 11 || /^(\d)\1+$/.test(cpf)) return false;
+
+  let soma = 0, resto;
+
+  for (let i = 1; i <= 9; i++) soma += parseInt(cpf[i - 1]) * (11 - i);
+  resto = (soma * 10) % 11;
+  if (resto === 10 || resto === 11) resto = 0;
+  if (resto !== parseInt(cpf[9])) return false;
+
+  soma = 0;
+  for (let i = 1; i <= 10; i++) soma += parseInt(cpf[i - 1]) * (12 - i);
+  resto = (soma * 10) % 11;
+  if (resto === 10 || resto === 11) resto = 0;
+
+  return resto === parseInt(cpf[10]);
 }
 
+// Rota de cadastro
+app.post('/api/cadastro', (req, res) => {
+  const { nome, cpf, email, senha, cep, endereco } = req.body;
+
+  // Validação básica
+  if (!cpf) {
+    return res.status(400).json({ message: 'CPF é obrigatório.' });
+  }
+
+  if (!validarCPF(cpf)) {
+    return res.status(400).json({ message: 'CPF inválido.' });
+  }
+
   const users = readUsersData();
+
+  if (users.some(u => u.cpf === cpf)) {
+    return res.status(400).json({ message: 'CPF já cadastrado' });
+  }
 
   if (users.some(u => u.email === email)) {
     return res.status(400).json({ message: 'Email já cadastrado' });
   }
 
-  if (email.includes('ADM@cooperativas.com.br')) {
+  if (email.toLowerCase().includes('adm@cooperativas.com.br')) {
     return res.status(403).json({ message: 'Não é possível cadastrar administradores.' });
   }
 
@@ -77,13 +104,15 @@ if (users.some(u => u.cpf === cpf)) {
     quantidadeReciclada: 0,
     pontos: 0,
     agendamentos: [],
-    resgatados: [] // Adicionado campo
+    resgatados: []
   };
 
   users.push(novoUsuario);
   saveUsersData(users);
+
   res.status(201).json({ message: 'Usuário cadastrado com sucesso' });
 });
+
 
 // Visualizar perfil
 app.get('/profile/:email', (req, res) => {
