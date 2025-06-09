@@ -374,3 +374,40 @@ select#horaColeta:focus {
 .btn-whatsapp:hover {
   background-color: #128C7E;
 }
+@media (max-width: 600px) {
+  .content {
+    width: 100%;
+    padding: 10px;
+    box-shadow: none;
+    border-radius: 0;
+  }
+
+  h2 {
+    font-size: 1.8rem;
+    margin-bottom: 15px;
+  }
+
+  .btn-voltar {
+    width: 100%;
+    display: block;
+    text-align: center;
+    padding: 14px;
+    font-size: 1rem;
+    margin-top: 20px;
+  }
+
+  /* Deixar a tabela responsiva já está OK no seu CSS 👍 */
+
+  /* Garantir botões do modal confortáveis no mobile */
+  .modal-botoes {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .btn-confirmar,
+  .btn-cancelar-modal {
+    width: 100%;
+    padding: 12px;
+    font-size: 1rem;
+  }
+}

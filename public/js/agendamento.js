@@ -1,21 +1,18 @@
-
-
 const API_URL = "https://reciclassa.onrender.com";
 
-    const recyclePoints = [
-      { id: 1, name: "Limpurb Itaigara", lat: -12.9897037, lng: -38.4671861},
-      { id: 2, name: "Limpurb Pirajá", lat: -12.8997581, lng: -38.4504567 },
-      { id: 3, name: "Ecoponto Prefeitura de Salvador Alto da Terezinha", lat: -12.8804975, lng: -38.4747831 },
-      { id: 4, name: "Cooperativa COOPERLIX Valéria", lat: -12.8827089, lng: -38.4393059 },
-      { id: 5, name: "COOPERBRAVA São Marcos", lat: -12.9233244, lng: -38.4249531 },
-      { id: 6, name: "COOPERES Ilha Amarela", lat: -12.8891411, lng: -38.469354 },
-      { id: 7, name: "CANORE Santa Cruz", lat: -13.0027052, lng: -38.472826 },
-      { id: 8, name: "Recicla Salvador Cidade Alta", lat: -12.9774484, lng: -38.4877508 },
-      { id: 9, name: "Salvador Reciclagem Imbuí", lat: -12.96863, lng: -38.4273147 },
-      { id: 10, name: "Solaris Reciclagem Fazenda Grande Do Retiro", lat: -12.9494532, lng: -38.4771619 }
-    ];
+const recyclePoints = [
+  { id: 1, name: "Limpurb Itaigara", lat: -12.9897037, lng: -38.4671861 },
+  { id: 2, name: "Limpurb Pirajá", lat: -12.8997581, lng: -38.4504567 },
+  { id: 3, name: "Ecoponto Prefeitura de Salvador Alto da Terezinha", lat: -12.8804975, lng: -38.4747831 },
+  { id: 4, name: "Cooperativa COOPERLIX Valéria", lat: -12.8827089, lng: -38.4393059 },
+  { id: 5, name: "COOPERBRAVA São Marcos", lat: -12.9233244, lng: -38.4249531 },
+  { id: 6, name: "COOPERES Ilha Amarela", lat: -12.8891411, lng: -38.469354 },
+  { id: 7, name: "CANORE Santa Cruz", lat: -13.0027052, lng: -38.472826 },
+  { id: 8, name: "Recicla Salvador Cidade Alta", lat: -12.9774484, lng: -38.4877508 },
+  { id: 9, name: "Salvador Reciclagem Imbuí", lat: -12.96863, lng: -38.4273147 },
+  { id: 10, name: "Solaris Reciclagem Fazenda Grande Do Retiro", lat: -12.9494532, lng: -38.4771619 }
+];
 
-    
 function calcularDistancia(lat1, lon1, lat2, lon2) {
   const R = 6371;
   const dLat = (lat2 - lat1) * Math.PI / 180;
@@ -153,10 +150,11 @@ function toBase64(file) {
   return new Promise((resolve, reject) => {
     const reader = new FileReader();
     reader.readAsDataURL(file);
-    reader.onload = () => resolve(reader.result); // resultado inclui o tipo + base64
+    reader.onload = () => resolve(reader.result);
     reader.onerror = error => reject(error);
   });
 }
+
 window.addEventListener('DOMContentLoaded', () => {
   const dataInput = document.getElementById('dataColeta');
   const hoje = new Date();
@@ -166,3 +164,48 @@ window.addEventListener('DOMContentLoaded', () => {
   const dataMinima = `${yyyy}-${mm}-${dd}`;
   dataInput.min = dataMinima;
 });
+
+// NOVA FUNÇÃO → atualiza horários disponíveis quando escolher uma data
+document.getElementById('dataColeta').addEventListener('change', async function () {
+  const dataSelecionada = this.value;
+  const selectHora = document.getElementById('horaColeta');
+
+  if (!dataSelecionada) return;
+
+  try {
+    const resposta = await fetch(`${API_URL}/api/agendamentos`);
+    const agendamentos = await resposta.json();
+
+    if (!resposta.ok) {
+      throw new Error(agendamentos.message || 'Erro ao buscar agendamentos.');
+    }
+
+    // Filtra apenas os agendamentos do dia selecionado
+    const horariosOcupados = agendamentos
+      .filter(a => a.data === dataSelecionada)
+      .map(a => a.hora);
+
+    // Atualiza o select de horário
+    selectHora.innerHTML = '<option value="">Selecione um horário</option>';
+
+    for (let h = 8; h <= 21; h++) {
+      for (let m = 0; m < 60; m += 30) {
+        const hora = `${String(h).padStart(2, '0')}:${String(m).padStart(2, '0')}`;
+        const option = document.createElement("option");
+        option.value = hora;
+        option.textContent = hora;
+
+        if (horariosOcupados.includes(hora)) {
+          option.disabled = true;
+          option.textContent += " (Indisponível)";
+        }
+
+        selectHora.appendChild(option);
+      }
+    }
+  } catch (error) {
+    console.error('Erro ao carregar horários:', error);
+    alert('Erro ao buscar horários disponíveis.');
+  }
+});
+
