@@ -195,13 +195,13 @@ premios.forEach(premio => {
       imagem = "img/valegas.png";
       break;
     case "Vale-refeição R$ 50":
-      imagem = "img/valerefeicao50.png";
+      imagem = "img/valeRefeicao50.png";
       break;
     case "Vale-refeição R$ 100":
-      imagem = "img/valerefeicao100.png";
+      imagem = "img/valeRefeicao100.png";
       break;
     case "Vale-refeição R$ 250":
-      imagem = "img/valerefeicao250.png";
+      imagem = "img/valeRefeicao250.png";
       break;
     case "Sacolas ecológicas":
       imagem = "img/sacola.png";
