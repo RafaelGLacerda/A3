@@ -1,49 +1,77 @@
 # ♻️ Projeto de Agendamento de Coletas - A3
 
-## 🚀 Como rodar o projeto
-
 ### 🌐 Acesse o site online
 🔗 https://reciclassa.onrender.com/
 
 ---
 
-### 💻 Sobre o projeto
+# 🧾 Como Funciona de Maneira Geral (Muito Importante) 🔥🔥🔥
 
-Este é um site interativo voltado para o agendamento de coletas de recicláveis. O sistema possui funcionalidades para **usuários comuns** e **contas administrativas (ADM)**, cada um com permissões específicas.
+## Tela Inicial
+- A primeira tela contém a opção de **login/cadastro**.
+- **Atenção**: é permitido **apenas um CPF por conta**.
+- Os e-mails podem ser variados (Gmail, iCloud, Outlook, etc.).
 
-#### ✅ Funcionalidades para usuários:
+## Após o Login
+- Você verá a **tela de boas-vindas**, com informações sobre o site e empresas parceiras (incluindo seus links de acesso).
+- Uma **barra lateral de navegação** estará disponível com os seguintes itens:
 
-- Cadastro e login
-- Tela inicial com barra lateral contendo:
-- **Perfil:** visualizar e editar dados
-- **Como funciona?:** explicação sobre o funcionamento da plataforma
-- **Conscientização:** dicas e informações sobre reciclagem
-- **Mapa:** visualização de pontos de coleta e cooperativas próximas
-- **Prêmios:** visualização e troca de pontos acumulados
-- **Agendamento:** permite escolher data e local para coleta, com base na cooperativa mais próxima do CEP informado
-- **Ver agendamentos:** consulta de status, detalhes e possibilidade de exclusão dos agendamentos
-- **Atendimento:** oferece por email uma forma de suporte ao usuário do site
-
-Após a confirmação da coleta por um ADM, o usuário poderá visualizar:
-- O **status atualizado**
-- Uma **imagem enviada pelo ADM**
-- Um **comentário do ADM**
-- A **quantidade de pontos recebida**, que pode ser trocada por prêmios
-- Uma conta ADM de exemplo para acesso popular "email": "JoaoADM@cooperativas.com.br", "senha": "admin123"
+### 🧭 Barra de Navegação
+- **Início**: Tela de boas-vindas.
+- **Perfil**: Visualize e edite suas informações (nome e/ou endereço).
+- **Como Funciona**: Explicação sobre o funcionamento da plataforma.
+- **Conscientização**: Conteúdos voltados ao meio ambiente.
+- **Mapa**: Mapa de Salvador com as cooperativas marcadas.
+- **Prêmios**: Visualize os prêmios disponíveis, o valor necessário para resgate e as imagens dos prêmios.
+- **Agendamento**: Agende a coleta dos seus recicláveis.
+- **Ver Agendamentos**: Veja todos os seus agendamentos, detalhes completos e possibilidade de contato com a cooperativa via WhatsApp.
 
 ---
 
-#### 🛠️ Funcionalidades para contas ADM:
+## 👨‍💼 Acesso ADM
+- O login como **ADM** é restrito a contas criadas pela própria empresa.
+- Funções do ADM:
+  - Administrar pontuação das coletas.
+  - Salvar códigos de resgate de prêmios.
+  - Visualizar histórico de agendamentos e pontuações.
+  - Confirmar ou indeferir agendamentos.
+  - Inserir recados e imagens nas coletas.
 
-- Visualização de todas as coletas solicitadas
-- Confirmação das coletas com:
-  - Marcação como **"Coleta Realizada"**
-  - Comentário personalizado
-  - Imagem da coleta
-  - Pontuação atribuída ao usuário
-  - historico (evitar fraudes)
+### 🧪 Conta ADM de Exemplo (teste)
+- **Email**: `JoaoADM@cooperativas.com.br`  
+- **Senha**: `admin123`
 
-> ⚠️ Contas ADM são exclusivas e **não podem ser criadas via site**.
+---
+
+## ⚙️ Funcionamento na Prática
+
+1. Crie sua conta.
+2. No menu **Perfil**, caso precise, edite seu nome e endereço (o endereço é essencial para as coletas).
+3. Acesse **Agendamento** e escolha data e horário disponíveis para coleta, e caso queira, uma imagem da reciclagem.
+4. Após agendar, vá até **Ver Agendamentos**.
+5. É **recomendado** entrar em contato com a cooperativa via WhatsApp para confirmar o agendamento (contato no ver agendamentos).
+6. O ADM visualizará o agendamento e poderá **confirmar** ou **indeferir**.
+7. Se confirmado, o ADM:
+   - Adicionará os pontos referentes à coleta.
+   - Poderá adicionar recados e imagens.
+
+---
+
+## 🎁 Resgate de Prêmios
+
+- Com os pontos acumulados, vá até a aba **Prêmios**.
+- Escolha o prêmio desejado.
+- Ao selecionar, você receberá um **código de resgate**.
+- Vá até a cooperativa mais próxima e apresente o código.
+- O ADM:
+  - Verificará se o código já foi utilizado.
+  - Se não, validará e salvará o código, impedindo novo uso.
+
+---
+
+✅ **Importante**: todo o processo é gratuito e voltado à sustentabilidade e incentivo à reciclagem nas comunidades!
+
+
 
 ---
 
