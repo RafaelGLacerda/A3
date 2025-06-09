@@ -59,7 +59,8 @@ document.getElementById('btnBuscarColeta').addEventListener('click', async funct
   const mensagemDiv = document.getElementById('mensagemAgendamento');
 
   if (cep.length !== 8) {
-    alert("CEP inválido. Digite um CEP com 8 números.");
+    mensagemDiv.textContent = "❌ CEP inválido. Digite um CEP com 8 números.";
+    mensagemDiv.style.color = "red";
     return;
   }
 
@@ -112,7 +113,8 @@ document.getElementById('form-agendamento').addEventListener('submit', async fun
   const imagemInput = document.getElementById('imagemReciclagem');
 
   if (!cooperativa) {
-    alert("Por favor, clique em 'Buscar Coleta Mais Próxima' antes de agendar.");
+    mensagemDiv.textContent = "❌ Por favor, clique em 'Buscar Coleta Mais Próxima' antes de agendar.";
+    mensagemDiv.style.color = "red";
     return;
   }
 
