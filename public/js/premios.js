@@ -33,16 +33,16 @@ const ulResgatados   = document.getElementById("premios-resgatados");
 const premios = [
   { nome: "Vale R$ 50",           pontos: 1000 },
   { nome: "Vale R$ 100",          pontos: 1800 },
-  { nome: "Vale gás",             pontos: 2000 },
-  { nome: "Vale-refeição R$ 50",  pontos: 1000 },
-  { nome: "Vale-refeição R$ 100", pontos: 1800 },
-  { nome: "Vale-refeição R$ 250", pontos: 2300 },
+  { nome: "Vale gás",             pontos: 1500 },
+  { nome: "Vale-refeição R$ 50",  pontos: 800 },
+  { nome: "Vale-refeição R$ 100", pontos: 1400 },
+  { nome: "Vale-refeição R$ 250", pontos: 2200 },
   { nome: "Sacolas ecológicas",   pontos:  500 },
-  { nome: "Ventilador",           pontos: 2500 },
+  { nome: "Ventilador",           pontos: 2000 },
   { nome: "Kit de cozinha",       pontos: 2000 },
-  { nome: "Mochila ecológica",    pontos: 5000 },
+  { nome: "Mochila ecológica",    pontos: 3000 },
   { nome: "Produtos de limpeza",  pontos: 1000 },
-  { nome: "AIRFRYER",             pontos: 50000 }
+  { nome: "AIRFRYER",             pontos: 5000 }
 ];
 
 // ─── Utilitários ───────────────────────────────────────────────────
@@ -181,15 +181,62 @@ document.getElementById("btn-cancelar").addEventListener("click", fecharModal);
 premios.forEach(premio => {
   const card = document.createElement("div");
   card.className = "card-premio";
+
+  // Define imagem com base no nome do prêmio
+  let imagem = "";
+  switch (premio.nome) {
+    case "Vale R$ 50":
+      imagem = "img/vale50.png";
+      break;
+    case "Vale R$ 100":
+      imagem = "img/vale100.png";
+      break;
+    case "Vale gás":
+      imagem = "img/valegas.png";
+      break;
+    case "Vale-refeição R$ 50":
+      imagem = "img/valerefeicao50.png";
+      break;
+    case "Vale-refeição R$ 100":
+      imagem = "img/valerefeicao100.png";
+      break;
+    case "Vale-refeição R$ 250":
+      imagem = "img/valerefeicao250.png";
+      break;
+    case "Sacolas ecológicas":
+      imagem = "img/sacola.png";
+      break;
+    case "Ventilador":
+      imagem = "img/ventilador.png";
+      break;
+    case "Kit de cozinha":
+      imagem = "img/kitcozinha.png";
+      break;
+    case "Mochila ecológica":
+      imagem = "img/mochila.png";
+      break;
+    case "Produtos de limpeza":
+      imagem = "img/limpeza.png";
+      break;
+    case "AIRFRYER":
+      imagem = "img/airfryer.png";
+      break;
+    default:
+      imagem = "img/default.png"; // caso queira uma imagem genérica de fallback
+  }
+
   card.innerHTML = `
+    <img src="${imagem}" alt="${premio.nome}" style="max-width: 100%; height: 150px; object-fit: contain; margin-bottom: 10px;">
     <h3>${premio.nome}</h3>
     <p><strong>Pontos:</strong> ${premio.pontos}</p>
     <button class="btn-resgatar">Resgatar</button>
   `;
+
   card.querySelector(".btn-resgatar")
       .addEventListener("click", () => resgatarPremio(premio.nome, premio.pontos));
   container.appendChild(card);
 });
+
 
 // ─── Inicialização ─────────────────────────────────────────────────
 carregarPontos();
