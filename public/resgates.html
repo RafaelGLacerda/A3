@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Resgates - Administração</title>
+  <link rel="icon" href="img/reciclaSSA.png" type="image/png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="css/adm.css">
+</head>
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    background-color: #f5f7fa;
+    margin: 0;
+    padding: 0;
+    color: #333;
+  }
+
+  header {
+    background-color: #2c3e50;
+    padding: 20px;
+    text-align: center;
+    color: white;
+  }
+
+  h1, h2 {
+    margin: 0 0 20px;
+  }
+
+  main {
+    max-width: 700px;
+    margin: 30px auto;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  }
+
+  section {
+    margin-bottom: 40px;
+  }
+
+  input[type="text"] {
+    width: calc(100% - 120px);
+    padding: 10px;
+    margin-right: 10px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 16px;
+  }
+
+  button {
+    margin-top: 10px;
+    padding: 10px 20px;
+    font-size: 16px;
+    background-color: #3498db;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+
+  button:hover {
+    background-color: #2980b9;
+  }
+
+  .btn-padrao {
+    background-color: #1abc9c;
+    margin-top: 10px;
+  }
+
+  .btn-padrao:hover {
+    background-color: #16a085;
+  }
+
+  ul {
+    list-style-type: disc;
+    padding-left: 20px;
+    margin-top: 15px;
+  }
+
+  li {
+    padding: 5px 0;
+    font-size: 16px;
+  }
+
+  #resultadoFiltro p {
+    font-style: italic;
+    color: #888;
+    margin-top: 10px;
+  }
+</style>
+
+<body>
+  <div id="mensagem" class="mensagem-oculta"></div>
+  <header>
+    <h1>Área de Resgates</h1>
+    <button onclick="window.location.href='adm.html'" class="btn-padrao">Voltar</button>
+  </header>
+
+  <main>
+    <section>
+      <h2>🔐 Inserir Novo Código de Resgate</h2>
+      <form id="formNovoCodigo">
+        <input type="text" id="novoCodigo" placeholder="Digite o novo código" required />
+        <button type="submit">Salvar Código</button>
+      </form>
+    </section>
+
+    <section>
+      <h2>🔎 Filtrar por Código</h2>
+      <input type="text" id="filtroCodigo" placeholder="Digite o código para buscar" />
+      <button onclick="filtrarCodigo()">Buscar</button>
+      <div id="resultadoFiltro"></div>
+    </section>
+  </main>
+
+  <script>
+    if (localStorage.getItem("tipo") !== "ADM") {
+  alert("Acesso restrito a administradores!");
+  window.location.href = "index.html";
+}
+    // Exemplo de armazenamento local, pode ser substituído por requisição ao backend
+    const codigosResgate = JSON.parse(localStorage.getItem('codigosResgate') || '[]');
+
+    document.getElementById("formNovoCodigo").addEventListener("submit", function (e) {
+      e.preventDefault();
+      const novo = document.getElementById("novoCodigo").value.trim();
+      if (novo) {
+        codigosResgate.push(novo);
+        localStorage.setItem('codigosResgate', JSON.stringify(codigosResgate));
+        mostrarMensagem("✅ Código salvo com sucesso!", "sucesso");
+        this.reset();
+      }
+    });
+
+    function filtrarCodigo() {
+      const filtro = document.getElementById("filtroCodigo").value.trim();
+      const resultado = codigosResgate.filter(c => c.includes(filtro));
+      const container = document.getElementById("resultadoFiltro");
+      if (resultado.length === 0) {
+        container.innerHTML = "<p>Nenhum código encontrado.</p>";
+      } else {
+        container.innerHTML = "<ul>" + resultado.map(c => `<li>${c}</li>`).join('') + "</ul>";
+      }
+    }
+    function mostrarMensagem(texto, tipo = "sucesso", duracao = 3000) {
+  const msg = document.getElementById("mensagem");
+  msg.className = `mensagem-visivel ${tipo}`;
+  msg.textContent = texto;
+
+  setTimeout(() => {
+    msg.className = "mensagem-oculta";
+  }, duracao);
+}
+
+  </script>
+</body>
+</html>
