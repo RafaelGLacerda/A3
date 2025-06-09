@@ -1,5 +1,18 @@
 const API_URL = "https://reciclassa.onrender.com";
 
+const COOPERATIVAS_WHATSAPP = {
+  "Limpurb Itaigara": "71932025000",
+  "Limpurb Pirajá": "71932025000",
+  "Ecoponto Prefeitura de Salvador Alto da Terezinha": "71932025000",
+  "Cooperativa COOPERLIX Valéria": "71945678901",
+  "COOPERBRAVA São Marcos": "71933669037",
+  "COOPERES Ilha Amarela": "71985340776",
+  "CANORE Santa Cruz": "71991052926",
+  "Recicla Salvador Cidade Alta": "71991343624",
+  "Salvador Reciclagem Imbuí": "71986015987",
+  "Solaris Reciclagem Fazenda Grande Do Retiro": "71996026501"
+};
+
 // Carrega a sidebar
 fetch("sidebar.html")
   .then(response => response.text())
@@ -62,26 +75,35 @@ if (!email) {
             statusTexto = "❌ Indeferido";
           }
 
-          const row = document.createElement('tr');
-          row.innerHTML = `
-            <td>${ag.nome}</td>
-            <td>${formatarDataBrasileira(ag.data)}</td>
-            <td>${ag.hora}</td>
-            <td>${ag.cep}</td>
-            <td>${ag.cooperativa}</td>
-            <td>${statusTexto}</td>
-            <td>${ag.status === "realizado" ? (ag.comentarioAdm || "Sem observações.") : "-"}</td>
-            <td>
-              ${ag.status === "pendente"
-              ? `<button class="btn-cancelar" onclick="cancelarAgendamento('${agId}')">Desistir da coleta</button>`
-              : "—"}
-            </td>
-            <td>
-              ${ag.imagem
-              ? `<img src="${API_URL}${ag.imagem}" alt="Imagem de reciclagem" style="width: 60px; height: 60px; object-fit: cover; border-radius: 5px;" />`
-              : "Sem imagem"}
-            </td>
-          `;
+          const whatsappNumber = COOPERATIVAS_WHATSAPP[ag.cooperativa];
+const whatsappLink = whatsappNumber
+  ? `<a href="https://wa.me/55${whatsappNumber}" target="_blank" class="btn-whatsapp">WhatsApp</a>`
+  : "—";
+
+const row = document.createElement('tr');
+
+row.innerHTML = `
+  <td>${ag.nome}</td>
+  <td>${formatarDataBrasileira(ag.data)}</td>
+  <td>${ag.hora}</td>
+  <td>${ag.cep}</td>
+  <td>${ag.cooperativa}</td>
+  <td>${statusTexto}</td>
+  <td>${whatsappLink}</td>
+  <td>${ag.status === "realizado" ? (ag.comentarioAdm || "Sem observações.") : "-"}</td>
+  <td>
+    ${ag.status === "pendente"
+      ? `<button class="btn-cancelar" onclick="cancelarAgendamento('${agId}')">Desistir da coleta</button>`
+      : "—"}
+  </td>
+  <td>
+    ${ag.imagem
+      ? `<img src="${API_URL}${ag.imagem}" alt="Imagem de reciclagem" style="width: 60px; height: 60px; object-fit: cover; border-radius: 5px;" />`
+      : "Sem imagem"}
+  </td>
+`;
+
+
           tbody.appendChild(row);
         });
       }

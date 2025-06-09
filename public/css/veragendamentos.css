@@ -363,3 +363,14 @@ select#horaColeta:focus {
   background-color: #fff;
   box-shadow: 0 0 5px rgba(56, 142, 60, 0.2);
 }
+.btn-whatsapp {
+  background-color: #25D366;
+  color: white;
+  padding: 5px 8px;
+  text-decoration: none;
+  border-radius: 5px;
+  font-weight: bold;
+}
+.btn-whatsapp:hover {
+  background-color: #128C7E;
+}

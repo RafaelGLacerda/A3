@@ -23,6 +23,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   carregarAgendamentos();
 });
+
 function formatarDataBrasileira(dataISO) {
   const data = new Date(dataISO);
   if (isNaN(data)) return dataISO;
@@ -56,9 +57,16 @@ function carregarAgendamentos() {
           <p><strong>CEP:</strong> ${ag.cep}</p>
           <p><strong>Endereço:</strong> ${ag.enderecoUsuario || "Não disponível"}</p>
           <p><strong>Cooperativa:</strong> ${ag.cooperativa}</p>
-          ${ag.imagem
-            ? `<div><strong>Imagem do usuário:</strong><br><img src="${API_URL}${ag.imagem}" alt="Imagem de reciclagem" style="width: 100px; height: 100px; object-fit: cover; border-radius: 8px; margin-bottom: 10px;"></div>`
-            : "<p><em>Sem imagem enviada pelo usuário.</em></p>"}
+          ${
+            ag.imagem
+              ? `<div>
+                  <strong>Imagem do usuário:</strong><br>
+                  <img src="${API_URL}${ag.imagem}" alt="Imagem de reciclagem" class="img-miniatura" style="max-width: 100%; height: auto; border-radius: 10px; margin-bottom: 10px; border: 1px solid #ccc;" />
+                  <br>
+                  <button class="btn-ampliar" data-img="${API_URL}${ag.imagem}">🔍 Ver em tela cheia</button>
+                </div>`
+              : "<p><em>Sem imagem enviada pelo usuário.</em></p>"
+          }
           <textarea placeholder="Observações..." class="observacao" rows="3"></textarea>
           <input type="number" placeholder="Pontos" class="pontos" min="0">
           <p><strong>Imagem da Coleta (opcional):</strong></p>
@@ -73,6 +81,18 @@ function carregarAgendamentos() {
         confirmarButton.addEventListener("click", () => registrarReciclagem(ag.id, card, confirmarButton));
         indeferirButton.addEventListener("click", () => indeferirColeta(ag.id, card, indeferirButton));
 
+        // Evento para ampliar imagem - ajustado para funcionar corretamente
+        const btnAmpliar = card.querySelector(".btn-ampliar");
+        if (btnAmpliar) {
+          btnAmpliar.addEventListener("click", (e) => {
+            const src = e.currentTarget.getAttribute("data-img");
+            const modal = document.getElementById("modalImagem");
+            const modalImg = modal.querySelector("img");
+            modalImg.src = src;
+            modal.style.display = "flex";
+          });
+        }
+
         container.appendChild(card);
       });
     })
@@ -81,6 +101,17 @@ function carregarAgendamentos() {
     });
 }
 
+// Fecha o modal ao clicar no X
+document.querySelector(".fechar-modal").addEventListener("click", () => {
+  document.getElementById("modalImagem").style.display = "none";
+});
+
+// Fecha o modal ao clicar fora da imagem
+document.getElementById("modalImagem").addEventListener("click", (e) => {
+  if (e.target === e.currentTarget) {
+    e.currentTarget.style.display = "none";
+  }
+});
 
 // Função para registrar a reciclagem
 function registrarReciclagem(agendamentoId, card, button) {
@@ -118,7 +149,6 @@ function enviarReciclagem(id, observacao, pontos, imagemBase64, card, button) {
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ observacao, pontos, imagem: imagemBase64, emailAdm }) // <-- ADICIONADO
   })
-
     .then(res => {
       if (!res.ok) throw new Error("Erro ao registrar reciclagem");
       return res.json();
@@ -155,11 +185,10 @@ function indeferirColeta(agendamentoId, card, button) {
   button.textContent = "Indeferindo...";
 
   fetch(`${API_URL}/api/indeferir/${agendamentoId}`, {
-  method: "PUT",
-  headers: { "Content-Type": "application/json" },
-  body: JSON.stringify({ observacao, emailAdm }) // <-- ADICIONADO
-})
-
+    method: "PUT",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ observacao, emailAdm }) // <-- ADICIONADO
+  })
     .then(res => {
       if (!res.ok) {
         return res.json().then(err => { throw new Error(err.message); });
@@ -182,9 +211,6 @@ function indeferirColeta(agendamentoId, card, button) {
       button.textContent = "Indeferir Coleta";
     });
 }
-
-
-
 
 // Logout e limpeza de sessão
 function logout() {
