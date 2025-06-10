@@ -5,7 +5,7 @@
 
 ---
 
-# 🧾 Como Funciona de Maneira Geral (Muito Importante) 🔥🔥🔥
+# 🧾 Como Funciona de Maneira Geral 🔥
 
 ## Tela Inicial
 - A primeira tela contém a opção de **login/cadastro**.
